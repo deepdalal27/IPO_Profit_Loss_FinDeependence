@@ -1,0 +1,30 @@
+{
+  "name": "ipo-deal-desk-findeependence",
+  "version": "1.0.0",
+  "description": "FinDeependence IPO Deal Desk by CA Deep Dalal: Kostak / Subject-to / premium IPO deals, SEBI allotment odds, GMP, settlements and analytics",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "npx --yes http-server site -p 3000 -c-1",
+    "sync": "node scripts/sync.js",
+    "test": "node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepdalal27/IPO_Profit_Loss_FinDeependence.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/deepdalal27/IPO_Profit_Loss_FinDeependence/issues"
+  },
+  "homepage": "https://github.com/deepdalal27/IPO_Profit_Loss_FinDeependence#readme",
+  "dependencies": {
+    "linkedom": "^0.18.5"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
