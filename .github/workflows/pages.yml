@@ -1,4 +1,4 @@
-name: Update IPOs & GMP
+name: Update IPOs & GMP and publish
 
 on:
   push:
@@ -10,9 +10,10 @@ on:
 permissions:
   contents: write
   pages: write
+  id-token: write
 
 concurrency:
-  group: ipo-sync
+  group: pages
   cancel-in-progress: false
 
 jobs:
@@ -29,7 +30,6 @@ jobs:
         run: npm test
       - name: Fetch IPOs, GMP and subscription (NSE, IPO Premium, investorgain)
         run: npm run sync
-      # GitHub Pages (deploy from branch: main, root) republishes the site after this commit.
       - name: Save updated IPO list
         run: |
           if ! git diff --quiet -- site/ipos.json; then
@@ -40,7 +40,17 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || true
             git push || echo "push skipped"
           fi
-      - name: Rebuild GitHub Pages
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" || echo "Pages rebuild request skipped"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
