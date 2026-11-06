@@ -1,0 +1,1430 @@
+{
+ "updatedAt": "2026-11-06T15:48:22.812Z",
+ "checkedAt": "2026-11-06T15:48:22.812Z",
+ "today": "2026-11-06",
+ "notes": [],
+ "ipos": [
+  {
+   "id": "ipp-1432",
+   "source": "NSE",
+   "src": {
+    "symbol": "NSE",
+    "name": "NSE",
+    "type": "NSE",
+    "openDate": "NSE",
+    "closeDate": "NSE",
+    "priceLow": "NSE",
+    "priceHigh": "NSE",
+    "lotSize": "NSE",
+    "registrar": "NSE",
+    "exchange": "NSE",
+    "allotmentDate": "NSE",
+    "listingDate": "NSE",
+    "ippId": "NSE",
+    "ippSlug": "NSE",
+    "ippUrl": "NSE",
+    "gmp": "ipopremium"
+   },
+   "symbol": "VPFL",
+   "name": "Vedant Poly Fabs Limited",
+   "type": "SME",
+   "openDate": "2026-11-02",
+   "closeDate": "2026-11-04",
+   "priceLow": 88,
+   "priceHigh": 94,
+   "lotSize": 1200,
+   "registrar": "Cameo Corporate Services Limited",
+   "exchange": "NSE SME",
+   "allotmentDate": "2026-11-05",
+   "listingDate": "2026-11-09",
+   "ippId": 1432,
+   "ippSlug": "vedant-poly-fabs-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1432/vedant-poly-fabs-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 4.25,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 4.25
+    }
+   ]
+  },
+  {
+   "id": "ipp-1429",
+   "source": "NSE",
+   "src": {
+    "symbol": "NSE",
+    "name": "NSE",
+    "type": "NSE",
+    "openDate": "NSE",
+    "closeDate": "NSE",
+    "priceLow": "NSE",
+    "priceHigh": "NSE",
+    "lotSize": "NSE",
+    "registrar": "NSE",
+    "exchange": "NSE",
+    "allotmentDate": "NSE",
+    "listingDate": "NSE",
+    "ippId": "NSE",
+    "ippSlug": "NSE",
+    "ippUrl": "NSE",
+    "gmp": "ipopremium"
+   },
+   "symbol": "HGSINDIALT",
+   "name": "HGS (India) Limited",
+   "type": "SME",
+   "openDate": "2026-10-30",
+   "closeDate": "2026-11-03",
+   "priceLow": 114,
+   "priceHigh": 120,
+   "lotSize": 1200,
+   "registrar": "Kfin Technologies Limited",
+   "exchange": "NSE SME",
+   "allotmentDate": "2026-11-04",
+   "listingDate": "2026-11-06",
+   "ippId": 1429,
+   "ippSlug": "hgs",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1429/hgs",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 30,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 30
+    }
+   ]
+  },
+  {
+   "id": "ipp-1430",
+   "source": "NSE",
+   "src": {
+    "symbol": "NSE",
+    "name": "NSE",
+    "type": "NSE",
+    "openDate": "NSE",
+    "closeDate": "NSE",
+    "priceLow": "NSE",
+    "priceHigh": "NSE",
+    "lotSize": "NSE",
+    "registrar": "NSE",
+    "exchange": "NSE",
+    "allotmentDate": "NSE",
+    "listingDate": "NSE",
+    "ippId": "NSE",
+    "ippSlug": "NSE",
+    "ippUrl": "NSE",
+    "gmp": "ipopremium"
+   },
+   "symbol": "MAXENGS",
+   "name": "Maxwell Engineering Solutions Limited",
+   "type": "SME",
+   "openDate": "2026-10-30",
+   "closeDate": "2026-11-03",
+   "priceLow": 150,
+   "priceHigh": 158,
+   "lotSize": 800,
+   "registrar": "KFin Technologies Limited",
+   "exchange": "NSE SME",
+   "allotmentDate": "2026-11-04",
+   "listingDate": "2026-11-06",
+   "ippId": 1430,
+   "ippSlug": "maxwell-engineering-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1430/maxwell-engineering-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 70,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 70
+    }
+   ]
+  },
+  {
+   "id": "ipp-1428",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Johnsoncab Electricals Ltd.",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 190,
+   "priceHigh": 200,
+   "lotSize": 600,
+   "openDate": "2026-10-30",
+   "closeDate": "2026-11-03",
+   "allotmentDate": "2026-11-04",
+   "listingDate": "2026-11-06",
+   "registrar": "Maashitla Securities Private Limited",
+   "ippId": 1428,
+   "ippSlug": "johnsoncab-electricals-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1428/johnsoncab-electricals-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 5,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 5
+    }
+   ]
+  },
+  {
+   "id": "ipp-1431",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Vectras Enprocon",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 99,
+   "priceHigh": 105,
+   "lotSize": 1200,
+   "openDate": "2026-10-30",
+   "closeDate": "2026-11-03",
+   "allotmentDate": "2026-11-04",
+   "listingDate": "2026-11-06",
+   "registrar": "MUFG Intime India Private Limited - Link Intime",
+   "ippId": 1431,
+   "ippSlug": "vectras-enprocon",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1431/vectras-enprocon",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 0,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ]
+  },
+  {
+   "id": "ipp-1424",
+   "source": "NSE",
+   "src": {
+    "symbol": "NSE",
+    "name": "NSE",
+    "type": "NSE",
+    "openDate": "NSE",
+    "closeDate": "NSE",
+    "priceLow": "NSE",
+    "priceHigh": "NSE",
+    "lotSize": "NSE",
+    "registrar": "NSE",
+    "exchange": "NSE",
+    "allotmentDate": "NSE",
+    "listingDate": "NSE",
+    "ippId": "NSE",
+    "ippSlug": "NSE",
+    "ippUrl": "NSE",
+    "gmp": "ipopremium"
+   },
+   "symbol": "BCSSL",
+   "name": "Bombay Coated and Special Steels Limited",
+   "type": "Mainboard",
+   "openDate": "2026-10-29",
+   "closeDate": "2026-11-02",
+   "priceLow": 78,
+   "priceHigh": 82,
+   "lotSize": 182,
+   "registrar": "KFin Technologies Limited",
+   "exchange": "Mainboard",
+   "allotmentDate": "2026-11-03",
+   "listingDate": "2026-11-05",
+   "ippId": 1424,
+   "ippSlug": "bombay-coated-special-steels-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1424/bombay-coated-special-steels-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 10,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 10
+    }
+   ]
+  },
+  {
+   "id": "ipp-1427",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Antala Industries Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 63,
+   "priceHigh": 67,
+   "lotSize": 2000,
+   "openDate": "2026-10-29",
+   "closeDate": "2026-11-02",
+   "allotmentDate": "2026-11-06",
+   "listingDate": "2026-11-05",
+   "registrar": "Bigshare Services Pvt Ltd",
+   "ippId": 1427,
+   "ippSlug": "antala-industries-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1427/antala-industries-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 0,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ]
+  },
+  {
+   "id": "ipp-1422",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "M.K.Sons Fine Jewels Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceLow": 153,
+   "priceHigh": 162,
+   "lotSize": 91,
+   "openDate": "2026-10-28",
+   "closeDate": "2026-10-30",
+   "allotmentDate": "2026-11-02",
+   "listingDate": "2026-11-04",
+   "registrar": "Bigshare Services Pvt Ltd",
+   "ippId": 1422,
+   "ippSlug": "mksons-fine-jewels-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1422/mksons-fine-jewels-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 5,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 5
+    }
+   ]
+  },
+  {
+   "id": "ipp-1425",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Carver Roboweld Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 76,
+   "priceHigh": 80,
+   "lotSize": 1600,
+   "openDate": "2026-10-28",
+   "closeDate": "2026-10-30",
+   "allotmentDate": "2026-11-02",
+   "listingDate": "2026-11-04",
+   "registrar": "Bigshare Services Pvt Ltd",
+   "ippId": 1425,
+   "ippSlug": "carver-roboweld-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1425/carver-roboweld-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 5,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 5
+    }
+   ]
+  },
+  {
+   "id": "ipp-1426",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Ajwa Projects Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 203,
+   "priceHigh": 203,
+   "lotSize": 600,
+   "openDate": "2026-10-28",
+   "closeDate": "2026-10-30",
+   "allotmentDate": "2026-11-02",
+   "listingDate": "2026-11-04",
+   "registrar": "Kfin Technologies Limited",
+   "ippId": 1426,
+   "ippSlug": "ajwa-projects-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1426/ajwa-projects-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 1,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 1
+    }
+   ]
+  },
+  {
+   "id": "ipp-1423",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Wiscon Industries Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 194,
+   "priceHigh": 204,
+   "lotSize": 600,
+   "openDate": "2026-10-27",
+   "closeDate": "2026-10-29",
+   "allotmentDate": "2026-10-30",
+   "listingDate": "2026-11-03",
+   "registrar": "Maashitla Securities Private Limited",
+   "ippId": 1423,
+   "ippSlug": "wiscon-industries-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1423/wiscon-industries-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 0,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ]
+  },
+  {
+   "id": "ipo-sfc-environmental-technologies",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "SFC Environmental Technologies Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 330,
+   "lotSize": 45,
+   "openDate": "2026-10-27",
+   "closeDate": "2026-10-29",
+   "allotmentDate": "2026-10-30",
+   "listingDate": "2026-11-03",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1412,
+   "ippSlug": "sfc-environmental-technologies-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1412/sfc-environmental-technologies-ltd",
+   "gmp": 25.5,
+   "priceLow": 313,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 25.5
+    }
+   ]
+  },
+  {
+   "id": "ipo-bls-polymers",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium",
+    "issueSizeCr": "ipopremium",
+    "subTotal": "ipopremium",
+    "sub": "ipopremium",
+    "apps": "ipopremium",
+    "lots": "ipopremium",
+    "subUpdated": "ipopremium",
+    "registrar": "ipopremium"
+   },
+   "name": "BLS Polymers",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 150,
+   "lotSize": 100,
+   "openDate": "2026-10-27",
+   "closeDate": "2026-10-29",
+   "allotmentDate": "2026-10-30",
+   "listingDate": "2026-11-03",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1414,
+   "ippSlug": "bls-polymers-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1414/bls-polymers-ltd",
+   "gmp": 67,
+   "priceLow": 142,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 66
+    },
+    {
+     "t": "2026-11-06 15:48",
+     "g": 67
+    }
+   ],
+   "issueSizeCr": 255,
+   "subTotal": 241.22,
+   "sub": {
+    "qib": {
+     "offered": 3400000,
+     "applied": 680857700,
+     "times": 200.25
+    },
+    "nii": {
+     "offered": 2550000,
+     "applied": 1425969900,
+     "times": 559.2
+    },
+    "bnii": {
+     "offered": 1700000,
+     "applied": 1007815300,
+     "times": 592.83
+    },
+    "snii": {
+     "offered": 850000,
+     "applied": 418154600,
+     "times": 491.95
+    },
+    "retail": {
+     "offered": 5950000,
+     "applied": 763731100,
+     "times": 128.36
+    },
+    "total": {
+     "offered": 11900000,
+     "applied": 2870558700,
+     "times": 241.22
+    }
+   },
+   "apps": {
+    "bnii": {
+     "reserved": 1214,
+     "applied": 146685,
+     "times": 120.83
+    },
+    "snii": {
+     "reserved": 607,
+     "applied": 281018,
+     "times": 462.96
+    },
+    "retail": {
+     "reserved": 59500,
+     "applied": 5723385,
+     "times": 96.19
+    }
+   },
+   "lots": {
+    "retail": {
+     "lots": 1,
+     "shares": 100,
+     "amount": 15000,
+     "reserved": 59500
+    },
+    "snii": {
+     "lots": 14,
+     "shares": 1400,
+     "amount": 210000,
+     "reserved": 607
+    },
+    "bnii": {
+     "lots": 67,
+     "shares": 6700,
+     "amount": 1005000,
+     "reserved": 1214
+    }
+   },
+   "subUpdated": "2026-10-29 19:10",
+   "registrar": "Kfin Technologies Limited"
+  },
+  {
+   "id": "ipo-eaaa-alternatives",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "EAAA India Alternatives Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 1665,
+   "lotSize": 9,
+   "openDate": "2026-10-26",
+   "closeDate": "2026-10-28",
+   "allotmentDate": "2026-10-29",
+   "listingDate": "2026-11-02",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1407,
+   "ippSlug": "eaaa-india-alternatives-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1407/eaaa-india-alternatives-ltd",
+   "gmp": 53,
+   "priceLow": 1585,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 53
+    }
+   ]
+  },
+  {
+   "id": "ipo-core4-engineers",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Core4 Engineers Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceHigh": 93,
+   "lotSize": 1200,
+   "openDate": "2026-10-23",
+   "closeDate": "2026-10-27",
+   "allotmentDate": "2026-10-28",
+   "listingDate": "2026-10-30",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1215,
+   "ippSlug": "core4-engineers-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1215/core4-engineers-ltd",
+   "gmp": 0,
+   "priceLow": 88,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ]
+  },
+  {
+   "id": "ipo-paras-healthcare",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Paras Healthcare Limited",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 693,
+   "lotSize": 21,
+   "openDate": "2026-10-21",
+   "closeDate": "2026-10-23",
+   "allotmentDate": "2026-10-26",
+   "listingDate": "2026-10-28",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 829,
+   "ippSlug": "paras-healthcare-limited",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/829/paras-healthcare-limited",
+   "gmp": 13,
+   "priceLow": 660,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 13
+    }
+   ]
+  },
+  {
+   "id": "ipo-jio-platforms",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Jio Platforms Ltd.",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 1119,
+   "lotSize": 12,
+   "openDate": "2026-10-21",
+   "closeDate": "2026-10-23",
+   "allotmentDate": "2026-10-26",
+   "listingDate": "2026-10-28",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1247,
+   "ippSlug": "jio-platforms-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1247/jio-platforms-ltd",
+   "gmp": 250,
+   "priceLow": 1065,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 250
+    }
+   ]
+  },
+  {
+   "id": "ipp-1421",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "registrar": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium"
+   },
+   "name": "Shellz India Ltd",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceLow": 170,
+   "priceHigh": 179,
+   "lotSize": 800,
+   "openDate": "2026-10-15",
+   "closeDate": "2026-10-19",
+   "allotmentDate": "2026-10-21",
+   "listingDate": "2026-10-23",
+   "registrar": "Bigshare Services Pvt Ltd",
+   "ippId": 1421,
+   "ippSlug": "shellz-india-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1421/shellz-india-ltd",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "gmp": 7,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 7
+    }
+   ]
+  },
+  {
+   "id": "ipo-zetwerk",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Zetwerk Manufacturing Ltd.",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 151,
+   "lotSize": 99,
+   "openDate": "2026-10-15",
+   "closeDate": "2026-10-19",
+   "allotmentDate": "2026-10-21",
+   "listingDate": "2026-10-23",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1417,
+   "ippSlug": "zetwerk-manufacturing-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1417/zetwerk-manufacturing-ltd",
+   "gmp": 1.2,
+   "priceLow": 143,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 1.2
+    }
+   ]
+  },
+  {
+   "id": "ipo-tonbo-imaging",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "ipopremium",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium",
+    "listingPrice": "ipopremium",
+    "issueSizeCr": "ipopremium",
+    "subTotal": "ipopremium",
+    "listingNse": "ipopremium",
+    "listingBse": "ipopremium",
+    "sub": "ipopremium",
+    "apps": "ipopremium",
+    "lots": "ipopremium",
+    "subUpdated": "ipopremium",
+    "registrar": "ipopremium"
+   },
+   "name": "Tonbo Imaging India",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 700,
+   "lotSize": 21,
+   "openDate": "2026-10-15",
+   "closeDate": "2026-10-19",
+   "allotmentDate": "2026-10-21",
+   "listingDate": "2026-10-23",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1411,
+   "ippSlug": "tonbo-imaging-india-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1411/tonbo-imaging-india-ltd",
+   "gmp": 452,
+   "priceLow": 665,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 452
+    }
+   ],
+   "listingPrice": 1160,
+   "issueSizeCr": 852.18,
+   "subTotal": 135.91,
+   "listingNse": 1160,
+   "listingBse": 1162,
+   "sub": {
+    "qib": {
+     "offered": 2432010,
+     "applied": 713933115,
+     "times": 293.56
+    },
+    "nii": {
+     "offered": 1824007,
+     "applied": 311805858,
+     "times": 170.95
+    },
+    "bnii": {
+     "offered": 1216005,
+     "applied": 224627487,
+     "times": 184.73
+    },
+    "snii": {
+     "offered": 608002,
+     "applied": 87178371,
+     "times": 143.39
+    },
+    "retail": {
+     "offered": 4256016,
+     "applied": 132240780,
+     "times": 31.07
+    },
+    "emp": {
+     "offered": 14000,
+     "applied": 760851,
+     "times": 54.35
+    },
+    "total": {
+     "offered": 8526033,
+     "applied": 1158740604,
+     "times": 135.91
+    }
+   },
+   "apps": {
+    "bnii": {
+     "reserved": 4136,
+     "applied": 150607,
+     "times": 36.41
+    },
+    "snii": {
+     "reserved": 2068,
+     "applied": 280756,
+     "times": 135.76
+    },
+    "retail": {
+     "reserved": 202667,
+     "applied": 5070638,
+     "times": 25.02
+    },
+    "emp": {
+     "reserved": null,
+     "applied": 23040,
+     "times": null
+    }
+   },
+   "lots": {
+    "retail": {
+     "lots": 1,
+     "shares": 21,
+     "amount": 14700,
+     "reserved": 202667
+    },
+    "snii": {
+     "lots": 14,
+     "shares": 294,
+     "amount": 205800,
+     "reserved": 2068
+    },
+    "bnii": {
+     "lots": 69,
+     "shares": 1449,
+     "amount": 1014300,
+     "reserved": 4136
+    }
+   },
+   "subUpdated": "2026-10-19 19:12",
+   "registrar": "Kfin Technologies Limited"
+  },
+  {
+   "id": "ipo-sahajanand-medical-technologies",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Sahajanand Medical Technologies Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 344,
+   "lotSize": 43,
+   "openDate": "2026-10-15",
+   "closeDate": "2026-10-19",
+   "allotmentDate": "2026-10-21",
+   "listingDate": "2026-10-23",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1409,
+   "ippSlug": "sahajanand-medical-technologies-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1409/sahajanand-medical-technologies-ltd",
+   "gmp": 17,
+   "priceLow": 327,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 17
+    }
+   ]
+  },
+  {
+   "id": "ipo-bonfiglioli-transmissions",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Bonfiglioli Transmissions Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 586,
+   "lotSize": 25,
+   "openDate": "2026-10-15",
+   "closeDate": "2026-10-19",
+   "allotmentDate": "2026-10-21",
+   "listingDate": "2026-10-23",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1413,
+   "ippSlug": "bonfiglioli-transmissions-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1413/bonfiglioli-transmissions-ltd",
+   "gmp": 66,
+   "priceLow": 558,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 66
+    }
+   ]
+  },
+  {
+   "id": "ipo-ravita-engineering-services",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Ravita Engineering Services Ltd",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "priceHigh": 112,
+   "lotSize": 1200,
+   "openDate": "2026-10-14",
+   "closeDate": "2026-10-16",
+   "allotmentDate": "2026-10-19",
+   "listingDate": "2026-10-22",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1420,
+   "ippSlug": "ravita-engineering-services-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1420/ravita-engineering-services-ltd",
+   "gmp": 1,
+   "priceLow": 105,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 1
+    }
+   ]
+  },
+  {
+   "id": "ipo-fusion-cx",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "Fusion CX Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 289,
+   "lotSize": 51,
+   "openDate": "2026-10-14",
+   "closeDate": "2026-10-16",
+   "allotmentDate": "2026-10-19",
+   "listingDate": "2026-10-22",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1410,
+   "ippSlug": "fusion-cx-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1410/fusion-cx-ltd",
+   "gmp": 13.5,
+   "priceLow": 275,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 13.5
+    }
+   ]
+  },
+  {
+   "id": "ipo-hd-fire-protect",
+   "source": "ipopremium",
+   "src": {
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "priceHigh": "ipopremium",
+    "lotSize": "investorgain",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "allotmentDate": "investorgain",
+    "listingDate": "ipopremium",
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "gmp": "ipopremium",
+    "priceLow": "ipopremium"
+   },
+   "name": "HD Fire Protect Ltd",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "priceHigh": 271,
+   "lotSize": 55,
+   "openDate": "2026-10-13",
+   "closeDate": "2026-10-15",
+   "allotmentDate": "2026-10-16",
+   "listingDate": "2026-10-21",
+   "updatedAt": "2026-11-06T15:48:22.812Z",
+   "ippId": 1416,
+   "ippSlug": "hd-fire-protect-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1416/hd-fire-protect-ltd",
+   "gmp": 70,
+   "priceLow": 258,
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 70
+    }
+   ]
+  },
+  {
+   "id": "ipp-1419",
+   "source": "ipopremium",
+   "src": {
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "gmp": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "listingDate": "ipopremium"
+   },
+   "ippId": 1419,
+   "ippSlug": "vaibhav-vyapaar-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1419/vaibhav-vyapaar-ltd",
+   "name": "Vaibhav Vyapaar Ltd",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "gmp": 3,
+   "openDate": "2026-10-13",
+   "closeDate": "2026-10-15",
+   "priceLow": 51,
+   "priceHigh": 54,
+   "listingDate": "2026-10-21",
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 3
+    }
+   ],
+   "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipp-1406",
+   "source": "ipopremium",
+   "src": {
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "gmp": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "listingDate": "ipopremium"
+   },
+   "ippId": 1406,
+   "ippSlug": "rkfashion-accessories-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1406/rkfashion-accessories-ltd",
+   "name": "R.K.Fashion Accessories Ltd.",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "gmp": 1.5,
+   "openDate": "2026-10-05",
+   "closeDate": "2026-10-07",
+   "priceLow": 77,
+   "priceHigh": 82,
+   "listingDate": "2026-10-12",
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 1.5
+    }
+   ],
+   "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipp-1399",
+   "source": "ipopremium",
+   "src": {
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "gmp": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "listingDate": "ipopremium"
+   },
+   "ippId": 1399,
+   "ippSlug": "tna-solutions-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1399/tna-solutions-ltd",
+   "name": "TNA Solutions Ltd.",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "gmp": 0,
+   "openDate": "2026-09-30",
+   "closeDate": "2026-10-06",
+   "priceLow": 66,
+   "priceHigh": 70,
+   "listingDate": "2026-10-09",
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ],
+   "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipp-1343",
+   "source": "ipopremium",
+   "src": {
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "gmp": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "listingDate": "ipopremium"
+   },
+   "ippId": 1343,
+   "ippSlug": "acme-india-industries-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1343/acme-india-industries-ltd",
+   "name": "Acme India Industries Ltd.",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "gmp": 43,
+   "openDate": "2026-09-30",
+   "closeDate": "2026-10-06",
+   "priceLow": 186,
+   "priceHigh": 196,
+   "listingDate": "2026-10-09",
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 43
+    }
+   ],
+   "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipp-1398",
+   "source": "ipopremium",
+   "src": {
+    "ippId": "ipopremium",
+    "ippSlug": "ipopremium",
+    "ippUrl": "ipopremium",
+    "name": "ipopremium",
+    "exchange": "ipopremium",
+    "type": "ipopremium",
+    "gmp": "ipopremium",
+    "openDate": "ipopremium",
+    "closeDate": "ipopremium",
+    "priceLow": "ipopremium",
+    "priceHigh": "ipopremium",
+    "listingDate": "ipopremium"
+   },
+   "ippId": 1398,
+   "ippSlug": "paramount-syntex-ltd",
+   "ippUrl": "https://www.ipopremium.in/view/ipo/1398/paramount-syntex-ltd",
+   "name": "Paramount Syntex Ltd.",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "gmp": 0,
+   "openDate": "2026-09-30",
+   "closeDate": "2026-10-06",
+   "priceLow": 119,
+   "priceHigh": 127,
+   "listingDate": "2026-10-09",
+   "gmpHistory": [
+    {
+     "t": "2026-11-06 15:48",
+     "g": 0
+    }
+   ],
+   "updatedAt": "2026-11-06T15:48:22.812Z"
+  }
+ ]
+}
