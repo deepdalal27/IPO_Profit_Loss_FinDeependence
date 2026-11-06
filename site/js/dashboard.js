@@ -36,13 +36,13 @@
     var periodName = { month: 'This month', last3: 'Last 3 months', fy: 'This financial year', lfy: 'Last financial year', all: 'All time', custom: 'Custom period' }[st.period];
 
     var html = '<div class="dash-head"><div><div class="lbl" style="font:700 10px var(--mono);letter-spacing:.14em;color:var(--teal);text-transform:uppercase">Business dashboard</div><h2>' + periodName + '</h2>' +
-      '<p class="muted" style="margin:4px 0 0">Deals are counted in the month the IPO lists. Realised = allotment and listing price known; expected = SEBI allotment odds × GMP.</p></div>' +
+      '</div>' +
       '<div class="filters" style="margin:0"><label>Period <select id="dPeriod">' + FD.opts([['month', 'This month'], ['last3', 'Last 3 months'], ['fy', 'This FY'], ['lfy', 'Last FY'], ['all', 'All time'], ['custom', 'Custom']], st.period) + '</select></label>' +
       (st.period === 'custom' ? '<label>From <input type="date" id="dFrom" value="' + st.from + '"></label><label>To <input type="date" id="dTo" value="' + st.to + '"></label>' : '') +
       '<label>Type <select id="dType">' + FD.opts([['', 'Mainboard + SME'], ['Mainboard', 'Mainboard'], ['SME', 'SME']], st.type) + '</select></label></div></div>';
 
     if (!FD.state.deals.length) {
-      html += '<div class="panel empty-state"><h3>Welcome to your IPO Deal Desk</h3><p>Three steps to start: add your investors and brokers, pick an IPO, then book Kostak / Subject-to / Premium deals.<br>The dashboard fills in by itself as allotment and listing results come in.</p>' +
+      html += '<div class="panel empty-state"><h3>Welcome to your IPO Deal Desk</h3>' +
         '<div class="row" style="justify-content:center"><button class="primary" data-go="people">Add investors</button><button data-go="ipos">See live IPOs &amp; GMP</button><button data-go="data">Load demo data</button></div></div>';
       html += opportunityBoard();
       el.innerHTML = html; wire(el); return;
@@ -118,7 +118,7 @@
       var gp = i.gmp != null && i.priceHigh ? i.gmp / i.priceHigh : null;
       return '<tr><td><a href="#" class="go" data-ipo="' + i.id + '">' + FD.esc(i.name) + '</a><br>' + FD.typePill(i) + ' ' + FD.stagePill(i.stage) + '</td><td class="num">' + (i.gmp == null ? '—' : '₹' + i.gmp) + '<br><span class="muted small">' + FD.pct(gp) + '</span></td><td class="nowrap">' + FD.dt(i.openDate) + ' – ' + FD.dt(i.closeDate) + '<br><span class="muted small">Lists ' + FD.dt(i.listingDate) + '</span></td>' + cells + '</tr>';
     }).join('');
-    return '<div class="card" style="margin-top:12px"><h3>Live opportunity board</h3><p class="sub">Gain if allotted at today\'s GMP, chance of allotment (SEBI lottery) and expected value per application = fair Kostak rate. Open an IPO for suggested buy rates.</p>' +
+    return '<div class="card" style="margin-top:12px"><h3>Live opportunity board</h3><p class="sub">Gain if allotted · chance · expected value per application</p>' +
       '<div class="tbl"><table><thead><tr><th>IPO</th><th class="num">GMP</th><th>Dates</th><th class="num">Retail</th><th class="num">sHNI</th><th class="num">bHNI</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
   }
 

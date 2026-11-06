@@ -13,11 +13,12 @@
 <body>
 <header class="bar">
   <div class="wrap">
-    <div class="brand"><img src="logo_circle.png" alt="FinDeependence logo"><div><div class="lbl">FinDeependence</div><h1>IPO Deal Desk</h1><span>Kostak · Subject-to · Premium deals · Created by CA Deep Dalal</span></div></div>
+    <div class="brand"><img src="logo_circle.png" alt="FinDeependence logo"><div><div class="lbl">FinDeependence</div><h1>IPO Deal Desk</h1><span>IPO deals · investors · brokers · CA Deep Dalal</span></div></div>
     <nav class="tabs" id="tabs" aria-label="Sections">
       <button data-v="dash" class="on">Dashboard</button>
       <button data-v="ipos">IPOs &amp; GMP</button>
       <button data-v="deals">Deals</button>
+      <button data-v="calc">Calculator</button>
       <button data-v="reports">Reports</button>
       <button data-v="people">Investors &amp; Brokers</button>
       <button data-v="data">Data &amp; Settings</button>
@@ -55,17 +56,19 @@
       <aside class="rail">
         <div class="rail-head"><h2>Deals by IPO</h2>
           <select id="dealFilter" aria-label="Which IPOs">
-            <option value="mine">IPOs with deals + open</option>
+            <option value="mine">Live &amp; applied</option>
             <option value="pending">Unsettled</option>
             <option value="all">All IPOs</option>
           </select></div>
         <input type="search" id="dealSearch" placeholder="Search IPO" aria-label="Search IPO">
         <div class="ipo-list" id="dealRail"></div>
+        <p class="muted small" id="dealInfo"></p>
       </aside>
       <div class="panel" id="dealPanel"></div>
     </div>
   </section>
 
+  <section class="view" id="v-calc" hidden></section>
   <section class="view" id="v-reports" hidden></section>
   <section class="view" id="v-people" hidden></section>
   <section class="view" id="v-data" hidden></section>
@@ -88,6 +91,7 @@
 <script src="js/dashboard.js"></script>
 <script src="js/ipos.js"></script>
 <script src="js/deals.js"></script>
+<script src="js/calculator.js"></script>
 <script src="js/reports.js"></script>
 <script src="js/people.js"></script>
 <script src="js/data.js"></script>

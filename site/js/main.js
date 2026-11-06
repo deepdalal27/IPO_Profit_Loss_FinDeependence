@@ -2,7 +2,7 @@
 (function () {
   var FD = window.FD;
   var view = 'dash';
-  var R = { dash: function () { FD.renderDash(); }, ipos: function () { FD.renderIpos(); }, deals: function () { FD.renderDeals(); }, reports: function () { FD.renderReports(); }, people: function () { FD.renderPeople(); }, data: function () { FD.renderData(); } };
+  var R = { dash: function () { FD.renderDash(); }, ipos: function () { FD.renderIpos(); }, deals: function () { FD.renderDeals(); }, calc: function () { FD.renderCalc(); }, reports: function () { FD.renderReports(); }, people: function () { FD.renderPeople(); }, data: function () { FD.renderData(); } };
 
   FD.go = function (v, id) {
     view = v;
@@ -50,7 +50,9 @@
     window.addEventListener('hashchange', function () { if (location.hash.indexOf('#ipp=') === 0) { hashImport(); FD.refresh(); } });
     if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { FD.refresh(); });
     try { var v = localStorage.getItem('fd-ipo-desk-view'); if (v && R[v]) view = v; } catch (e) {}
-    fetch('ipos.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).catch(function () { return { ipos: [] }; }).then(function (feed) {
+    fetch('https://raw.githubusercontent.com/deepdalal27/IPO_Profit_Loss_FinDeependence/main/site/ipos.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .catch(function () { return fetch('ipos.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }); })
+      .catch(function () { return { ipos: [] }; }).then(function (feed) {
       FD.feed = feed || { ipos: [] };
       hashImport();
       FD.go(view);

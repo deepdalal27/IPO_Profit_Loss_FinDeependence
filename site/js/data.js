@@ -58,13 +58,9 @@
       '<label>Default investor deal <select id="sBuy">' + FD.opts([['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium per share'], ['NONE', 'Own account']], s.defaults.buyType) + '</select></label>' +
       '<label>Default broker deal <select id="sSell">' + FD.opts([['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium per share']], s.defaults.sellType) + '</select></label>' +
       '<label>Theme <select id="sTheme">' + FD.opts([['auto', 'Match device'], ['light', 'Light'], ['dark', 'Dark']], s.theme) + '</select></label>' +
-      '<div class="full"><h3 class="sec" style="margin-top:4px">Application-size factors (used only when application counts are not yet published)</h3><p class="muted small" style="margin:0">Average application ÷ allotment unit. Chance ≈ factor ÷ times subscribed. Calibrated from recent exchange data: Retail ≈ 1.3, sHNI ≈ 1.05, bHNI ≈ 5, SME individual ≈ 1.</p></div>' +
+      '<div class="full"><h3 class="sec" style="margin-top:4px">Probability factors (when application counts are not published)</h3></div>' +
       ['RETAIL', 'SHNI', 'BHNI', 'RETAIL_SME'].map(function (k) { return '<label>' + { RETAIL: 'Retail', SHNI: 'sHNI', BHNI: 'bHNI', RETAIL_SME: 'SME individual' }[k] + ' <input data-fac="' + k + '" type="number" step="0.05" min="0.5" value="' + s.factors[k] + '"></label>'; }).join('') +
-      '</div><h3 class="sec">How the SEBI allotment odds are worked out</h3><ul class="small muted" style="margin:0;padding-left:18px">' +
-      '<li><b>Retail</b> (up to ₹2 lakh): if oversubscribed, the maximum number of applicants get the minimum lot by lottery. Chance = retail shares ÷ minimum lot ÷ valid applications.</li>' +
-      '<li><b>sHNI</b> (₹2–10 lakh, 1/3 of NII) and <b>bHNI</b> (above ₹10 lakh, 2/3 of NII): each winner gets the <b>minimum NII application</b> (the smallest lots above ₹2 lakh) by lottery; any balance is allotted proportionately. A bigger bHNI bid does not raise your chance — it only adds proportionate shares if the category is barely subscribed.</li>' +
-      '<li><b>SME</b>: individual minimum application is 2 lots; NII minimum is more than 2 lots.</li>' +
-      '<li>Expected value per application = chance × GMP × allotment unit = <b>fair Kostak</b>. Fair Subject-to = GMP × allotment unit.</li></ul></div>';
+      '</div></div>';
     el.innerHTML = html;
     var $ = function (q) { return el.querySelector(q); };
     fetch('js/parse.js').then(function (r) { return r.text(); }).then(function (src) { $('#bm').href = bookmarkletHref(src); });

@@ -58,9 +58,6 @@
           '<td><b>' + FD.fmt(o.fairKostak == null ? null : Math.round(o.fairKostak)) + '</b></td><td class="pos">' + FD.fmt(o.bidKostak) + '</td>' +
           '<td>' + FD.fmt(o.fairSubject) + '</td><td class="pos">' + FD.fmt(o.bidSubject) + '</td></tr>';
       }).join('') + '</tbody></table></div>';
-    html += '<p class="muted small">Retail: each winner gets the minimum lot by lottery. sHNI and bHNI: each winner gets the <b>minimum NII application (' + (r.SHNI || '—') + ' lots = ' + C.unitShares(i, 'SHNI') + ' shares)</b> by lottery, balance proportionate (SEBI ICDR, NII 1/3 sHNI · 2/3 bHNI). Chance = winners ÷ applications. ' +
-      '“Your bid” keeps a ' + m + '% margin below the fair rate (change it in Data &amp; Settings). Fair Kostak = expected value; fair Subject-to = gain if allotted.</p>';
-
     if (i.sub && Object.keys(i.sub).length) {
       var order = ['qib', 'nii', 'bnii', 'snii', 'retail', 'emp', 'sh', 'total'], lab = { qib: 'QIB', nii: 'NII (HNI)', bnii: 'bHNI (₹10L+)', snii: 'sHNI (₹2–10L)', retail: 'Retail', emp: 'Employees', sh: 'Shareholders', total: 'Total' };
       html += '<div class="grid2" style="margin-top:12px"><div><h3 class="sec">Subscription (shares)</h3><div class="tbl"><table><thead><tr><th>Category</th><th class="num">Offered</th><th class="num">Applied</th><th class="num">Times</th></tr></thead><tbody>' +
