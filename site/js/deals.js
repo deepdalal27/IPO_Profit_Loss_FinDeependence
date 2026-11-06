@@ -1,8 +1,9 @@
-/* FinDeependence IPO Deal Desk · Deals: book applications per IPO, allotment, broker hedges, settlement. */
+/* FinDeependence IPO Deal Desk · Deals: one row per investor (like the HNI IPO Ledger), click a category to apply,
+   deal terms per IPO, allotment, broker, settlement. */
 (function () {
   var FD = window.FD, C = FD.C;
-  var picked = {}; // selected deal ids
-  var addOpen = null;
+  var view = { show: 'all', q: '', group: '' };
+  var TYPES = [['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium/sh'], ['NONE', 'Own']];
 
   FD.renderDeals = function () {
     var f = document.getElementById('dealFilter').value, q = document.getElementById('dealSearch').value.trim().toLowerCase();
@@ -10,105 +11,113 @@
     var unsettled = {}; FD.rows().forEach(function (x) { if (!x.r.final || (!x.d.invSettled && Math.abs(x.r.invNet) > 0.5) || (x.r.hedged && !x.d.brkSettled && Math.abs(x.r.brkNet) > 0.5)) unsettled[x.d.ipoId] = 1; });
     var list = FD.ipos().filter(function (i) {
       if (q && i.name.toLowerCase().indexOf(q) < 0) return false;
-      if (f === 'mine') return cnt[i.id] || i.stage === 'Open' || i.stage === 'Upcoming';
+      if (f === 'mine') return cnt[i.id] || i.stage !== 'Listed';
       if (f === 'pending') return unsettled[i.id];
       return true;
     });
-    if (!FD.sel.deal || !FD.ipo(FD.sel.deal)) FD.sel.deal = (list.find(function (i) { return cnt[i.id]; }) || list[0] || {}).id;
+    if (!FD.sel.deal || !FD.ipo(FD.sel.deal)) FD.sel.deal = (list[0] || {}).id;
     var rail = document.getElementById('dealRail');
     rail.innerHTML = list.length ? list.map(function (i) {
       var n = cnt[i.id] || 0;
-      return '<button class="ipo-btn' + (i.id === FD.sel.deal ? ' sel' : '') + '" data-id="' + i.id + '"><span class="nm">' + FD.esc(i.name) + ' ' + FD.stagePill(i.stage) + '</span><span class="sub">' + (n ? n + ' application' + (n > 1 ? 's' : '') : 'No deals yet') + (unsettled[i.id] && n ? ' · open items' : '') + ' · lists ' + FD.dt(i.listingDate) + '</span></button>';
+      return '<button class="ipo-btn' + (i.id === FD.sel.deal ? ' sel' : '') + '" data-id="' + i.id + '"><span class="nm">' + FD.esc(i.name) + ' ' + FD.stagePill(i.stage) + '</span>' +
+        '<span class="nm">' + (i.type === 'SME' ? '<span class="pill SME">' + FD.esc(i.exchange || 'SME') + '</span>' : '') + '</span>' +
+        '<span class="sub">' + FD.dt(i.openDate) + ' – ' + FD.dt(i.closeDate) + '</span>' +
+        '<span class="sub">₹' + (C.price(i) || '—') + ' · Lot ' + (i.lotSize || '—') + (i.gmp != null ? ' · GMP ₹' + i.gmp : '') + ' · ' + (n ? n + ' applied' : 'none applied') + '</span></button>';
     }).join('') : '<p class="muted">Nothing here.</p>';
-    rail.querySelectorAll('.ipo-btn').forEach(function (b) { b.onclick = function () { FD.sel.deal = b.dataset.id; picked = {}; addOpen = null; FD.renderDeals(); }; });
+    rail.querySelectorAll('.ipo-btn').forEach(function (b) { b.onclick = function () { FD.sel.deal = b.dataset.id; FD.renderDeals(); }; });
+    var fi = FD.feed; document.getElementById('dealInfo').textContent = 'IPO list checked ' + (fi.checkedAt ? ago(fi.checkedAt) : '—') + ' · NSE, ipopremium.in, investorgain.com';
     panel(FD.ipo(FD.sel.deal));
   };
+  function ago(t) { var h = (Date.now() - new Date(t)) / 36e5; return h < 1 ? Math.max(1, Math.round(h * 60)) + ' min ago' : h < 48 ? Math.round(h) + ' h ago' : Math.round(h / 24) + ' days ago'; }
+
+  // Deal terms for an IPO (what new applications get)
+  function terms(i) {
+    var t = (FD.state.terms = FD.state.terms || {})[i.id];
+    if (!t) t = { buyType: FD.state.settings.defaults.buyType, buyRate: {}, brokerId: '', sellType: FD.state.settings.defaults.sellType, sellRate: {} };
+    return t;
+  }
+  function saveTerms(i, t) { FD.state.terms = FD.state.terms || {}; FD.state.terms[i.id] = t; FD.save(true); }
 
   function panel(i) {
     var el = document.getElementById('dealPanel');
     if (!i) { el.innerHTML = '<div class="empty-state"><h3>Pick an IPO</h3></div>'; return; }
     var rows = FD.rows(function (x) { return x.d.ipoId === i.id; });
-    rows.sort(function (a, b) { return FD.invName(a.d.investorId).localeCompare(FD.invName(b.d.investorId)); });
-    var t = FD.sum(rows), allFinal = rows.length && t.final === rows.length;
+    var byInv = {}; rows.forEach(function (x) { byInv[x.d.investorId] = x; });
+    var t = FD.sum(rows), r = C.lotRules(i), T = terms(i);
+    var o = {}; C.CATS.forEach(function (c) { o[c] = C.opportunity(i, c, FD.state.settings.factors, FD.state.settings.marginPct); });
     var lp = i.settlePrice != null ? i.settlePrice : i.listingPrice;
-    var html = '<div class="panel-head"><div><h2>' + FD.esc(i.name) + ' ' + FD.stagePill(i.stage) + ' ' + FD.typePill(i) + '</h2>' +
-      '<p class="muted" style="margin:4px 0 0">Issue ₹' + (C.price(i) || '—') + ' · Lot ' + (i.lotSize || '—') + ' · GMP ' + (i.gmp == null ? '—' : '₹' + i.gmp) + ' · Allotment ' + FD.dt(i.allotmentDate) + ' · Listing ' + FD.dt(i.listingDate) + '</p></div>' +
-      '<div class="row"><label class="dl">Settlement price ₹ <input class="rate" id="dlSettle" type="number" step="any" value="' + (lp == null ? '' : lp) + '" placeholder="listing"></label>' +
-      '<button id="dlIpo">IPO details</button><button id="dlXls">Excel</button><button id="dlPdf">PDF</button></div></div>';
-    if (!C.price(i) || !i.lotSize) html += '<div class="notice">Issue price or lot size is missing for this IPO. <button id="fixIpo">Fill it in</button></div>';
-    html += '<div class="tiles">' +
-      tile('Applications', t.n, 'Retail ' + t.cats.RETAIL + ' · sHNI ' + t.cats.SHNI + ' · bHNI ' + t.cats.BHNI + ' · hedged ' + t.hedged) +
-      tile('Allotted', t.decided ? t.allotted + ' / ' + t.decided : '—', t.decided < t.n ? (t.n - t.decided) + ' pending' : 'all results in', 'AL-ALLOTTED') +
-      tile(allFinal ? 'Net profit' : 'Expected profit', !allFinal && t.open && !t.expKnown ? '—' : FD.signed(allFinal ? t.profit : t.expProfit), allFinal ? 'realised' : (t.open && !t.expKnown ? 'add subscription in IPO details · ' : '') + t.final + ' of ' + t.n + ' final · flat listing ' + FD.fmt(Math.round(t.worst + t.profit)), (allFinal ? t.profit : t.expProfit) >= 0 ? 'pos' : 'neg') +
-      tile('Investors', t.payInv || t.recvInv ? (t.payInv ? 'Pay ' + FD.fmt(Math.round(t.payInv)) : '') + (t.recvInv ? (t.payInv ? ' · ' : '') + 'Get ' + FD.fmt(Math.round(t.recvInv)) : '') : '—', 'unsettled balances') +
-      tile('Brokers', t.payBrk || t.recvBrk ? (t.recvBrk ? 'Get ' + FD.fmt(Math.round(t.recvBrk)) : '') + (t.payBrk ? (t.recvBrk ? ' · ' : '') + 'Pay ' + FD.fmt(Math.round(t.payBrk)) : '') : '—', 'unsettled balances') +
+
+    var html = '<div class="panel-head"><div><h2>' + FD.esc(i.name) + ' ' + FD.stagePill(i.stage) + '</h2>' +
+      '<p class="muted" style="margin:6px 0 0">' + [i.symbol, i.exchange || i.type, FD.dt(i.openDate) + ' to ' + FD.dt(i.closeDate), 'Listing ' + FD.dt(i.listingDate)].filter(Boolean).map(FD.esc).join(' · ') + '</p></div>' +
+      '<div class="row"><button id="dlXls">Excel</button><button id="dlPdf">PDF</button><button id="dlIpo">IPO details</button></div></div>';
+    if (!C.price(i) || !i.lotSize) html += '<div class="notice row"><span class="grow">Price or lot size is missing for this IPO.</span><button id="fixIpo">Fill it in</button></div>';
+    html += '<div class="facts">' +
+      fact('Price band', i.priceLow && i.priceLow !== i.priceHigh ? '₹' + i.priceLow + ' – ₹' + i.priceHigh : (i.priceHigh ? '₹' + i.priceHigh : '—')) +
+      fact('Lot size', i.lotSize ? i.lotSize.toLocaleString('en-IN') + ' sh' : '—') +
+      fact('GMP', i.gmp == null ? '—' : '₹' + i.gmp, i.gmp != null && i.priceHigh ? FD.pct(i.gmp / i.priceHigh) : '', 'pos') +
+      catFact('RETAIL', 'retail', o.RETAIL, r) + catFact('SHNI', 'shni', o.SHNI, r) + catFact('BHNI', 'bhni', o.BHNI, r) +
+      '<label class="fact"><small>Listing / settle ₹</small><input id="dlSettle" class="rate" type="number" step="any" value="' + (lp == null ? '' : lp) + '" placeholder="' + (i.gmp != null && i.priceHigh ? 'GMP ' + (i.priceHigh + i.gmp) : 'price') + '"></label>' +
       '</div>';
-    html += addForm(i, rows);
-    if (rows.length) {
-      var np = Object.keys(picked).filter(function (k) { return picked[k]; }).length;
-      html += '<div class="toolbar" id="bulkBar"><span class="lbl">' + (np ? np + ' selected' : 'Select rows for bulk actions') + '</span>' +
-        (np ? '<span class="seg sm"><button data-bulk="YES">Allotted</button><button data-bulk="NO">Not allotted</button><button data-bulk="PENDING">Pending</button></span>' +
-          '<button data-bulk="sell">Sell to broker…</button><button data-bulk="buy">Change investor deal…</button><button data-bulk="invS">Investor settled</button><button data-bulk="brkS">Broker settled</button><button class="danger" data-bulk="del">Delete</button>' :
-          '<button id="pasteAllot">Paste allotted PANs / names</button><button id="allNo">Mark all pending as not allotted</button>') + '</div>';
-      html += '<div class="tbl max"><table id="dealTbl"><thead><tr><th><input type="checkbox" id="pickAll" aria-label="Select all"' + (np === rows.length ? ' checked' : '') + '></th><th>Investor</th><th>Category</th><th>Investor deal</th><th>Sold to broker</th><th>Allotment</th><th class="num">Listing P/L</th><th class="num">Investor ±</th><th class="num">Broker ±</th><th class="num">My profit</th><th>Settled</th></tr></thead><tbody>' +
-        rows.map(rowHtml).join('') +
-        '<tr class="tot"><td></td><td>Total (' + t.n + ')</td><td></td><td class="money">' + FD.fmt(Math.round(sumF(rows, 'Di'))) + '</td><td class="money">' + FD.fmt(Math.round(sumF(rows, 'Db'))) + '</td><td></td><td class="money">' + FD.signed(sumF(rows, 'L')) + '</td><td class="money">' + FD.signed(sumF(rows, 'invNet')) + '</td><td class="money">' + FD.signed(sumF(rows, 'brkNet')) + '</td><td class="money">' + FD.signed(sumF(rows, 'profit')) + '</td><td></td></tr>' +
-        '</tbody></table></div><p class="muted small">Investor ± : + you receive from the investor, − you pay the investor. Broker ± : + broker pays you, − you pay the broker. Italic grey = expected (allotment odds × GMP) until the result is in.</p>';
-      html += settlement(i, rows);
+
+    // Deal terms
+    var brokers = [['', 'Keep the risk']].concat(FD.state.brokers.map(function (b) { return [b.id, b.name]; })).concat([['__new', '+ New broker']]);
+    var rateIn = function (side, c) {
+      var v = (side === 'buy' ? T.buyRate : T.sellRate)[c];
+      var ph = side === 'buy' ? (T.buyType === 'KOSTAK' ? o[c].bidKostak : T.buyType === 'SUBJECT' ? o[c].bidSubject : T.buyType === 'PREMIUM' ? i.gmp : null) : null;
+      return '<label class="tl ' + c.toLowerCase() + '">' + C.CAT_LABEL[c] + ' ₹<input class="rate" data-t="' + side + 'Rate" data-c="' + c + '" type="number" step="any" value="' + (v == null ? '' : v) + '"' + (ph != null ? ' placeholder="' + ph + '"' : '') + '></label>';
+    };
+    html += '<div class="terms"><div class="trow"><span class="lbl">Investor gets</span><select data-t="buyType">' + FD.opts(TYPES, T.buyType) + '</select>' + (T.buyType === 'NONE' ? '' : C.CATS.map(function (c) { return rateIn('buy', c); }).join('')) + '</div>' +
+      '<div class="trow"><span class="lbl">Sold to</span><select data-t="brokerId">' + FD.opts(brokers, T.brokerId || '') + '</select>' +
+      (T.brokerId ? '<select data-t="sellType">' + FD.opts(TYPES.slice(0, 3), T.sellType) + '</select>' + C.CATS.map(function (c) { return rateIn('sell', c); }).join('') : '') + '</div>' +
+      '<div class="trow"><span class="muted small grow">New applications get these terms.</span>' + (rows.length ? '<button id="tApply">Apply to all ' + rows.length + ' applied</button>' : '') + '</div></div>';
+
+    // Investor rows
+    var invs = FD.state.investors.filter(function (x) { return x.active !== false || byInv[x.id]; });
+    var groups = Array.from(new Set(FD.state.investors.map(function (x) { return x.group || ''; }).filter(Boolean))).sort();
+    var shown = invs.filter(function (x) {
+      if (view.show === 'applied' && !byInv[x.id]) return false;
+      if (view.group && x.group !== view.group) return false;
+      if (view.q && (x.name + ' ' + (x.pan || '')).toLowerCase().indexOf(view.q) < 0) return false;
+      return true;
+    }).sort(function (a, b) { return (byInv[b.id] ? 1 : 0) - (byInv[a.id] ? 1 : 0) || a.name.localeCompare(b.name); });
+    html += '<div class="row tools"><input type="search" id="dQ" placeholder="Search name or PAN" value="' + FD.esc(view.q) + '">' +
+      (groups.length ? '<select id="dG"><option value="">All groups</option>' + FD.opts(groups, view.group) + '</select>' : '') +
+      '<select id="dShow">' + FD.opts([['all', 'All investors'], ['applied', 'Applied only']], view.show) + '</select><span class="grow"></span>' +
+      (rows.length ? '<button id="pasteAllot">Paste allotted PANs</button><button id="allNo">Pending → Not allotted</button><button id="allSet">Mark all settled</button>' : '') + '</div>';
+    if (!FD.state.investors.length) {
+      html += '<div class="empty-state"><h3>No investors yet</h3><p>Add names and PANs once; they appear here for every IPO.</p><button class="primary" id="goPeople">Add investors</button></div>';
+    } else {
+      html += '<div class="tbl"><table id="dealTbl"><thead><tr><th class="num">#</th><th>Investor</th><th>Category</th><th>Investor deal</th><th>Broker deal</th><th>Allotment</th><th class="num">Profit</th><th></th></tr></thead><tbody>' +
+        shown.map(function (inv, k) { return rowHtml(inv, byInv[inv.id], k + 1, i); }).join('') +
+        '<tr class="tot"><td></td><td>Total · ' + t.n + ' applied</td><td>' + t.cats.RETAIL + ' Retail · ' + t.cats.SHNI + ' sHNI · ' + t.cats.BHNI + ' bHNI</td><td>' + FD.fmt(Math.round(sumF(rows, 'Di'))) + '<br><span class="small muted">investor ' + FD.signed(sumF(rows, 'invNet'), false) + '</span></td><td>' + FD.fmt(Math.round(sumF(rows, 'Db'))) + '<br><span class="small muted">broker ' + FD.signed(sumF(rows, 'brkNet'), false) + '</span></td><td>' + (t.decided ? t.allotted + ' of ' + t.decided + ' allotted' : '') + '</td><td class="num">' + FD.signed(sumF(rows, 'profit')) + '</td><td></td></tr>' +
+        '</tbody></table></div>';
     }
+    html += settlement(i, rows);
     el.innerHTML = html;
-    wire(el, i, rows);
+    wire(el, i, rows, byInv);
+  }
+  function fact(l, v, hint, cls) { return '<div class="fact ' + (cls || '') + '"><small>' + l + '</small><b>' + v + '</b>' + (hint ? '<span class="hint">' + hint + '</span>' : '') + '</div>'; }
+  function catFact(c, cls, op, r) {
+    return '<div class="fact ' + cls + '"><small>' + C.CAT_LABEL[c] + ' · ' + (r[c] || '—') + (r[c] === 1 ? ' lot' : ' lots') + '</small><b>' + FD.oneIn(op.p) + '</b><span class="hint">' + FD.fmt(op.blockAmount) + (op.expected != null ? ' · EV ' + FD.fmt(Math.round(op.expected)) : '') + '</span></div>';
   }
   function sumF(rows, k) { return rows.reduce(function (s, x) { var v = x.r.final ? x.r[k] : (x.r.exp ? x.r.exp[k] : 0); return s + (v || 0); }, 0); }
-  function tile(l, v, h, cls) { return '<div class="fact ' + (cls || '') + '"><small>' + l + '</small><b>' + v + '</b><span class="hint">' + (h || '') + '</span></div>'; }
 
-  function lotTxt(l) { return (l || '—') + (l === 1 ? ' lot' : ' lots'); }
-  function rowHtml(x) {
-    var d = x.d, r = x.r, inv = FD.investor(d.investorId) || {};
-    var f = r.final, e = r.exp || {};
-    var val = function (k) { return f ? FD.signed(r[k]) : (r.exp ? '<span class="exp">' + FD.signed(e[k], false) + '</span>' : '—'); };
-    var brokers = [['', '— not sold —']].concat(FD.state.brokers.map(function (b) { return [b.id, b.name]; }));
-    var types = [['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium/sh'], ['NONE', 'Own']];
-    return '<tr class="c-' + d.cat + '" data-id="' + d.id + '"><td><input type="checkbox" data-pick="' + d.id + '"' + (picked[d.id] ? ' checked' : '') + ' aria-label="Select"></td>' +
-      '<td><b>' + FD.esc(inv.name || '(deleted)') + '</b><br><span class="muted small mono">' + FD.esc(inv.pan || '') + '</span></td>' +
-      '<td><select class="sel-sm" data-f="cat">' + FD.opts([['RETAIL', 'Retail'], ['SHNI', 'sHNI'], ['BHNI', 'bHNI']], d.cat) + '</select><br><span class="muted small">' + lotTxt(d.lots || C.lotRules(x.ipo)[d.cat]) + '</span></td>' +
-      '<td><div class="stack"><select class="sel-sm" data-f="buyType">' + FD.opts(types, d.buyType) + '</select><input class="rate" data-f="buyRate" type="number" step="any" value="' + (d.buyRate == null ? '' : d.buyRate) + '"' + (d.buyType === 'NONE' ? ' disabled' : '') + ' aria-label="Investor rate"></div></td>' +
-      '<td><div class="stack"><select class="sel-sm" data-f="brokerId">' + FD.opts(brokers, d.brokerId || '') + '</select>' + (d.brokerId ? '<select class="sel-sm" data-f="sellType">' + FD.opts(types.slice(0, 3), d.sellType || 'KOSTAK') + '</select><input class="rate" data-f="sellRate" type="number" step="any" value="' + (d.sellRate == null ? '' : d.sellRate) + '" aria-label="Broker rate">' : '') + '</div></td>' +
-      '<td><div class="stack"><span class="seg sm">' + ['PENDING', 'YES', 'NO'].map(function (a) { return '<button data-al="' + a + '"' + ((d.allot || 'PENDING') === a ? ' class="on"' : '') + '>' + { PENDING: '?', YES: 'Yes', NO: 'No' }[a] + '</button>'; }).join('') + '</span>' +
-      (d.allot === 'YES' ? '<input class="rate" style="width:70px" data-f="shares" type="number" value="' + (d.shares == null ? r.unit : d.shares) + '" aria-label="Shares allotted" title="Shares allotted">' : '') + '</div>' + (d.allot === 'PENDING' && x.sebiP != null ? '<span class="muted small">' + FD.oneIn(x.sebiP) + '</span>' : '') + '</td>' +
-      '<td class="money">' + (f ? FD.signed(r.L) : (r.exp ? '<span class="exp">' + FD.signed(e.L, false) + '</span>' : '—')) + '</td>' +
-      '<td class="money">' + val('invNet') + '</td><td class="money">' + (r.hedged ? val('brkNet') : '<span class="muted">—</span>') + '</td><td class="money"><b>' + val('profit') + '</b></td>' +
-      '<td class="nowrap small"><label title="Investor settled"><input type="checkbox" data-f="invSettled"' + (d.invSettled ? ' checked' : '') + (f ? '' : ' disabled') + '> Inv</label> ' + (r.hedged ? '<label title="Broker settled"><input type="checkbox" data-f="brkSettled"' + (d.brkSettled ? ' checked' : '') + (f ? '' : ' disabled') + '> Brk</label>' : '') + '<br>' +
-      '<button class="sel-sm" data-msg="' + d.id + '" title="Copy settlement message">Msg</button> <button class="sel-sm danger" data-del="' + d.id + '" title="Delete">✕</button></td></tr>';
-  }
-
-  function addForm(i, rows) {
-    var inIpo = {}; rows.forEach(function (x) { inIpo[x.d.investorId] = 1; });
-    var open = addOpen != null ? addOpen : !rows.length;
-    var m = FD.state.settings.marginPct;
-    var o = {}; C.CATS.forEach(function (c) { o[c] = C.opportunity(i, c, FD.state.settings.factors, m); });
-    var invs = FD.state.investors.filter(function (x) { return x.active !== false; });
-    var groups = Array.from(new Set(FD.state.investors.map(function (x) { return x.group || ''; }).filter(Boolean))).sort();
-    var def = FD.state.settings.defaults;
-    return '<details class="blk" id="addBlk"' + (open ? ' open' : '') + '><summary>+ Add applications to this IPO <span class="muted small">one per PAN · ' + (invs.length - Object.keys(inIpo).length) + ' investors available</span></summary><div style="padding:12px">' +
-      (FD.state.investors.length ? '' : '<div class="notice">Add your investors first in <a href="#" id="goPeople">Investors &amp; Brokers</a>.</div>') +
-      '<div class="row" style="margin-bottom:8px"><input type="search" id="pkQ" placeholder="Search name / PAN" style="max-width:240px">' + (groups.length ? '<select id="pkG"><option value="">All groups</option>' + FD.opts(groups) + '</select>' : '') + '<button id="pkAll">Select all shown</button><button id="pkNone">Clear</button><span class="muted small" id="pkCount">0 selected</span></div>' +
-      '<div class="picklist" id="pick">' + invs.map(function (x) {
-        var dis = inIpo[x.id];
-        return '<label class="' + (dis ? 'dis' : '') + '" data-q="' + FD.esc((x.name + ' ' + (x.pan || '') + ' ' + (x.group || '')).toLowerCase()) + '" data-g="' + FD.esc(x.group || '') + '"><input type="checkbox" value="' + x.id + '"' + (dis ? ' disabled' : '') + '> ' + FD.esc(x.name) + ' <span class="pan">' + FD.esc(x.pan || '') + '</span></label>';
-      }).join('') + '</div>' +
-      '<div class="form" style="margin-top:10px;margin-bottom:0">' +
-      '<label>Category <select id="aCat">' + FD.opts([['RETAIL', 'Retail'], ['SHNI', 'sHNI'], ['BHNI', 'bHNI']], 'RETAIL') + '</select></label>' +
-      '<label>Lots per application <input id="aLots" type="number" min="1" placeholder="minimum"></label>' +
-      '<label>Investor deal <select id="aBuyT">' + FD.opts([['KOSTAK', 'Kostak (fixed, allotted or not)'], ['SUBJECT', 'Subject-to (only if allotted)'], ['PREMIUM', 'Premium ₹ per share'], ['NONE', 'Own account (no payout)']], def.buyType) + '</select></label>' +
-      '<label>Rate to investor ₹ <input id="aBuyR" type="number" step="any" placeholder="e.g. 300"></label>' +
-      '<label>Sell to broker <select id="aBrk"><option value="">— keep the risk —</option>' + FD.opts(FD.state.brokers.map(function (b) { return [b.id, b.name]; })) + '<option value="__new">+ New broker…</option></select></label>' +
-      '<label>Broker deal <select id="aSellT">' + FD.opts([['KOSTAK', 'Kostak (fixed, allotted or not)'], ['SUBJECT', 'Subject-to (only if allotted)'], ['PREMIUM', 'Premium ₹ per share']], def.sellType) + '</select></label>' +
-      '<label>Rate from broker ₹ <input id="aSellR" type="number" step="any" placeholder="e.g. 400"></label>' +
-      '<label>Note <input id="aNote" placeholder="optional"></label>' +
-      '<p class="full muted small" id="aHint" style="margin:0"></p>' +
-      '<div class="full row" style="justify-content:flex-end"><button class="primary" id="aAdd">Add applications</button></div></div></div></details>';
-    function hint() { return o; }
+  function rowHtml(inv, x, n, i) {
+    var cat = x ? x.d.cat : '';
+    var seg = '<span class="seg">' + [['', 'None'], ['RETAIL', 'Retail'], ['SHNI', 'sHNI'], ['BHNI', 'bHNI']].map(function (c) { return '<button data-cat="' + c[0] + '"' + (cat === c[0] ? ' class="on"' : '') + '>' + c[1] + '</button>'; }).join('') + '</span>';
+    var head = '<td class="num muted">' + n + '</td><td><b>' + FD.esc(inv.name) + '</b>' + (inv.pan ? '<br><span class="muted small mono">' + FD.esc(inv.pan) + '</span>' : '') + '</td><td>' + seg + (x ? '<div class="sub2"><input class="lots" data-f="lots" type="number" min="1" value="' + (x.d.lots || C.lotRules(i)[x.d.cat] || '') + '"> lots</div>' : '') + '</td>';
+    if (!x) return '<tr class="none-row" data-inv="' + inv.id + '">' + head + '<td>–</td><td>–</td><td>–</td><td class="num">–</td><td></td></tr>';
+    var d = x.d, r = x.r, f = r.final, e = r.exp || {};
+    var val = function (k) { return f ? FD.signed(r[k]) : (r.exp ? '<span class="exp">' + FD.signed(e[k], false) + '</span>' : '–'); };
+    var brokers = [['', '—']].concat(FD.state.brokers.map(function (b) { return [b.id, b.name]; }));
+    return '<tr class="c-' + d.cat + '" data-inv="' + inv.id + '" data-id="' + d.id + '">' + head +
+      '<td><span class="pair"><select data-f="buyType">' + FD.opts(TYPES, d.buyType) + '</select>' + (d.buyType === 'NONE' ? '' : '<input class="rate" data-f="buyRate" type="number" step="any" value="' + (d.buyRate == null ? '' : d.buyRate) + '">') + '</span></td>' +
+      '<td><select class="bsel" data-f="brokerId">' + FD.opts(brokers, d.brokerId || '') + '</select>' + (d.brokerId ? '<div class="sub2 pair"><select data-f="sellType">' + FD.opts(TYPES.slice(0, 3), d.sellType || 'KOSTAK') + '</select><input class="rate" data-f="sellRate" type="number" step="any" value="' + (d.sellRate == null ? '' : d.sellRate) + '"></div>' : '') + '</td>' +
+      '<td><span class="seg al">' + [['PENDING', '?'], ['YES', 'Yes'], ['NO', 'No']].map(function (a) { return '<button data-al="' + a[0] + '"' + ((d.allot || 'PENDING') === a[0] ? ' class="on"' : '') + '>' + a[1] + '</button>'; }).join('') + '</span>' +
+      (d.allot === 'YES' ? ' <input class="lots" data-f="shares" type="number" value="' + (d.shares == null ? r.unit : d.shares) + '" title="Shares allotted">' : '') + '</td>' +
+      '<td class="num"><b>' + val('profit') + '</b><div class="sub2 small">Investor ' + val('invNet') + (r.hedged ? '<br>Broker ' + val('brkNet') : '') + '</div></td>' +
+      '<td class="nowrap small">' + (f ? '<label title="Investor settled"><input type="checkbox" data-f="invSettled"' + (d.invSettled ? ' checked' : '') + '> Inv</label>' + (r.hedged ? '<br><label title="Broker settled"><input type="checkbox" data-f="brkSettled"' + (d.brkSettled ? ' checked' : '') + '> Brk</label>' : '') + '<br>' : '') +
+      '<button class="mini" data-msg="' + d.id + '" title="Copy WhatsApp message">Msg</button></td></tr>';
   }
 
   function settlement(i, rows) {
@@ -155,117 +164,86 @@
     });
   }
 
-  function wire(el, i, rows) {
+
+  function newDeal(i, invId, cat, T) {
+    var br = T.brokerId || null;
+    return { id: FD.uid('d-'), ipoId: i.id, investorId: invId, cat: cat, lots: null, buyType: T.buyType, buyRate: T.buyRate[cat] == null ? null : T.buyRate[cat],
+      brokerId: br, sellType: br ? T.sellType : null, sellRate: br && T.sellRate[cat] != null ? T.sellRate[cat] : null,
+      allot: 'PENDING', shares: null, invSettled: '', brkSettled: '', note: '', createdAt: new Date().toISOString(), ipoSnap: FD.snap(i) };
+  }
+  function applyTerms(d, T) {
+    d.buyType = T.buyType; d.buyRate = T.buyRate[d.cat] == null ? null : T.buyRate[d.cat];
+    d.brokerId = T.brokerId || null; d.sellType = d.brokerId ? T.sellType : null; d.sellRate = d.brokerId && T.sellRate[d.cat] != null ? T.sellRate[d.cat] : null;
+  }
+
+  function wire(el, i, rows, byInv) {
     var $ = function (s) { return el.querySelector(s); };
     var byId = {}; rows.forEach(function (x) { byId[x.d.id] = x; });
+    var done = function () { FD.save(); FD.renderDeals(); };
     $('#dlIpo').onclick = function () { FD.go('ipos', i.id); };
+    $('#dlXls').onclick = function () { FD.exportIpo(i, 'xlsx'); };
+    $('#dlPdf').onclick = function () { FD.exportIpo(i, 'pdf'); };
     if ($('#fixIpo')) $('#fixIpo').onclick = function () { FD.editIpo(i); };
+    if ($('#goPeople')) $('#goPeople').onclick = function () { FD.go('people'); };
     $('#dlSettle').onchange = function (e) {
       var v = e.target.value === '' ? null : +e.target.value;
       if (v != null && i.listingPrice == null) FD.setIpoEdit(i.id, { listingPrice: v, gmpBeforeListing: FD.lastGmpBefore(i) != null ? FD.lastGmpBefore(i) : i.gmp });
-      else FD.setIpoEdit(i.id, { settlePrice: v != null && v === i.listingPrice ? null : v });
-      FD.invalidate(); FD.renderDeals(); FD.toast('Settlement price saved');
+      else if (v == null) FD.setIpoEdit(i.id, { settlePrice: null, listingPrice: null });
+      else FD.setIpoEdit(i.id, { settlePrice: v === i.listingPrice ? null : v });
+      FD.invalidate(); FD.renderDeals(); FD.toast('Listing price saved');
     };
-    $('#dlXls').onclick = function () { FD.exportIpo(i, 'xlsx'); };
-    $('#dlPdf').onclick = function () { FD.exportIpo(i, 'pdf'); };
-    var blk = $('#addBlk'); blk.ontoggle = function () { addOpen = blk.open; };
-    if ($('#goPeople')) $('#goPeople').onclick = function (e) { e.preventDefault(); FD.go('people'); };
-    // picklist
-    var pk = $('#pick');
-    var count = function () { $('#pkCount').textContent = pk.querySelectorAll('input:checked').length + ' selected'; };
-    var filt = function () {
-      var q = ($('#pkQ').value || '').toLowerCase(), g = $('#pkG') ? $('#pkG').value : '';
-      pk.querySelectorAll('label').forEach(function (l) { l.hidden = (q && l.dataset.q.indexOf(q) < 0) || (g && l.dataset.g !== g); });
-    };
-    $('#pkQ').oninput = filt; if ($('#pkG')) $('#pkG').onchange = filt;
-    pk.onchange = count;
-    $('#pkAll').onclick = function () { pk.querySelectorAll('label:not([hidden]) input:not(:disabled)').forEach(function (c) { c.checked = true; }); count(); };
-    $('#pkNone').onclick = function () { pk.querySelectorAll('input').forEach(function (c) { c.checked = false; }); count(); };
-    var hint = function () {
-      var c = $('#aCat').value, o = C.opportunity(i, c, FD.state.settings.factors, FD.state.settings.marginPct);
-      var r = C.lotRules(i);
-      $('#aLots').placeholder = 'min ' + (r[c] || '—');
-      $('#aHint').innerHTML = C.CAT_LABEL[c] + ': ' + FD.oneIn(o.p) + ' chance · gain if allotted ' + FD.fmt(o.gainIfAllotted) + ' · fair Kostak <b>' + FD.fmt(o.fairKostak == null ? null : Math.round(o.fairKostak)) + '</b> (bid ' + FD.fmt(o.bidKostak) + ') · fair Subject-to <b>' + FD.fmt(o.fairSubject) + '</b> (bid ' + FD.fmt(o.bidSubject) + ')' + (i.gmp != null ? ' · fair premium ₹' + i.gmp + '/share' : '');
-      $('#aBuyR').disabled = $('#aBuyT').value === 'NONE';
-    };
-    $('#aCat').onchange = hint; $('#aBuyT').onchange = hint; hint();
-    $('#aBrk').onchange = function (e) {
-      if (e.target.value !== '__new') return;
-      var name = prompt('New broker name'); if (!name) { e.target.value = ''; return; }
-      var b = { id: FD.uid('b-'), name: name.trim(), createdAt: new Date().toISOString() }; FD.state.brokers.push(b); FD.save();
-      var op = document.createElement('option'); op.value = b.id; op.textContent = b.name; e.target.insertBefore(op, e.target.lastElementChild); e.target.value = b.id;
-    };
-    $('#aAdd').onclick = function () {
-      var ids = Array.from(pk.querySelectorAll('input:checked')).map(function (c) { return c.value; });
-      if (!ids.length) { FD.toast('Tick at least one investor', true); return; }
-      var cat = $('#aCat').value, lots = +$('#aLots').value || null, r = C.lotRules(i);
-      if (lots && r[cat] && lots < r[cat]) { FD.toast('Minimum for ' + C.CAT_LABEL[cat] + ' is ' + r[cat] + ' lots', true); return; }
-      var brk = $('#aBrk').value === '__new' ? '' : $('#aBrk').value;
-      var now = new Date().toISOString(), snap = FD.snap(i);
-      ids.forEach(function (id) {
-        FD.state.deals.push({ id: FD.uid('d-'), ipoId: i.id, investorId: id, cat: cat, lots: lots, buyType: $('#aBuyT').value, buyRate: $('#aBuyR').value === '' ? null : +$('#aBuyR').value,
-          brokerId: brk || null, sellType: brk ? $('#aSellT').value : null, sellRate: brk && $('#aSellR').value !== '' ? +$('#aSellR').value : null,
-          allot: 'PENDING', shares: null, invSettled: '', brkSettled: '', note: $('#aNote').value.trim(), createdAt: now, ipoSnap: snap });
-      });
-      FD.save(); addOpen = false; FD.renderDeals(); FD.toast(ids.length + ' application' + (ids.length > 1 ? 's' : '') + ' added');
-    };
-    if (!rows.length) return;
-    // table edits
-    var tbl = $('#dealTbl');
-    tbl.addEventListener('change', function (e) {
-      var tr = e.target.closest('tr[data-id]'), pick = e.target.dataset.pick;
-      if (pick) { picked[pick] = e.target.checked; FD.renderDeals(); return; }
-      if (e.target.id === 'pickAll') { rows.forEach(function (x) { picked[x.d.id] = e.target.checked; }); FD.renderDeals(); return; }
-      if (!tr || !e.target.dataset.f) return;
-      var d = byId[tr.dataset.id].d, k = e.target.dataset.f, v = e.target.type === 'checkbox' ? (e.target.checked ? FD.today() : '') : e.target.value;
-      if (/Rate$|^shares$/.test(k)) v = v === '' ? null : +v;
-      if (k === 'brokerId') { v = v || null; if (v && !d.sellType) d.sellType = FD.state.settings.defaults.sellType; }
-      if (k === 'cat') d.lots = null;
-      d[k] = v; FD.save(); FD.renderDeals();
-    });
-    tbl.addEventListener('click', function (e) {
-      var b = e.target.closest('button'); if (!b) return;
-      var tr = b.closest('tr[data-id]');
-      if (b.dataset.al && tr) { var d = byId[tr.dataset.id].d; d.allot = b.dataset.al; if (d.allot !== 'YES') d.shares = null; FD.save(); FD.renderDeals(); }
-      if (b.dataset.del) FD.confirm('Delete this application of ' + FD.esc(FD.invName(byId[b.dataset.del].d.investorId)) + '?', function () { FD.state.deals = FD.state.deals.filter(function (d) { return d.id !== b.dataset.del; }); FD.save(); FD.renderDeals(); }, 'Delete');
-      if (b.dataset.msg) copy(msgFor(byId[b.dataset.msg]));
-    });
-    // bulk
-    var sel = function () { return rows.filter(function (x) { return picked[x.d.id]; }); };
-    el.querySelectorAll('[data-bulk]').forEach(function (b) {
-      b.onclick = function () {
-        var s = sel(), k = b.dataset.bulk;
-        if (/^(YES|NO|PENDING)$/.test(k)) { s.forEach(function (x) { x.d.allot = k; if (k !== 'YES') x.d.shares = null; }); done(); }
-        else if (k === 'invS') { s.forEach(function (x) { if (x.r.final) x.d.invSettled = FD.today(); }); done(); }
-        else if (k === 'brkS') { s.forEach(function (x) { if (x.r.final && x.r.hedged) x.d.brkSettled = FD.today(); }); done(); }
-        else if (k === 'del') FD.confirm('Delete ' + s.length + ' applications?', function () { var ids = {}; s.forEach(function (x) { ids[x.d.id] = 1; }); FD.state.deals = FD.state.deals.filter(function (d) { return !ids[d.id]; }); picked = {}; done(); }, 'Delete');
-        else if (k === 'sell' || k === 'buy') dealDialog(k, s, done);
+    // terms
+    var T = JSON.parse(JSON.stringify(terms(i)));
+    el.querySelectorAll('[data-t]').forEach(function (inp) {
+      inp.onchange = function () {
+        var k = inp.dataset.t, v = inp.value;
+        if (k === 'brokerId' && v === '__new') {
+          var name = prompt('Broker name'); if (!name || !name.trim()) { inp.value = T.brokerId || ''; return; }
+          var b = { id: FD.uid('b-'), name: name.trim(), createdAt: new Date().toISOString() }; FD.state.brokers.push(b); v = b.id;
+        }
+        if (k === 'buyRate' || k === 'sellRate') T[k][inp.dataset.c] = v === '' ? null : +v; else T[k] = v;
+        saveTerms(i, T); FD.renderDeals();
       };
     });
-    function done() { FD.save(); FD.renderDeals(); }
+    if ($('#tApply')) $('#tApply').onclick = function () { rows.forEach(function (x) { applyTerms(x.d, T); }); done(); FD.toast('Terms applied to ' + rows.length + ' applications'); };
+    // filters
+    $('#dQ').oninput = function (e) { view.q = e.target.value.toLowerCase(); var p = e.target.selectionStart; FD.renderDeals(); var n = document.getElementById('dQ'); n.focus(); n.setSelectionRange(p, p); };
+    if ($('#dG')) $('#dG').onchange = function (e) { view.group = e.target.value; FD.renderDeals(); };
+    $('#dShow').onchange = function (e) { view.show = e.target.value; FD.renderDeals(); };
+    var tbl = $('#dealTbl');
+    if (tbl) {
+      tbl.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        var tr = b.closest('tr[data-inv]'); if (!tr) return;
+        var x = byInv[tr.dataset.inv];
+        if (b.dataset.cat != null && b.closest('.seg') && !b.dataset.al) {
+          var c = b.dataset.cat;
+          if (!c) {
+            if (!x) return;
+            var del = function () { FD.state.deals = FD.state.deals.filter(function (d) { return d.id !== x.d.id; }); done(); };
+            if (x.d.allot !== 'PENDING' || x.d.invSettled) FD.confirm('Remove ' + FD.esc(FD.invName(x.d.investorId)) + ' from this IPO? Its result is already recorded.', del, 'Remove'); else del();
+          } else if (!x) { FD.state.deals.push(newDeal(i, tr.dataset.inv, c, T)); done(); }
+          else if (x.d.cat !== c) { x.d.cat = c; x.d.lots = null; x.d.shares = null; if (T.buyRate[c] != null) x.d.buyRate = T.buyRate[c]; if (x.d.brokerId && T.sellRate[c] != null) x.d.sellRate = T.sellRate[c]; done(); }
+          return;
+        }
+        if (b.dataset.al && x) { x.d.allot = b.dataset.al; if (x.d.allot !== 'YES') x.d.shares = null; done(); }
+        if (b.dataset.msg) copy(msgFor(byId[b.dataset.msg]));
+      });
+      tbl.addEventListener('change', function (e) {
+        var tr = e.target.closest('tr[data-id]'), k = e.target.dataset.f; if (!tr || !k) return;
+        var d = byId[tr.dataset.id].d, v = e.target.type === 'checkbox' ? (e.target.checked ? FD.today() : '') : e.target.value;
+        if (/Rate$|^shares$|^lots$/.test(k)) v = v === '' ? null : +v;
+        if (k === 'lots' && v != null) { var mn = C.lotRules(i)[d.cat]; if (mn && v < mn) { FD.toast('Minimum for ' + C.CAT_LABEL[d.cat] + ' is ' + mn + ' lots', true); v = mn; } }
+        if (k === 'brokerId') { v = v || null; if (v) { d.sellType = d.sellType || T.sellType; if (d.sellRate == null && T.sellRate[d.cat] != null) d.sellRate = T.sellRate[d.cat]; } else { d.sellType = null; d.sellRate = null; } }
+        d[k] = v; done();
+      });
+    }
     if ($('#allNo')) $('#allNo').onclick = function () { var n = 0; rows.forEach(function (x) { if (x.d.allot === 'PENDING') { x.d.allot = 'NO'; n++; } }); done(); FD.toast(n + ' marked not allotted'); };
+    if ($('#allSet')) $('#allSet').onclick = function () { var n = 0; rows.forEach(function (x) { if (x.r.final) { if (!x.d.invSettled) { x.d.invSettled = FD.today(); n++; } if (x.r.hedged && !x.d.brkSettled) x.d.brkSettled = FD.today(); } }); done(); FD.toast(n ? n + ' marked settled' : 'Nothing final to settle yet'); };
     if ($('#pasteAllot')) $('#pasteAllot').onclick = function () { pasteAllot(rows, done); };
     el.querySelectorAll('[data-bmsg]').forEach(function (b) { b.onclick = function () { copy(brokerMsg(i, b.dataset.bmsg, rows)); }; });
     el.querySelectorAll('[data-bset]').forEach(function (b) { b.onclick = function () { rows.forEach(function (x) { if (x.d.brokerId === b.dataset.bset && x.r.final) x.d.brkSettled = x.d.brkSettled || FD.today(); }); done(); }; });
     el.querySelectorAll('[data-iset]').forEach(function (b) { b.onclick = function () { rows.forEach(function (x) { if (x.d.investorId === b.dataset.iset && x.r.final) x.d.invSettled = x.d.invSettled || FD.today(); }); done(); }; });
-  }
-
-  function dealDialog(kind, sel, done) {
-    var sell = kind === 'sell';
-    FD.modal('<h2>' + (sell ? 'Sell ' + sel.length + ' applications to a broker' : 'Change investor deal for ' + sel.length + ' applications') + '</h2><div class="form">' +
-      (sell ? '<label>Broker <select id="xB"><option value="">— keep the risk (remove broker) —</option>' + FD.opts(FD.state.brokers.map(function (b) { return [b.id, b.name]; })) + '</select></label>' : '') +
-      '<label>Deal type <select id="xT">' + FD.opts([['KOSTAK', 'Kostak (fixed, allotted or not)'], ['SUBJECT', 'Subject-to (only if allotted)'], ['PREMIUM', 'Premium ₹ per share']].concat(sell ? [] : [['NONE', 'Own account']])) + '</select></label>' +
-      '<label>Rate ₹ <input id="xR" type="number" step="any"></label></div><div class="row" style="justify-content:flex-end"><button data-close>Cancel</button><button class="primary" id="xOk">Apply</button></div>',
-    function (b, close) {
-      b.querySelector('#xOk').onclick = function () {
-        var t = b.querySelector('#xT').value, r = b.querySelector('#xR').value === '' ? null : +b.querySelector('#xR').value;
-        sel.forEach(function (x) {
-          if (sell) { var br = b.querySelector('#xB').value || null; x.d.brokerId = br; x.d.sellType = br ? t : null; x.d.sellRate = br ? r : null; x.d.brkSettled = ''; }
-          else { x.d.buyType = t; x.d.buyRate = r; }
-        });
-        close(); done();
-      };
-    });
   }
 
   function pasteAllot(rows, done) {

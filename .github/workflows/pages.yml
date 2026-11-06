@@ -1,19 +1,17 @@
-name: Update IPOs & GMP and publish
+name: Update IPOs & GMP
 
 on:
   push:
-    branches: [main, claude/youthful-bardeen-7axi46]
+    branches: [main]
   schedule:
     - cron: '11,41 3-16 * * *'   # every 30 min, 08:41–22:11 IST (GitHub may delay scheduled runs)
   workflow_dispatch:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: ipo-sync
   cancel-in-progress: false
 
 jobs:
@@ -30,6 +28,7 @@ jobs:
         run: npm test
       - name: Fetch IPOs, GMP and subscription (NSE, IPO Premium, investorgain)
         run: npm run sync
+      # GitHub Pages (deploy from branch: main, root) republishes the site after this commit.
       - name: Save updated IPO list
         run: |
           if ! git diff --quiet -- site/ipos.json; then
@@ -40,19 +39,3 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || true
             git push || echo "push skipped"
           fi
-      - uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
