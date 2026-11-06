@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
 
 concurrency:
   group: ipo-sync
@@ -39,3 +40,7 @@ jobs:
             git pull --rebase origin "${GITHUB_REF_NAME}" || true
             git push || echo "push skipped"
           fi
+      - name: Rebuild GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X POST "repos/${GITHUB_REPOSITORY}/pages/builds" || echo "Pages rebuild request skipped"
