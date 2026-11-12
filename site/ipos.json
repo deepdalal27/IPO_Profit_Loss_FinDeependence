@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-06T16:05:36.654Z",
- "checkedAt": "2026-11-11T18:38:42.950Z",
+ "updatedAt": "2026-11-12T10:57:35.963Z",
+ "checkedAt": "2026-11-12T10:57:35.963Z",
  "today": "2026-11-12",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -1474,6 +1474,19 @@
     }
    ],
    "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipo-crystal-crop-protection",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain"
+   },
+   "name": "Crystal Crop Protection",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "updatedAt": "2026-11-12T10:57:35.963Z"
   }
  ]
 }
