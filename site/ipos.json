@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-11-13T10:52:18.451Z",
- "checkedAt": "2026-11-13T10:52:18.451Z",
- "today": "2026-11-13",
+ "updatedAt": "2026-11-13T18:29:53.617Z",
+ "checkedAt": "2026-11-13T18:29:53.617Z",
+ "today": "2026-11-14",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
@@ -20,7 +20,8 @@
     "openDate": "investorgain",
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
-    "listingDate": "investorgain"
+    "listingDate": "investorgain",
+    "gmp": "investorgain"
    },
    "name": "Watrana Rentals",
    "exchange": "NSE SME",
@@ -32,7 +33,14 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-13T08:50:48.061Z"
+   "updatedAt": "2026-11-13T18:29:53.617Z",
+   "gmp": 15,
+   "gmpHistory": [
+    {
+     "t": "2026-11-13 18:29",
+     "g": 15
+    }
+   ]
   },
   {
    "id": "ipo-crystal-crop-protection",
