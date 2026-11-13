@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/history.js']
+    paths: ['scripts/history.js', 'scripts/history-ipp.js']
 
 permissions:
   contents: write
@@ -25,9 +25,15 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Collect past IPOs (only new ones are fetched)
+      - name: investorgain — IPO list, GMP history (new IPOs only)
         run: node scripts/history.js
         timeout-minutes: 75
+      - name: IPO Premium — category subscription, applications, listing (new pages only)
+        if: always()
+        run: node scripts/history-ipp.js
+        timeout-minutes: 60
+        env:
+          BUDGET_MIN: 50
       - name: Save history
         if: always()
         run: |
