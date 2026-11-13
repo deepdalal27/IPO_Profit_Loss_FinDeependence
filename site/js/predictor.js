@@ -74,16 +74,16 @@
       '<div class="fact pos"><small>Expected total subscription</small><b>' + tx(tot && tot.median) + '</b><span class="hint">likely ' + tx(tot && tot.p25) + ' – ' + tx(tot && tot.p75) + '</span></div>' +
       '<div class="fact"><small>GMP</small><b>' + (g * 100).toFixed(1) + '%</b><span class="hint">₹' + (+st.gmp || 0) + ' on ₹' + (+st.price || 0) + ' · est. listing ₹' + ((+st.price || 0) + (+st.gmp || 0)) + '</span></div>' +
       '<div class="fact ' + (clashCut > 0.01 ? 'retail' : '') + '"><small>Date clash</small><b>' + (st.rivals.length ? '−' + Math.round(clashCut * 100) + '%' : 'None') + '</b><span class="hint">' + (st.rivals.length ? st.rivals.length + ' other IPO' + (st.rivals.length > 1 ? 's' : '') + ' open · effect on demand' : 'alone in its window') + '</span></div></div>';
-    html += '<div class="tbl"><table class="res fc"><thead><tr><th>Category</th><th class="num">Expected subscription</th><th class="num">Likely range</th><th class="num">Chance of allotment</th><th class="num">Gain if allotted</th><th class="num">Value per application</th></tr></thead><tbody>' +
+    html += '<div class="tbl"><table class="res fc"><thead><tr><th>Category</th><th class="num">Expected</th><th class="num">Likely range</th><th class="num">Chance</th><th class="num">Gain if allotted</th><th class="num">Fair Kostak</th></tr></thead><tbody>' +
       CATS.map(function (c) {
-        var q = f.cats[c]; if (!q) return '';
+        var q = f.cats[c]; if (!q) return '<tr><td>' + (CAT_MAP[c] ? FD.catPill(CAT_MAP[c]) : '<span class="pill MB">QIB</span>') + '</td><td colspan="5" class="muted">Not enough past ' + st.seg + ' IPOs with category data yet — use the total above</td></tr>';
         var row = '<tr><td>' + (CAT_MAP[c] ? FD.catPill(CAT_MAP[c]) : '<span class="pill MB">QIB</span>') + '</td><td class="num"><b>' + tx(q.median) + '</b></td><td class="num muted">' + tx(q.p25) + ' – ' + tx(q.p75) + '</td>';
         if (!CAT_MAP[c]) return row + '<td class="num muted">—</td><td class="num muted">—</td><td class="num muted">—</td></tr>';
         var p = chance(q.median, c), unit = unitShares(c), gain = unit && st.gmp !== '' ? unit * (+st.gmp) : null;
         var sub = c === 'rii' ? (factor(c) !== 1 ? '1 in ' + oneInNum(chance(q.median * factor(c), c)) + ' if all apply 1 lot' : '') : 'range ' + FD.oneIn(chance(q.p75, c)) + ' – ' + FD.oneIn(chance(q.p25, c));
         return row + '<td class="num"><b>' + FD.oneIn(p) + '</b><br><span class="muted small">' + sub + '</span></td>' +
           '<td class="num">' + (gain == null ? '<span class="muted small">enter lot size</span>' : FD.fmt(gain) + '<br><span class="muted small">' + unit + ' sh × ₹' + st.gmp + '</span>') + '</td>' +
-          '<td class="num"><b>' + (gain == null ? '—' : FD.fmt(Math.round(gain * p))) + '</b><br><span class="muted small">= fair Kostak</span></td></tr>';
+          '<td class="num"><b>' + (gain == null ? '—' : FD.fmt(Math.round(gain * p))) + '</b><br><span class="muted small">chance × gain</span></td></tr>';
       }).join('') + '</tbody></table></div>' +
       '<p class="muted small" style="margin:8px 0 0">Subscription is counted in shares. Chance of allotment = winners ÷ applications (SEBI lottery). Applications ≈ subscription ÷ average lots per application — Retail ' + FD.state.settings.factors.RETAIL + ', sHNI ' + FD.state.settings.factors.SHNI + ', bHNI ' + FD.state.settings.factors.BHNI + ' (measured on exchange data). bHNI winners get the minimum HNI lot, so a big bid does not raise your chance.</p>' +
       '</div></div></div>';
@@ -119,12 +119,12 @@
     // ---- methodology ----
     html += '<details class="panel method"><summary><b>Methodology &amp; data quality</b></summary><div class="method-body">' +
       '<div><h4>Data</h4><ul><li>Final category subscription, GMP history and listing price: investorgain.com (Chittorgarh group), refreshed daily.</li>' +
-      (nse ? '<li>Mainboard category figures replaced with NSE\'s official consolidated bid data for ' + nse.matched + ' IPOs' + (nse.added ? ' (+' + nse.added + ' added)' : '') + '. investorgain matched NSE within 2% on ' + nse.within2pct + ' of ' + nse.compared + ' values.</li>' : '') +
+      (nse ? '<li>Mainboard category figures replaced with NSE\'s official consolidated bid data for ' + nse.matched + ' IPOs' + (nse.added ? ' (+' + nse.added + ' added)' : '') + '.</li>' : '') +
       '<li>GMP used = GMP on the closing day (else the last GMP before listing).</li></ul></div>' +
       '<div><h4>Forecast model</h4><ul><li>Per category, on a log scale: issue size, GMP %, Mainboard / SME, market mood (how heavily IPOs were subscribed in the previous 45 days) and date clashes.</li>' +
       '<li>Date clash: IPOs open on the same days share investor money, the higher-GMP issue taking the larger share. An IPO is assumed to keep about √(its share) of its demand; past data refines this.</li>' +
       '<li>Expected = median forecast; likely range = middle 50% of outcomes for similar IPOs.</li>' +
-      '<li>Fit on past data: ' + CATS.map(function (c) { var q = m.models[c]; return q ? LBL[c] + ' R² ' + q.r2.toFixed(2) + ' (' + q.n + ' IPOs)' : ''; }).filter(Boolean).join(' · ') + '.</li></ul></div>' +
+      '<li>Fit on past data: ' + ['Mainboard', 'SME'].map(function (sg) { var t = CATS.map(function (c) { var q = m.models[sg][c]; return q ? LBL[c] + ' ' + q.r2.toFixed(2) : ''; }).filter(Boolean).join(', '); return t ? sg + ' R² — ' + t + ' (' + (m.models[sg].rii || m.models[sg].total).n + ' IPOs)' : sg + ' — category data still being collected'; }).join(' · ') + '.</li></ul></div>' +
       '<div><h4>Chance of allotment (SEBI)</h4><ul><li>Retail: each winner gets one minimum lot by lottery.</li><li>sHNI (₹2–10 L) and bHNI (above ₹10 L): each winner gets the minimum HNI lot by lottery; any balance goes proportionately.</li>' +
       '<li>Checked on exchange data: BLS Polymers Retail 128.36× by shares → 1 in 96 actual (1.3 lots per application); bHNI 592.83× → 1 in 121 actual (4.9).</li></ul></div></div></details>';
 

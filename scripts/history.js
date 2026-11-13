@@ -185,7 +185,7 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
     }
     if (!x.closeDate && x.listingDate) x.closeDate = backBusinessDays(x.listingDate, 3);
     if (!x.openDate && x.closeDate) x.openDate = backBusinessDays(x.closeDate, 2);
-    if (x.subTotalT != null) x.total = x.subTotalT;
+    if (x.subTotalT != null && x.subSource !== 'NSE') x.total = x.subTotalT;
     if (x.subLayout && x.gmpSeries) x.v = 4;
     n++; if (n % 20 === 0) { console.log(`  pages ${n}`); save(); }
     await sleep(1000);
