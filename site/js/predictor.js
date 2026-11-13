@@ -36,10 +36,26 @@
 
 
   // Average application size ÷ allotment unit (from exchange application-wise data)
+  // Measured on past IPOs with application counts: (times by shares) ÷ (applications ÷ winners). Falls back to Settings.
+  function measured() {
+    if (FD._facFor === FD.history) return FD._fac;
+    var out = {};
+    ['Mainboard', 'SME'].forEach(function (sg) {
+      out[sg] = {};
+      ['rii', 'shni', 'bhni'].forEach(function (c) {
+        var v = (FD.history.ipos || []).filter(function (x) { return (x.seg || (x.exchange === 'Mainboard' ? 'Mainboard' : 'SME')) === sg && x.apps && x.apps[c] && x.apps[c].reserved > 0 && x.apps[c].applied > x.apps[c].reserved && x[c] > 1.5; })
+          .map(function (x) { return x[c] / (x.apps[c].applied / x.apps[c].reserved); }).filter(function (r) { return r > 0.5 && r < 30; });
+        if (v.length >= 10) out[sg][c] = { f: P.median(v), n: v.length };
+      });
+    });
+    FD._fac = out; FD._facFor = FD.history; return out;
+  }
   function factor(c) {
+    var m = (measured()[st.seg] || {})[c]; if (m) return m.f;
     var f = FD.state.settings.factors;
     return c === 'rii' ? (st.seg === 'SME' ? f.RETAIL_SME : f.RETAIL) : c === 'shni' ? f.SHNI : f.BHNI;
   }
+  function actualOdds(r, c) { var a = r.src && r.src.apps && r.src.apps[c]; return a && a.reserved > 0 && a.applied > 0 ? Math.min(1, a.reserved / a.applied) : null; }
   function chance(times, c) { if (times == null) return null; return times <= 1 ? 1 : Math.min(1, factor(c) / times); }
 
   FD.renderPredict = function () {
@@ -85,17 +101,17 @@
           '<td class="num">' + (gain == null ? '<span class="muted small">enter lot size</span>' : FD.fmt(gain) + '<br><span class="muted small">' + unit + ' sh × ₹' + st.gmp + '</span>') + '</td>' +
           '<td class="num"><b>' + (gain == null ? '—' : FD.fmt(Math.round(gain * p))) + '</b><br><span class="muted small">chance × gain</span></td></tr>';
       }).join('') + '</tbody></table></div>' +
-      '<p class="muted small" style="margin:8px 0 0">Subscription is counted in shares. Chance of allotment = winners ÷ applications (SEBI lottery). Applications ≈ subscription ÷ average lots per application — Retail ' + FD.state.settings.factors.RETAIL + ', sHNI ' + FD.state.settings.factors.SHNI + ', bHNI ' + FD.state.settings.factors.BHNI + ' (measured on exchange data). bHNI winners get the minimum HNI lot, so a big bid does not raise your chance.</p>' +
+      '<p class="muted small" style="margin:8px 0 0">Subscription is counted in shares. Chance of allotment = winners ÷ applications (SEBI lottery). Applications ≈ subscription ÷ average application size — Retail ' + factor('rii').toFixed(2) + ', sHNI ' + factor('shni').toFixed(2) + ', bHNI ' + factor('bhni').toFixed(2) + ' units ' + ((measured()[st.seg] || {}).rii ? '(measured on ' + measured()[st.seg].rii.n + ' past ' + st.seg + ' IPOs)' : '(measured on exchange data)') + '. bHNI winners get the minimum HNI lot, so a big bid does not raise your chance.</p>' +
       '</div></div></div>';
 
     // ---- comparable IPOs ----
     var comp = P.comparables(withCats, st.seg, +st.size || 1, g, 8, 'rii');
     var med = function (c) { return P.median(comp.map(function (r) { return r[c]; }).filter(function (v) { return v != null; })); };
     html += '<div class="panel"><div class="panel-head"><div><h2>Most similar past IPOs</h2><p class="muted" style="margin:4px 0 0">' + st.seg + ' IPOs closest in issue size and GMP to the one above — what they actually got</p></div></div>' +
-      '<div class="tbl"><table class="pt"><thead><tr><th>IPO</th><th>Closed</th><th class="num">Size ₹Cr</th><th class="num">GMP</th><th class="num">QIB</th><th class="num">sHNI</th><th class="num">bHNI</th><th class="num">Retail</th><th class="num">Total</th><th class="num">Listing</th></tr></thead><tbody>' +
-      comp.map(rowHtml).join('') +
+      '<div class="tbl"><table class="pt"><thead><tr><th>IPO</th><th>Closed</th><th class="num">Size ₹Cr</th><th class="num">GMP</th><th class="num">QIB</th><th class="num">sHNI</th><th class="num">bHNI</th><th class="num">Retail</th><th class="num">Total</th><th class="num">Listing</th><th class="num">Retail chance (actual)</th></tr></thead><tbody>' +
+      comp.map(function (r) { return rowHtml(r, true); }).join('') +
       '<tr class="tot"><td>Median of these ' + comp.length + '</td><td></td><td class="num">' + Math.round(P.median(comp.map(function (r) { return r.sizeCr; })) || 0).toLocaleString('en-IN') + '</td><td class="num">' + pc(P.median(comp.map(function (r) { return r.g; }))) + '</td>' +
-      ['qib', 'shni', 'bhni', 'rii', 'total'].map(function (c) { return '<td class="num">' + tx(med(c)) + '</td>'; }).join('') + '<td class="num">' + sg(P.median(comp.map(function (r) { return r.listingGainPct; }).filter(function (v) { return v != null; }))) + '</td></tr></tbody></table></div></div>';
+      ['qib', 'shni', 'bhni', 'rii', 'total'].map(function (c) { return '<td class="num">' + tx(med(c)) + '</td>'; }).join('') + '<td class="num">' + sg(P.median(comp.map(function (r) { return r.listingGainPct; }).filter(function (v) { return v != null; }))) + '</td><td class="num">' + FD.oneIn(P.median(comp.map(function (r) { return actualOdds(r, 'rii'); }).filter(function (v) { return v != null; }))) + '</td></tr></tbody></table></div></div>';
 
     // ---- matrix ----
     var mx = P.matrix(withCats, st.mSeg, st.mCat);
@@ -114,11 +130,11 @@
     var th = function (k, l, num) { return '<th class="sortable' + (num ? ' num' : '') + (st.sort === k ? ' on' : '') + '" data-sort="' + k + '">' + l + '<span class="arr">' + (st.sort === k ? (st.dir > 0 ? '▲' : '▼') : '↕') + '</span></th>'; };
     html += '<div class="panel"><div class="panel-head"><div><h2>Past IPO subscription</h2><p class="muted" style="margin:4px 0 0">Final times subscribed per category · GMP during the issue · listing gain</p></div><div class="row"><input type="search" id="tQ" placeholder="Search IPO" value="' + FD.esc(st.q) + '" style="width:190px"><select id="tYear"><option value="">All years</option>' + FD.opts(years.slice().reverse(), st.tYear) + '</select><select id="tSeg">' + FD.opts([['', 'Mainboard + SME'], ['Mainboard', 'Mainboard'], ['SME', 'SME']], st.tSeg) + '</select><button class="primary" id="tX">Excel</button></div></div>' +
       '<div class="tbl max"><table class="pt" id="histTbl"><thead><tr>' + th('name', 'IPO') + th('close', 'Closed') + th('size', 'Size ₹Cr', 1) + th('g', 'GMP', 1) + th('qib', 'QIB', 1) + th('shni', 'sHNI', 1) + th('bhni', 'bHNI', 1) + th('rii', 'Retail', 1) + th('total', 'Total', 1) + th('lg', 'Listing', 1) + '</tr></thead><tbody>' +
-      list.map(rowHtml).join('') + '</tbody></table></div><p class="muted small" style="margin:8px 0 0">' + list.length + ' IPOs</p></div>';
+      list.map(function (r) { return rowHtml(r); }).join('') + '</tbody></table></div><p class="muted small" style="margin:8px 0 0">' + list.length + ' IPOs</p></div>';
 
     // ---- methodology ----
     html += '<details class="panel method"><summary><b>Methodology &amp; data quality</b></summary><div class="method-body">' +
-      '<div><h4>Data</h4><ul><li>Final category subscription, GMP history and listing price: investorgain.com (Chittorgarh group), refreshed daily.</li>' +
+      '<div><h4>Data</h4><ul><li>Category subscription, applications and winners, lots, listing price: IPO Premium (ipopremium.in), refreshed daily.</li><li>GMP history: investorgain.com (IPO Premium pages drop the GMP after listing).</li>' +
       (nse ? '<li>Mainboard category figures replaced with NSE\'s official consolidated bid data for ' + nse.matched + ' IPOs' + (nse.added ? ' (+' + nse.added + ' added)' : '') + '.</li>' : '') +
       '<li>GMP used = GMP on the closing day (else the last GMP before listing).</li></ul></div>' +
       '<div><h4>Forecast model</h4><ul><li>Per category, on a log scale: issue size, GMP %, Mainboard / SME, market mood (how heavily IPOs were subscribed in the previous 45 days) and date clashes.</li>' +
@@ -131,9 +147,9 @@
     el.innerHTML = html;
     wire(el, list);
   };
-  function rowHtml(r) {
+  function rowHtml(r, odds) {
     return '<tr><td>' + FD.esc(r.name) + (r.seg === 'SME' ? ' <span class="pill SME">SME</span>' : '') + '</td><td class="nowrap">' + FD.dt(r.close) + '</td><td class="num">' + Math.round(r.sizeCr).toLocaleString('en-IN') + '</td><td class="num">' + pc(r.g) + '</td>' +
-      ['qib', 'shni', 'bhni', 'rii', 'total'].map(function (c) { return '<td class="num">' + tx(r[c]) + '</td>'; }).join('') + '<td class="num">' + sg(r.listingGainPct) + '</td></tr>';
+      ['qib', 'shni', 'bhni', 'rii', 'total'].map(function (c) { return '<td class="num">' + tx(r[c]) + '</td>'; }).join('') + '<td class="num">' + sg(r.listingGainPct) + '</td>' + (odds === true ? '<td class="num">' + (actualOdds(r, 'rii') == null ? '<span class="muted">—</span>' : FD.oneIn(actualOdds(r, 'rii'))) + '</td>' : '') + '</tr>';
   }
   function pc(g) { return g == null ? '—' : (g * 100).toFixed(0) + '%'; }
   function sg(v) { return v == null ? '—' : '<span class="' + (v >= 0 ? 'pos' : 'neg') + '">' + (v > 0 ? '+' : '') + v.toFixed(1) + '%</span>'; }
