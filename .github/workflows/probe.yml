@@ -2,7 +2,7 @@ name: Build IPO history (subscription + GMP)
 on:
   push:
     branches: [claude/youthful-bardeen-7axi46]
-    paths: ['.github/workflows/probe.yml', 'scripts/history.js', 'scripts/probe.js']
+    paths: ['.github/workflows/probe.yml', 'scripts/history.js']
   workflow_dispatch:
 permissions:
   contents: write
@@ -14,9 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: npm ci
-      - run: node scripts/probe.js
-      - run: test -n "$RUN_HISTORY" && node scripts/history.js || true
-        env: { RUN_HISTORY: '' }
+      - run: node scripts/history.js
+        timeout-minutes: 60
       - name: Save history
         run: |
           git config user.name "github-actions[bot]"
