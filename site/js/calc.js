@@ -57,7 +57,9 @@
     if (ov != null) return { p: Math.max(0, Math.min(1, ov / 100)), basis: 'manual', times: null };
     var key = SUBKEY[cat], sub = (ipo.sub || {})[key] || {}, apps = (ipo.apps || {})[key] || {};
     var times = n(sub.times);
-    if (times == null && ipo.override && ipo.override.times) times = n(ipo.override.times[cat]);
+    var basisT = null;
+    if (times == null && ipo.override && ipo.override.times && n(ipo.override.times[cat]) != null) { times = n(ipo.override.times[cat]); basisT = 'assumed'; }
+    if (times == null && ipo.predicted && n(ipo.predicted[cat]) != null) { times = n(ipo.predicted[cat]); basisT = 'predicted'; }
     var lot = n(ipo.lotSize), unit = unitShares(ipo, cat);
     // 1. application-wise data
     if (n(apps.applied) && n(apps.reserved)) {
@@ -69,9 +71,9 @@
     }
     // 2. estimate from times subscribed (shares)
     if (times != null) {
-      if (times <= 1) return { p: 1, basis: 'undersubscribed', times: times };
+      if (times <= 1) return { p: 1, basis: basisT || 'undersubscribed', times: times };
       var fac = cat === 'RETAIL' ? (ipo.type === 'SME' ? f.RETAIL_SME : f.RETAIL) : f[cat];
-      var res = { p: Math.min(1, fac / times), basis: 'estimated', times: times };
+      var res = { p: Math.min(1, fac / times), basis: basisT || 'estimated', times: times };
       if (n(sub.offered) && unit) { res.unitsAvail = Math.floor(sub.offered / unit); res.appsApplied = Math.round(res.unitsAvail / res.p); }
       return res;
     }

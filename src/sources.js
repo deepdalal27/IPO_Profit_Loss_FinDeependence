@@ -104,13 +104,19 @@ async function investorgain() {
     const exch = badges.find((b) => /SME|BSE|NSE|Mainboard/i.test(b)) || 'Mainboard';
     const g = cell('GMP'); const gb = g && g.querySelector('b'); const gtxt = gb ? gb.textContent.trim() : '';
     const sub = cell('Sub');
-    const first = (label) => { const c = cell(label); return c ? (c.querySelector('.mono-num') || c).childNodes[0]?.textContent?.trim() || c.textContent.trim() : ''; };
+    // text before the first <br> (the cell often adds a small second line)
+    const first = (label) => {
+      const c = cell(label); if (!c) return '';
+      let t = '';
+      for (const n of (c.querySelector('.mono-num') || c).childNodes) { if (n.nodeName === 'BR' || n.nodeName === 'SMALL') break; t += n.textContent; }
+      return t.trim() || c.textContent.trim();
+    };
     out.push({
       source: 'investorgain', name: P.cleanName(a ? (a.getAttribute('title') || a.textContent) : nameCell.textContent),
       exchange: /SME/i.test(exch) ? exch.toUpperCase() : 'Mainboard', type: /SME/i.test(exch) ? 'SME' : 'Mainboard',
       gmp: /^-?\d/.test(gtxt) ? P.num(gtxt) : null,
       subTotal: sub ? P.num(sub.textContent) : null,
-      priceHigh: P.num(first('Price')), lotSize: P.num(first('Lot')),
+      priceHigh: P.num(first('Price')), lotSize: P.num(first('Lot')), issueSizeCr: P.num(first('IPO Size')),
       openDate: P.isoDate(first('Open')), closeDate: P.isoDate(first('Close')),
       allotmentDate: P.isoDate(first('BoA')), listingDate: P.isoDate(first('Listing')),
     });

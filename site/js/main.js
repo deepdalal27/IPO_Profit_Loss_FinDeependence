@@ -2,7 +2,7 @@
 (function () {
   var FD = window.FD;
   var view = 'dash';
-  var R = { dash: function () { FD.renderDash(); }, ipos: function () { FD.renderIpos(); }, deals: function () { FD.renderDeals(); }, calc: function () { FD.renderCalc(); }, reports: function () { FD.renderReports(); }, people: function () { FD.renderPeople(); }, data: function () { FD.renderData(); } };
+  var R = { dash: function () { FD.renderDash(); }, ipos: function () { FD.renderIpos(); }, deals: function () { FD.renderDeals(); }, calc: function () { FD.renderCalc(); }, predict: function () { FD.renderPredict(); }, reports: function () { FD.renderReports(); }, people: function () { FD.renderPeople(); }, data: function () { FD.renderData(); } };
 
   FD.go = function (v, id) {
     view = v;
@@ -54,6 +54,7 @@
       .catch(function () { return fetch('ipos.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }); })
       .catch(function () { return { ipos: [] }; }).then(function (feed) {
       FD.feed = feed || { ipos: [] };
+      FD.loadHistory().then(function () { FD.refresh(); });
       hashImport();
       FD.go(view);
     });

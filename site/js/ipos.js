@@ -50,9 +50,9 @@
         var o = C.opportunity(i, c, FD.state.settings.factors, m);
         var p = o.p, k = C.SUBKEY[c], realT = ((i.sub || {})[k] || {}).times;
         var assumed = i.override && i.override.times && i.override.times[c];
-        var subCell = realT != null ? realT + '×' : '<input class="rate" type="number" step="any" min="0" data-assume="' + c + '" value="' + (assumed == null ? '' : assumed) + '" placeholder="assume ×" title="Assume how many times this category will be subscribed">';
+        var subCell = realT != null ? realT + '×' : '<input class="rate" type="number" step="any" min="0" data-assume="' + c + '" value="' + (assumed == null ? '' : assumed) + '" placeholder="' + (i.predicted && i.predicted[c] ? 'pred ' + (i.predicted[c] >= 10 ? Math.round(i.predicted[c]) : i.predicted[c].toFixed(1)) + '×' : 'assume ×') + '" title="Assume how many times this category will be subscribed">';
         return '<tr class="c-' + c + '"><td>' + FD.catPill(c) + '</td><td>' + (o.minLots || '—') + ' lot' + (o.minLots > 1 ? 's' : '') + '<br><span class="muted small">' + FD.fmt(o.blockAmount) + '</span></td>' +
-          '<td>' + subCell + (realT == null && assumed != null ? '<br><span class="muted small">assumed</span>' : '') + '</td>' +
+          '<td>' + subCell + (realT == null && assumed != null ? '<br><span class="muted small">assumed</span>' : (realT == null && i.predicted && i.predicted[c] ? '<br><span class="muted small">predicted</span>' : '')) + '</td>' +
           '<td><span class="prob">' + FD.oneIn(p) + ' <small>' + FD.pct(p, p != null && p < 0.01 ? 2 : 1) + '</small></span><div class="bar-mini"><span style="width:' + Math.min(100, (p || 0) * 100) + '%"></span></div><span class="muted small">' + (o.appsApplied ? Math.round(o.appsApplied).toLocaleString('en-IN') + ' apps · ' + Math.round(o.unitsAvail || 0).toLocaleString('en-IN') + ' winners · ' : '') + basisText(o.basis) + '</span></td>' +
           '<td>' + FD.fmt(o.gainIfAllotted) + '<br><span class="muted small">' + o.unitShares + ' sh × ₹' + (i.gmp == null ? '—' : i.gmp) + '</span></td>' +
           '<td><b>' + FD.fmt(o.fairKostak == null ? null : Math.round(o.fairKostak)) + '</b></td><td class="pos">' + FD.fmt(o.bidKostak) + '</td>' +
@@ -91,7 +91,7 @@
   }
   function same(a, b) { return (a == null && b == null) || a === b; }
   function fact(l, v, hint, cls) { return '<div class="fact ' + (cls || '') + '"><small>' + l + '</small><b>' + v + '</b>' + (hint ? '<span class="hint">' + hint + '</span>' : '') + '</div>'; }
-  function basisText(b) { return { applications: 'from application count', estimated: 'estimated from subscription', undersubscribed: 'undersubscribed: all get', manual: 'your override', none: 'awaiting subscription' }[b] || ''; }
+  function basisText(b) { return { applications: 'from application count', estimated: 'estimated from subscription', undersubscribed: 'undersubscribed: all get', manual: 'your override', none: 'awaiting subscription', predicted: 'predicted from past IPOs', assumed: 'your assumption' }[b] || ''; }
 
   // Edit / add IPO
   function editIpo(i) {
