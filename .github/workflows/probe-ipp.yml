@@ -1,0 +1,14 @@
+name: Probe IPO Premium (temporary)
+on:
+  push:
+    branches: [claude/youthful-bardeen-7axi46]
+    paths: ['.github/workflows/probe-ipp.yml', 'scripts/probe-ipp.js']
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm ci
+      - run: node scripts/probe-ipp.js
