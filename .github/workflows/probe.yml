@@ -1,0 +1,24 @@
+name: Probe data sources (temporary)
+on:
+  push:
+    branches: [claude/youthful-bardeen-7axi46]
+    paths: ['.github/workflows/probe.yml', 'scripts/probe.js']
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: >-
+          node scripts/probe.js
+          https://www.investorgain.com/report/ipo-subscription-live/333/
+          https://www.investorgain.com/gmp/vedant-poly-fabs-ipo/2297/
+          https://www.investorgain.com/report/live-ipo-gmp/331/all/
+          https://www.investorgain.com/report/ipo-gmp-performance-tracker/
+          https://www.chittorgarh.com/report/ipo-subscription-status-live-bidding-data-bse-nse/21/
+          https://www.chittorgarh.com/report/mainboard-ipo-list-in-india-bse-nse/83/
+          https://www.ipopremium.in/view/ipo/1414/bls-polymers-ltd
+          https://www.ipopremium.in/
+          https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/
+          https://api.bseindia.com/BseIndiaAPI/api/DefaultData/w?Fdate=&Purposecode=&strCat=-1&strPrevDate=&strScrip=&strSearch=P&strToDate=&strType=C
