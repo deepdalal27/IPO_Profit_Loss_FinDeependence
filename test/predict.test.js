@@ -15,7 +15,7 @@ function synth() {
 
 test('learns the GMP and size effects', () => {
   const m = P.train(synth());
-  assert.ok(m.models.rii.r2 > 0.95);
+  assert.ok(m.models.Mainboard.rii.r2 > 0.95);
   for (const [size, g] of [[300, 0.3], [800, 0.1], [2000, 0.4]]) {
     const truth = Math.exp(1 + 4 * g - 0.3 * Math.log(size));
     const f = P.forecast(m, { seg: 'Mainboard', sizeCr: size, g, rivals: [], open: '2026-03-01' }).cats.rii.median;

@@ -134,6 +134,17 @@ function backBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n
 function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n > 0) { t.setUTCDate(t.getUTCDate() + 1); const w = t.getUTCDay(); if (w !== 0 && w !== 6) n--; } return t.toISOString().slice(0, 10); }
 
 (async () => {
+  if (process.argv[2] === '--debug') { // print every table of the given subscription pages: slug/id ...
+    for (const a of process.argv.slice(3)) {
+      const [slug, id] = a.split('/'); const doc = await page(`${BASE}/subscription/${slug}/${id}/`);
+      if (!doc) { console.log(slug, 'no page'); continue; }
+      console.log(`\n=== ${slug}`);
+      for (const tb of doc.querySelectorAll('table')) console.log('TABLE ' + (tb.getAttribute('class') || '') + ' heads=' + JSON.stringify([...tb.querySelectorAll('thead th')].map(txt)) + '\n  rows=' + JSON.stringify([...tb.querySelectorAll('tbody tr')].slice(0, 9).map((tr) => [...tr.querySelectorAll('td,th')].map(txt))));
+      console.log('PARSED ' + JSON.stringify(await subPage(slug, +id, false)));
+      await sleep(1500);
+    }
+    return;
+  }
   const now = new Date();
   const years = process.argv.slice(2).length ? process.argv.slice(2).map(Number) : [now.getUTCFullYear() - 1, now.getUTCFullYear()];
   const old = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : { ipos: [] };
@@ -155,8 +166,8 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
   }
   let n = 0, dbg = 0;
   for (const x of byId.values()) {
-    if (x.v === 4) continue; // already complete
-    if (x.v !== 4) {
+    if (x.v === 4 || !x.slug) continue; // already complete (or added from NSE)
+    if (x.v !== 4 && x.subSource !== 'NSE') {
       const s = await subPage(x.slug, x.igId, dbg < 2);
       if (s && s._layout) { for (const k of ['qib', 'nii', 'shni', 'bhni', 'rii']) delete x[k]; }
       if (s) { dbg++; x.subLayout = s._layout || null; for (const k of ['qib', 'nii', 'bnii', 'snii', 'retail', 'total', 'emp']) if (s[k] != null) x[{ bnii: 'bhni', snii: 'shni', retail: 'rii' }[k] || k] = s[k]; if (s.reserved) x.reserved = s.reserved; }
@@ -174,7 +185,7 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
     }
     if (!x.closeDate && x.listingDate) x.closeDate = backBusinessDays(x.listingDate, 3);
     if (!x.openDate && x.closeDate) x.openDate = backBusinessDays(x.closeDate, 2);
-    if (x.subTotalT != null) x.total = x.subTotalT;
+    if (x.subTotalT != null && x.subSource !== 'NSE') x.total = x.subTotalT;
     if (x.subLayout && x.gmpSeries) x.v = 4;
     n++; if (n % 20 === 0) { console.log(`  pages ${n}`); save(); }
     await sleep(1000);

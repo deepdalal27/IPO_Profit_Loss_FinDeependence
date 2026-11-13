@@ -39,9 +39,11 @@
       if (!x.price || !x.sizeCr || !x.closeDate) return;
       var g = gmpDuring(x);
       var open = x.openDate && x.openDate <= x.closeDate && days(x.openDate, x.closeDate) <= 10 ? x.openDate : addDays(x.closeDate, x.exchange === 'Mainboard' ? -2 : -2);
+      // Sanity: a category can't be > 3,000× or > 40× the issue's total subscription (bad source rows)
+      var ok = function (v) { return v != null && isFinite(v) && v >= 0 && v <= 3000 && (!(x.total > 0) || v <= x.total * 40 + 5) ? v : null; };
       var r = { id: x.igId, name: x.name, seg: x.exchange === 'Mainboard' ? 'Mainboard' : 'SME', exchange: x.exchange, sizeCr: x.sizeCr, price: x.price,
         gmp: g, g: g == null ? null : g / x.price, open: open, close: x.closeDate, listingGainPct: x.listingGainPct,
-        qib: x.qib, shni: x.shni, bhni: x.bhni, rii: x.rii, nii: x.nii, total: x.total, year: x.closeDate.slice(0, 4), src: x };
+        qib: ok(x.qib), shni: ok(x.shni), bhni: ok(x.bhni), rii: ok(x.rii), nii: ok(x.nii), total: x.total > 0 && x.total <= 3000 ? x.total : null, year: x.closeDate.slice(0, 4), src: x };
       out.push(r);
     });
     return out;
@@ -70,11 +72,11 @@
   }
 
   function features(r) {
-    var sme = r.seg === 'SME' ? 1 : 0, ls = Math.log(Math.max(1, r.sizeCr)), g = Math.max(-0.3, Math.min(1.5, r.g || 0));
-    return [1, ls, sme, sme * ls, g, g * g, Math.log(Math.max(0.02, r.share == null ? 1 : r.share)), r.heat || 0];
+    var ls = Math.log(Math.max(1, r.sizeCr)), g = Math.max(-0.3, Math.min(1.5, r.g || 0));
+    return [1, ls, g, g * g, Math.log(Math.max(0.02, r.share == null ? 1 : r.share)), r.heat || 0];
   }
-  var FEAT = ['Intercept', 'ln(issue size ₹Cr)', 'SME', 'SME × ln(size)', 'GMP %', 'GMP % squared', 'ln(attention share)', 'Market heat'];
-  var CLASH = 6, CLASH_PRIOR = 0.5;
+  var FEAT = ['Intercept', 'ln(issue size ₹Cr)', 'GMP %', 'GMP % squared', 'ln(attention share)', 'Market heat'];
+  var CLASH = 4, CLASH_PRIOR = 0.5, SEGS = ['Mainboard', 'SME'];
 
   // Market heat: how strongly IPOs in the same segment were subscribed in the 45 days before this one opened
   // (mean ln total subscription, relative to the segment's overall mean). Controls for hot vs cold markets.
@@ -112,7 +114,7 @@
 
   function fitCat(rows, cat, ridge) {
     var use = rows.filter(function (r) { return r[cat] != null && r[cat] > 0 && r.g != null; });
-    if (use.length < 12) return null;
+    if (use.length < 15) return null;
     var X = use.map(features), y = use.map(function (r) { return Math.log(Math.max(0.05, r[cat])); });
     // Prior: an IPO keeps about √(attention share) of its demand when it clashes (elasticity 0.5), updated by the data
     var prior = {}; prior[CLASH] = [CLASH_PRIOR, Math.max(8, use.length * 0.15)];
@@ -145,14 +147,15 @@
     opts = opts || {};
     var rows = addHeat(dataset(history)), ridge = opts.ridge == null ? 0.5 : opts.ridge;
     var lambdas = [1, 2, 3, 5, 8], best = { lambda: 3, err: Infinity }, cvs = {};
+    var bySeg = {}; SEGS.forEach(function (sg) { bySeg[sg] = rows.filter(function (r) { return r.seg === sg; }); });
     lambdas.forEach(function (l) {
       shares(rows, l);
-      var e = CATS.reduce(function (s, c) { return s + cvError(rows, c, ridge); }, 0);
+      var e = 0; SEGS.forEach(function (sg) { CATS.forEach(function (c) { var v = cvError(bySeg[sg], c, ridge); if (isFinite(v)) e += v; }); });
       cvs[l] = e; if (e < best.err) best = { lambda: l, err: e };
     });
     shares(rows, best.lambda);
     var models = {};
-    CATS.concat(['total']).forEach(function (c) { models[c] = fitCat(rows, c, ridge); });
+    SEGS.forEach(function (sg) { models[sg] = {}; CATS.concat(['total']).forEach(function (c) { models[sg][c] = fitCat(bySeg[sg], c, ridge); }); });
     return { rows: rows, lambda: best.lambda, cv: cvs, models: models, features: FEAT, trainedAt: new Date().toISOString() };
   }
 
@@ -164,14 +167,14 @@
     var r = { seg: x.seg, sizeCr: x.sizeCr, g: x.g, share: share, heat: heat };
     var out = { share: share, heat: heat, cats: {} };
     CATS.concat(['total']).forEach(function (c) {
-      var m = model.models[c]; if (!m) return;
+      var m = (model.models[x.seg] || {})[c]; if (!m) return;
       var mu = dot(m.beta, features(r)), s = m.sigma;
       out.cats[c] = { median: Math.exp(mu), p10: Math.exp(mu + Z.p10 * s), p25: Math.exp(mu + Z.p25 * s), p75: Math.exp(mu + Z.p75 * s), p90: Math.exp(mu + Z.p90 * s), mu: mu, sigma: s, n: m.n, r2: m.r2 };
     });
     // Same IPO alone in its window, to show what the clash costs
     if (x.rivals && x.rivals.length) {
       var solo = Object.assign({}, r, { share: 1 });
-      out.solo = {}; CATS.forEach(function (c) { var m = model.models[c]; if (m) out.solo[c] = Math.exp(dot(m.beta, features(solo))); });
+      out.solo = {}; CATS.forEach(function (c) { var m = (model.models[x.seg] || {})[c]; if (m) out.solo[c] = Math.exp(dot(m.beta, features(solo))); });
     }
     return out;
   }
@@ -223,6 +226,13 @@
     return groups;
   }
 
-  var api = { FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
+  // Nearest past IPOs of the same type: distance = |ln(size ratio)| / ln 2 + |GMP difference| / 10 points
+  function comparables(rows, seg, sizeCr, g, k, cat) {
+    return rows.filter(function (r) { return r.seg === seg && r.g != null && r.sizeCr && (r[cat || 'rii'] != null); })
+      .map(function (r) { return { r: r, d: Math.abs(Math.log(r.sizeCr / Math.max(1, sizeCr))) / Math.LN2 + Math.abs(r.g - g) / 0.1 }; })
+      .sort(function (a, b) { return a.d - b.d; }).slice(0, k || 8).map(function (x) { return x.r; });
+  }
+
+  var api = { comparables: comparables, FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.FDPredict = api;
 })(typeof window !== 'undefined' ? window : globalThis);
