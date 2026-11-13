@@ -11,7 +11,7 @@
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .catch(function () { return fetch('history.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }); })
       .catch(function () { return { ipos: [] }; })
-      .then(function (h) { FD.history = h || { ipos: [] }; FD.model = (FD.history.ipos || []).length >= 20 ? P.train(FD.history) : null; FD.invalidate(); return FD.model; });
+      .then(function (h) { FD.history = h || { ipos: [] }; FD.model = (FD.history.ipos || []).length >= 20 ? P.train(FD.history, { halfLifeDays: (FD.state && FD.state.settings.recencyMonths != null ? +FD.state.settings.recencyMonths : 6) * 30.4 }) : null; FD.invalidate(); return FD.model; });
   };
 
   // Forecast for an IPO from the live list, with rivals = other IPOs whose windows overlap (same segment)
@@ -106,17 +106,18 @@
 
     // ---- comparable IPOs ----
     var comp = P.comparables(withCats, st.seg, +st.size || 1, g, 8, 'rii');
-    var med = function (c) { return P.median(comp.map(function (r) { return r[c]; }).filter(function (v) { return v != null; })); };
+    var cw = comp.map(function (r) { return r.w; });
+    var med = function (c) { return P.wquant(comp.map(function (r) { return r[c]; }), cw, 0.5); };
     html += '<div class="panel"><div class="panel-head"><div><h2>Most similar past IPOs</h2><p class="muted" style="margin:4px 0 0">' + st.seg + ' IPOs closest in issue size and GMP to the one above — what they actually got</p></div></div>' +
       '<div class="tbl"><table class="pt"><thead><tr><th>IPO</th><th>Closed</th><th class="num">Size ₹Cr</th><th class="num">GMP</th><th class="num">QIB</th><th class="num">sHNI</th><th class="num">bHNI</th><th class="num">Retail</th><th class="num">Total</th><th class="num">Listing</th><th class="num">Retail chance (actual)</th></tr></thead><tbody>' +
       comp.map(function (r) { return rowHtml(r, true); }).join('') +
-      '<tr class="tot"><td>Median of these ' + comp.length + '</td><td></td><td class="num">' + Math.round(P.median(comp.map(function (r) { return r.sizeCr; })) || 0).toLocaleString('en-IN') + '</td><td class="num">' + pc(P.median(comp.map(function (r) { return r.g; }))) + '</td>' +
+      '<tr class="tot"><td>Recency-weighted median of these ' + comp.length + '</td><td></td><td class="num">' + Math.round(P.median(comp.map(function (r) { return r.sizeCr; })) || 0).toLocaleString('en-IN') + '</td><td class="num">' + pc(P.median(comp.map(function (r) { return r.g; }))) + '</td>' +
       ['qib', 'shni', 'bhni', 'rii', 'total'].map(function (c) { return '<td class="num">' + tx(med(c)) + '</td>'; }).join('') + '<td class="num">' + sg(P.median(comp.map(function (r) { return r.listingGainPct; }).filter(function (v) { return v != null; }))) + '</td><td class="num">' + FD.oneIn(P.median(comp.map(function (r) { return actualOdds(r, 'rii'); }).filter(function (v) { return v != null; }))) + '</td></tr></tbody></table></div></div>';
 
     // ---- matrix ----
     var mx = P.matrix(withCats, st.mSeg, st.mCat);
     var curRow = P.SIZE_B[st.mSeg].findIndex(function (b) { return +st.size >= b[0] && +st.size < b[1]; }), curCol = P.GMP_B.findIndex(function (b) { return g >= b[0] && g < b[1]; });
-    html += '<div class="panel"><div class="panel-head"><div><h2>Average subscription by issue size and GMP</h2><p class="muted" style="margin:4px 0 0">Median times subscribed of past IPOs · number of IPOs below each figure</p></div>' +
+    html += '<div class="panel"><div class="panel-head"><div><h2>Average subscription by issue size and GMP</h2><p class="muted" style="margin:4px 0 0">Recency-weighted median times subscribed · number of IPOs below each figure</p></div>' +
       '<div class="row"><span class="seg">' + ['Mainboard', 'SME'].map(function (s) { return '<button data-ms="' + s + '"' + (st.mSeg === s ? ' class="on"' : '') + '>' + s + '</button>'; }).join('') + '</span>' +
       '<span class="seg">' + ['rii', 'shni', 'bhni', 'qib', 'total'].map(function (c) { return '<button data-mc="' + c + '"' + (st.mCat === c ? ' class="on"' : '') + '>' + LBL[c] + '</button>'; }).join('') + '</span></div></div>' +
       '<div class="tbl"><table class="mxt"><thead><tr><th>Issue size \\ GMP</th>' + P.GMP_B.map(function (b) { return '<th>' + b[2] + '</th>'; }).join('') + '</tr></thead><tbody>' +
@@ -139,7 +140,7 @@
       '<li>GMP used = GMP on the closing day (else the last GMP before listing).</li></ul></div>' +
       '<div><h4>Forecast model</h4><ul><li>Per category, on a log scale: issue size, GMP %, Mainboard / SME, market mood (how heavily IPOs were subscribed in the previous 45 days) and date clashes.</li>' +
       '<li>Date clash: IPOs open on the same days share investor money, the higher-GMP issue taking the larger share. An IPO is assumed to keep about √(its share) of its demand; past data refines this.</li>' +
-      '<li>Expected = median forecast; likely range = middle 50% of outcomes for similar IPOs.</li>' +
+      '<li>Recent IPOs count more: an IPO\'s weight halves every ' + Math.round(m.halfLifeDays / 30.4) + ' months of age (change in Data &amp; Settings), in the model, the matrix and the comparables median.</li><li>Expected = median forecast; likely range = middle 50% of outcomes for similar IPOs.</li>' +
       '<li>Fit on past data: ' + ['Mainboard', 'SME'].map(function (sg) { var t = CATS.map(function (c) { var q = m.models[sg][c]; return q ? LBL[c] + ' ' + q.r2.toFixed(2) : ''; }).filter(Boolean).join(', '); return t ? sg + ' R² — ' + t + ' (' + (m.models[sg].rii || m.models[sg].total).n + ' IPOs)' : sg + ' — category data still being collected'; }).join(' · ') + '.</li></ul></div>' +
       '<div><h4>Chance of allotment (SEBI)</h4><ul><li>Retail: each winner gets one minimum lot by lottery.</li><li>sHNI (₹2–10 L) and bHNI (above ₹10 L): each winner gets the minimum HNI lot by lottery; any balance goes proportionately.</li>' +
       '<li>Checked on exchange data: BLS Polymers Retail 128.36× by shares → 1 in 96 actual (1.3 lots per application); bHNI 592.83× → 1 in 121 actual (4.9).</li></ul></div></div></details>';

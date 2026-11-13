@@ -48,3 +48,17 @@ test('matrix buckets by size and GMP', () => {
   const n = mx.reduce((s, r) => s + r.cells.reduce((a, c) => a + c.n, 0), 0);
   assert.equal(n, 120);
 });
+
+test('recent IPOs weigh more: a regime shift pulls the forecast towards the newer level', () => {
+  const ipos = []; let id = 1;
+  for (let k = 0; k < 160; k++) {
+    const d = new Date(Date.UTC(2025, 0, 6) + k * 4 * 864e5).toISOString().slice(0, 10);
+    const t = k < 100 ? 5 : 20; // older IPOs ~5×, the latest 60 ~20×
+    ipos.push({ igId: id++, name: 'IPO ' + k, exchange: 'Mainboard', price: 100, sizeCr: 500, closeDate: d, openDate: d, gmpFinal: 10, qib: t, shni: t, bhni: t, rii: t, total: t });
+  }
+  const eq = P.forecast(P.train({ ipos }, { halfLifeDays: 0 }), { seg: 'Mainboard', sizeCr: 500, g: 0.1, rivals: [], open: '2026-12-01' }).cats.rii.median;
+  const rec = P.forecast(P.train({ ipos }, { halfLifeDays: 90 }), { seg: 'Mainboard', sizeCr: 500, g: 0.1, rivals: [], open: '2026-12-01' }).cats.rii.median;
+  assert.ok(rec > eq * 1.3, `recency ${rec} vs equal ${eq}`);
+  assert.equal(P.wquant([1, 2, 100], [1, 1, 10], 0.5), 100);
+  assert.equal(P.wquant([1, 2, 3], null, 0.5), 2);
+});

@@ -15,6 +15,20 @@
   function days(a, b) { return Math.round((Date.parse(b) - Date.parse(a)) / 864e5); }
   function addDays(d, n) { var t = new Date(Date.parse(d) + n * 864e5); return t.toISOString().slice(0, 10); }
   function median(a) { if (!a.length) return null; var s = a.slice().sort(function (x, y) { return x - y; }); var m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; }
+  // Weighted quantile (weights = recency). q = 0.5 gives the weighted median.
+  function wquant(vals, wts, q) {
+    var a = vals.map(function (v, i) { return [v, wts ? wts[i] : 1]; }).filter(function (p) { return p[0] != null && !isNaN(p[0]) && p[1] > 0; }).sort(function (x, y) { return x[0] - y[0]; });
+    if (!a.length) return null;
+    var tot = a.reduce(function (t, p) { return t + p[1]; }, 0), acc = 0;
+    for (var i = 0; i < a.length; i++) { acc += a[i][1]; if (acc >= q * tot) return (acc - a[i][1] === q * tot && i > 0) ? (a[i][0] + a[i - 1][0]) / 2 : a[i][0]; }
+    return a[a.length - 1][0];
+  }
+  // Recency weights: newest IPO = 1, halves every `halfLifeDays`
+  function addWeights(rows, halfLifeDays) {
+    var hl = halfLifeDays > 0 ? halfLifeDays : 0, latest = rows.reduce(function (m, r) { return r.close > m ? r.close : m; }, '0000');
+    rows.forEach(function (r) { r.w = hl ? Math.pow(0.5, Math.max(0, days(r.close, latest)) / hl) : 1; });
+    return rows;
+  }
   function quant(a, q) { if (!a.length) return null; var s = a.slice().sort(function (x, y) { return x - y; }); var i = (s.length - 1) * q, lo = Math.floor(i), hi = Math.ceil(i); return s[lo] + (s[hi] - s[lo]) * (i - lo); }
 
   // GMP (₹) during the issue: latest GMP on or before the closing date; else the last GMP before listing.
@@ -81,24 +95,23 @@
   // Market heat: how strongly IPOs in the same segment were subscribed in the 45 days before this one opened
   // (mean ln total subscription, relative to the segment's overall mean). Controls for hot vs cold markets.
   function heatFor(rows, seg, date, excludeId) {
-    var from = addDays(date, -45), v = [], all = [];
+    var from = addDays(date, -45), v = [], sw = 0, swx = 0;
     rows.forEach(function (o) {
       if (o.seg !== seg || !(o.total > 0)) return;
-      all.push(Math.log(o.total));
+      var w = o.w == null ? 1 : o.w; sw += w; swx += w * Math.log(o.total); // baseline = recency-weighted mean
       if (o.id !== excludeId && o.close < date && o.close >= from) v.push(Math.log(o.total));
     });
-    if (!v.length || !all.length) return 0;
-    var mAll = all.reduce(function (a, b) { return a + b; }, 0) / all.length;
-    return v.reduce(function (a, b) { return a + b; }, 0) / v.length - mAll;
+    if (!v.length || !sw) return 0;
+    return v.reduce(function (a, b) { return a + b; }, 0) / v.length - swx / sw;
   }
   function addHeat(rows) { rows.forEach(function (r) { r.heat = heatFor(rows, r.seg, r.open, r.id); }); return rows; }
 
   // Solve (XᵀX + kI)β = Xᵀy by Gauss-Jordan
   // prior: {index: [mean, strength]} — pulls a coefficient towards a prior belief (Bayesian ridge)
-  function ols(X, y, ridge, prior) {
+  function ols(X, y, ridge, prior, w) {
     var p = X[0].length, A = [], i, j, k;
     for (i = 0; i < p; i++) { A.push(new Array(p + 1).fill(0)); }
-    X.forEach(function (row, n) { for (i = 0; i < p; i++) { for (j = 0; j < p; j++) A[i][j] += row[i] * row[j]; A[i][p] += row[i] * y[n]; } });
+    X.forEach(function (row, n) { var wn = w ? w[n] : 1; for (i = 0; i < p; i++) { for (j = 0; j < p; j++) A[i][j] += wn * row[i] * row[j]; A[i][p] += wn * row[i] * y[n]; } });
     for (i = 1; i < p; i++) A[i][i] += ridge;
     Object.keys(prior || {}).forEach(function (ix) { var pr = prior[ix]; A[ix][ix] += pr[1]; A[ix][p] += pr[1] * pr[0]; });
     for (i = 0; i < p; i++) {
@@ -116,19 +129,22 @@
     var use = rows.filter(function (r) { return r[cat] != null && r[cat] > 0 && r.g != null; });
     if (use.length < 15) return null;
     var X = use.map(features), y = use.map(function (r) { return Math.log(Math.max(0.05, r[cat])); });
+    // Recency weights, scaled so they sum to the effective sample size (keeps ridge / prior strength comparable)
+    var w0 = use.map(function (r) { return r.w == null ? 1 : r.w; }), sw = w0.reduce(function (a, v) { return a + v; }, 0), sw2 = w0.reduce(function (a, v) { return a + v * v; }, 0);
+    var nEff = sw2 ? sw * sw / sw2 : use.length, w = w0.map(function (v) { return v * nEff / sw; });
     // Prior: an IPO keeps about √(attention share) of its demand when it clashes (elasticity 0.5), updated by the data
-    var prior = {}; prior[CLASH] = [CLASH_PRIOR, Math.max(8, use.length * 0.15)];
-    var b = ols(X, y, ridge, prior);
+    var prior = {}; prior[CLASH] = [CLASH_PRIOR, Math.max(8, nEff * 0.15)];
+    var b = ols(X, y, ridge, prior, w);
     if (b[CLASH] < 0) { // a smaller share of attention cannot raise subscription
       var Xc = X.map(function (row) { var c = row.slice(); c[CLASH] = 0; return c; });
-      b = ols(Xc, y, ridge); b[CLASH] = 0; X = Xc;
+      b = ols(Xc, y, ridge, null, w); b[CLASH] = 0; X = Xc;
     }
     var res = y.map(function (v, i) { return v - dot(b, X[i]); });
-    var sse = res.reduce(function (s, e) { return s + e * e; }, 0);
-    var mean = y.reduce(function (s, v) { return s + v; }, 0) / y.length;
-    var sst = y.reduce(function (s, v) { return s + (v - mean) * (v - mean); }, 0);
-    var sigma = Math.sqrt(sse / Math.max(1, use.length - b.length));
-    return { cat: cat, beta: b, sigma: sigma, n: use.length, r2: sst ? 1 - sse / sst : 0, resid: res };
+    var sse = res.reduce(function (s, e, i) { return s + w[i] * e * e; }, 0);
+    var mean = y.reduce(function (s, v, i) { return s + w[i] * v; }, 0) / nEff;
+    var sst = y.reduce(function (s, v, i) { return s + w[i] * (v - mean) * (v - mean); }, 0);
+    var sigma = Math.sqrt(sse / Math.max(1, nEff - b.length));
+    return { cat: cat, beta: b, sigma: sigma, n: use.length, nEff: nEff, r2: sst ? 1 - sse / sst : 0, resid: res };
   }
   // Leave-one-out error for choosing λ (closed form via refits is heavy; use 5-fold CV)
   function cvError(rows, cat, ridge) {
@@ -138,14 +154,15 @@
     for (var f = 0; f < 5; f++) {
       var train = use.filter(function (_, i) { return i % 5 !== f; }), test = use.filter(function (_, i) { return i % 5 === f; });
       var m = fitCat(train, cat, ridge); if (!m) continue;
-      test.forEach(function (r) { var e = Math.log(Math.max(0.05, r[cat])) - dot(m.beta, features(r)); err += e * e; cnt++; });
+      test.forEach(function (r) { var e = Math.log(Math.max(0.05, r[cat])) - dot(m.beta, features(r)), wr = r.w == null ? 1 : r.w; err += wr * e * e; cnt += wr; });
     }
     return cnt ? err / cnt : Infinity;
   }
 
   function train(history, opts) {
     opts = opts || {};
-    var rows = addHeat(dataset(history)), ridge = opts.ridge == null ? 0.5 : opts.ridge;
+    var halfLife = opts.halfLifeDays == null ? 180 : opts.halfLifeDays;
+    var rows = addHeat(addWeights(dataset(history), halfLife)), ridge = opts.ridge == null ? 0.5 : opts.ridge;
     var lambdas = [1, 2, 3, 5, 8], best = { lambda: 3, err: Infinity }, cvs = {};
     var bySeg = {}; SEGS.forEach(function (sg) { bySeg[sg] = rows.filter(function (r) { return r.seg === sg; }); });
     lambdas.forEach(function (l) {
@@ -156,7 +173,7 @@
     shares(rows, best.lambda);
     var models = {};
     SEGS.forEach(function (sg) { models[sg] = {}; CATS.concat(['total']).forEach(function (c) { models[sg][c] = fitCat(bySeg[sg], c, ridge); }); });
-    return { rows: rows, lambda: best.lambda, cv: cvs, models: models, features: FEAT, trainedAt: new Date().toISOString() };
+    return { halfLifeDays: halfLife, rows: rows, lambda: best.lambda, cv: cvs, models: models, features: FEAT, trainedAt: new Date().toISOString() };
   }
 
   // Forecast for a new IPO: {seg, sizeCr, g (fraction), rivals:[{g, overlap}], ownDays}
@@ -207,8 +224,9 @@
     var S = SIZE_B[seg];
     return S.map(function (sb) {
       return { label: sb[2], cells: GMP_B.map(function (gb) {
-        var v = rows.filter(function (r) { return r.seg === seg && r.sizeCr >= sb[0] && r.sizeCr < sb[1] && r.g != null && r.g >= gb[0] && r.g < gb[1] && r[cat] != null; }).map(function (r) { return r[cat]; });
-        return { n: v.length, median: median(v), p25: quant(v, 0.25), p75: quant(v, 0.75) };
+        var v = rows.filter(function (r) { return r.seg === seg && r.sizeCr >= sb[0] && r.sizeCr < sb[1] && r.g != null && r.g >= gb[0] && r.g < gb[1] && r[cat] != null; });
+        var vals = v.map(function (r) { return r[cat]; }), wts = v.map(function (r) { return r.w == null ? 1 : r.w; });
+        return { n: v.length, median: wquant(vals, wts, 0.5), p25: wquant(vals, wts, 0.25), p75: wquant(vals, wts, 0.75), plain: median(vals) };
       }) };
     });
   }
@@ -233,6 +251,6 @@
       .sort(function (a, b) { return a.d - b.d; }).slice(0, k || 8).map(function (x) { return x.r; });
   }
 
-  var api = { comparables: comparables, FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
+  var api = { wquant: wquant, addWeights: addWeights, comparables: comparables, FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.FDPredict = api;
 })(typeof window !== 'undefined' ? window : globalThis);
