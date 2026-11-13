@@ -71,16 +71,34 @@
 
   function features(r) {
     var sme = r.seg === 'SME' ? 1 : 0, ls = Math.log(Math.max(1, r.sizeCr)), g = Math.max(-0.3, Math.min(1.5, r.g || 0));
-    return [1, ls, sme, sme * ls, g, g * g, Math.log(Math.max(0.02, r.share == null ? 1 : r.share))];
+    return [1, ls, sme, sme * ls, g, g * g, Math.log(Math.max(0.02, r.share == null ? 1 : r.share)), r.heat || 0];
   }
-  var FEAT = ['Intercept', 'ln(issue size ₹Cr)', 'SME', 'SME × ln(size)', 'GMP %', 'GMP % squared', 'ln(attention share)'];
+  var FEAT = ['Intercept', 'ln(issue size ₹Cr)', 'SME', 'SME × ln(size)', 'GMP %', 'GMP % squared', 'ln(attention share)', 'Market heat'];
+  var CLASH = 6, CLASH_PRIOR = 0.5;
+
+  // Market heat: how strongly IPOs in the same segment were subscribed in the 45 days before this one opened
+  // (mean ln total subscription, relative to the segment's overall mean). Controls for hot vs cold markets.
+  function heatFor(rows, seg, date, excludeId) {
+    var from = addDays(date, -45), v = [], all = [];
+    rows.forEach(function (o) {
+      if (o.seg !== seg || !(o.total > 0)) return;
+      all.push(Math.log(o.total));
+      if (o.id !== excludeId && o.close < date && o.close >= from) v.push(Math.log(o.total));
+    });
+    if (!v.length || !all.length) return 0;
+    var mAll = all.reduce(function (a, b) { return a + b; }, 0) / all.length;
+    return v.reduce(function (a, b) { return a + b; }, 0) / v.length - mAll;
+  }
+  function addHeat(rows) { rows.forEach(function (r) { r.heat = heatFor(rows, r.seg, r.open, r.id); }); return rows; }
 
   // Solve (XᵀX + kI)β = Xᵀy by Gauss-Jordan
-  function ols(X, y, ridge) {
+  // prior: {index: [mean, strength]} — pulls a coefficient towards a prior belief (Bayesian ridge)
+  function ols(X, y, ridge, prior) {
     var p = X[0].length, A = [], i, j, k;
     for (i = 0; i < p; i++) { A.push(new Array(p + 1).fill(0)); }
     X.forEach(function (row, n) { for (i = 0; i < p; i++) { for (j = 0; j < p; j++) A[i][j] += row[i] * row[j]; A[i][p] += row[i] * y[n]; } });
     for (i = 1; i < p; i++) A[i][i] += ridge;
+    Object.keys(prior || {}).forEach(function (ix) { var pr = prior[ix]; A[ix][ix] += pr[1]; A[ix][p] += pr[1] * pr[0]; });
     for (i = 0; i < p; i++) {
       var piv = i; for (k = i + 1; k < p; k++) if (Math.abs(A[k][i]) > Math.abs(A[piv][i])) piv = k;
       var t = A[i]; A[i] = A[piv]; A[piv] = t;
@@ -96,7 +114,13 @@
     var use = rows.filter(function (r) { return r[cat] != null && r[cat] > 0 && r.g != null; });
     if (use.length < 12) return null;
     var X = use.map(features), y = use.map(function (r) { return Math.log(Math.max(0.05, r[cat])); });
-    var b = ols(X, y, ridge);
+    // Prior: an IPO keeps about √(attention share) of its demand when it clashes (elasticity 0.5), updated by the data
+    var prior = {}; prior[CLASH] = [CLASH_PRIOR, Math.max(8, use.length * 0.15)];
+    var b = ols(X, y, ridge, prior);
+    if (b[CLASH] < 0) { // a smaller share of attention cannot raise subscription
+      var Xc = X.map(function (row) { var c = row.slice(); c[CLASH] = 0; return c; });
+      b = ols(Xc, y, ridge); b[CLASH] = 0; X = Xc;
+    }
     var res = y.map(function (v, i) { return v - dot(b, X[i]); });
     var sse = res.reduce(function (s, e) { return s + e * e; }, 0);
     var mean = y.reduce(function (s, v) { return s + v; }, 0) / y.length;
@@ -119,8 +143,8 @@
 
   function train(history, opts) {
     opts = opts || {};
-    var rows = dataset(history), ridge = opts.ridge == null ? 0.5 : opts.ridge;
-    var lambdas = [0, 1, 2, 3, 5, 8], best = { lambda: 3, err: Infinity }, cvs = {};
+    var rows = addHeat(dataset(history)), ridge = opts.ridge == null ? 0.5 : opts.ridge;
+    var lambdas = [1, 2, 3, 5, 8], best = { lambda: 3, err: Infinity }, cvs = {};
     lambdas.forEach(function (l) {
       shares(rows, l);
       var e = CATS.reduce(function (s, c) { return s + cvError(rows, c, ridge); }, 0);
@@ -136,8 +160,9 @@
   function forecast(model, x) {
     var own = x.ownDays || 3;
     var share = shareFor(x.g, x.rivals, model.lambda, own);
-    var r = { seg: x.seg, sizeCr: x.sizeCr, g: x.g, share: share };
-    var out = { share: share, cats: {} };
+    var heat = heatFor(model.rows, x.seg, x.open || new Date().toISOString().slice(0, 10), null);
+    var r = { seg: x.seg, sizeCr: x.sizeCr, g: x.g, share: share, heat: heat };
+    var out = { share: share, heat: heat, cats: {} };
     CATS.concat(['total']).forEach(function (c) {
       var m = model.models[c]; if (!m) return;
       var mu = dot(m.beta, features(r)), s = m.sigma;
@@ -198,6 +223,6 @@
     return groups;
   }
 
-  var api = { CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
+  var api = { FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.FDPredict = api;
 })(typeof window !== 'undefined' ? window : globalThis);

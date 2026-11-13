@@ -361,3 +361,5 @@ table.mxt td { text-align: center; } table.mxt td:first-child { text-align: left
 table.mxt td.hlc { outline: 2px solid var(--accent); outline-offset: -2px; }
 tr.gtop td { border-top: 2px solid var(--line); }
 #histTbl td { white-space: nowrap; } #histTbl td:last-child { white-space: normal; min-width: 160px; }
+.stack2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-bottom: 12px; }
+@media (min-width: 1200px) { .stack2 { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }

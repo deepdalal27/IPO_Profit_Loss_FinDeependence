@@ -1,0 +1,39 @@
+name: Update past IPO history (subscription + GMP)
+
+on:
+  schedule:
+    - cron: '37 13 * * *'   # daily 19:07 IST, after the day's subscription closes
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/history.js']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ipo-history
+  cancel-in-progress: false
+
+jobs:
+  history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Collect past IPOs (only new ones are fetched)
+        run: node scripts/history.js
+        timeout-minutes: 75
+      - name: Save history
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/history.json
+          git commit -m "Update past IPO history" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push
