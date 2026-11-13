@@ -1,19 +1,25 @@
-name: Probe data sources (temporary)
+name: Build IPO history (subscription + GMP)
 on:
   push:
     branches: [claude/youthful-bardeen-7axi46]
-    paths: ['.github/workflows/probe.yml', 'scripts/probe.js']
+    paths: ['.github/workflows/probe.yml', 'scripts/history.js']
+  workflow_dispatch:
+permissions:
+  contents: write
 jobs:
-  probe:
+  history:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: npm ci
-      - run: >-
-          node scripts/probe.js
-          https://www.investorgain.com/report/ipo-subscription-live/333/all/
-          https://www.investorgain.com/report/ipo-gmp-performance-tracker/377/all/
-          https://www.investorgain.com/subscription/vedant-poly-fabs-ipo/2297/
-          https://www.investorgain.com/gmp/bls-polymers-ipo/2280/
+      - run: node scripts/history.js
+      - name: Save history
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/history.json
+          git commit -m "Update IPO history" || exit 0
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push
