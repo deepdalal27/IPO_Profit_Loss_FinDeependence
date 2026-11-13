@@ -39,9 +39,11 @@
       if (!x.price || !x.sizeCr || !x.closeDate) return;
       var g = gmpDuring(x);
       var open = x.openDate && x.openDate <= x.closeDate && days(x.openDate, x.closeDate) <= 10 ? x.openDate : addDays(x.closeDate, x.exchange === 'Mainboard' ? -2 : -2);
+      // Sanity: a category can't be > 3,000× or > 40× the issue's total subscription (bad source rows)
+      var ok = function (v) { return v != null && isFinite(v) && v >= 0 && v <= 3000 && (!(x.total > 0) || v <= x.total * 40 + 5) ? v : null; };
       var r = { id: x.igId, name: x.name, seg: x.exchange === 'Mainboard' ? 'Mainboard' : 'SME', exchange: x.exchange, sizeCr: x.sizeCr, price: x.price,
         gmp: g, g: g == null ? null : g / x.price, open: open, close: x.closeDate, listingGainPct: x.listingGainPct,
-        qib: x.qib, shni: x.shni, bhni: x.bhni, rii: x.rii, nii: x.nii, total: x.total, year: x.closeDate.slice(0, 4), src: x };
+        qib: ok(x.qib), shni: ok(x.shni), bhni: ok(x.bhni), rii: ok(x.rii), nii: ok(x.nii), total: x.total > 0 && x.total <= 3000 ? x.total : null, year: x.closeDate.slice(0, 4), src: x };
       out.push(r);
     });
     return out;
@@ -223,6 +225,13 @@
     return groups;
   }
 
-  var api = { FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
+  // Nearest past IPOs of the same type: distance = |ln(size ratio)| / ln 2 + |GMP difference| / 10 points
+  function comparables(rows, seg, sizeCr, g, k, cat) {
+    return rows.filter(function (r) { return r.seg === seg && r.g != null && r.sizeCr && (r[cat || 'rii'] != null); })
+      .map(function (r) { return { r: r, d: Math.abs(Math.log(r.sizeCr / Math.max(1, sizeCr))) / Math.LN2 + Math.abs(r.g - g) / 0.1 }; })
+      .sort(function (a, b) { return a.d - b.d; }).slice(0, k || 8).map(function (x) { return x.r; });
+  }
+
+  var api = { comparables: comparables, FEAT: FEAT, heatFor: heatFor, CATS: CATS, LABEL: LABEL, dataset: dataset, shares: shares, shareFor: shareFor, train: train, forecast: forecast, expectedChance: expectedChance, matrix: matrix, clashes: clashes, SIZE_B: SIZE_B, GMP_B: GMP_B, median: median, quant: quant, gmpDuring: gmpDuring, gmpAt: gmpAt, invNorm: invNorm };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.FDPredict = api;
 })(typeof window !== 'undefined' ? window : globalThis);

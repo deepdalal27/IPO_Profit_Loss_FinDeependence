@@ -363,3 +363,17 @@ tr.gtop td { border-top: 2px solid var(--line); }
 #histTbl td { white-space: nowrap; } #histTbl td:last-child { white-space: normal; min-width: 160px; }
 .stack2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-bottom: 12px; }
 @media (min-width: 1200px) { .stack2 { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } }
+/* Predictor — forecast sheet */
+table.fc td { vertical-align: top; }
+table.fc td b { font-size: 15px; }
+table.mxt th { text-align: center; } table.mxt th:first-child { text-align: left; }
+table.mxt td { text-align: center; padding: 10px 8px; }
+table.mxt td b { display: block; font: 700 15px var(--mono); }
+table.mxt .cnt { display: block; font: 500 10px var(--mono); color: var(--muted); margin-top: 2px; }
+table.pt td, table.pt th { padding: 8px 10px; }
+details.method { margin-top: 12px; }
+details.method summary { cursor: pointer; font-size: 15px; }
+.method-body { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 12px; font-size: 13px; }
+.method-body h4 { font: 700 11px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--teal); margin: 0 0 6px; }
+.method-body ul { margin: 0; padding-left: 18px; color: var(--muted); } .method-body li { margin: 4px 0; }
+#v-predict .panel { margin-bottom: 12px; }
