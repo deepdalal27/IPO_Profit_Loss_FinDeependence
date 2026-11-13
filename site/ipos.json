@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-13T08:50:48.061Z",
- "checkedAt": "2026-11-13T10:12:44.878Z",
+ "updatedAt": "2026-11-13T10:52:18.451Z",
+ "checkedAt": "2026-11-13T10:52:18.451Z",
  "today": "2026-11-13",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -53,8 +53,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-13T08:50:48.061Z",
-   "gmp": 48,
+   "updatedAt": "2026-11-13T10:52:18.451Z",
+   "gmp": 45,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -66,6 +66,10 @@
     {
      "t": "2026-11-13 08:50",
      "g": 48
+    },
+    {
+     "t": "2026-11-13 10:52",
+     "g": 45
     }
    ]
   },
