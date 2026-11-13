@@ -58,6 +58,12 @@
     (FD.state.deals || []).forEach(function (d) { if (!ids[d.ipoId] && d.ipoSnap) { list.push(Object.assign({}, d.ipoSnap, { id: d.ipoId })); ids[d.ipoId] = 1; } });
     var t = todayIST();
     list.forEach(function (i) { i.stage = C.stage(i, t); i.bookDate = i.listingDate || i.closeDate || i.openDate || ''; });
+    FD._ipoMap = {}; list.forEach(function (i) { FD._ipoMap[i.id] = i; });
+    if (FD.model && FD.forecastIpo) list.forEach(function (i) {
+      if (i.listingPrice != null || (i.stage !== 'Open' && i.stage !== 'Upcoming' && i.stage !== 'Closed')) return;
+      var f = null; try { FD._ipos = list; f = FD.forecastIpo(i); } catch (e) { f = null; }
+      if (f && f.cats) i.predicted = { RETAIL: f.cats.rii && f.cats.rii.median, SHNI: f.cats.shni && f.cats.shni.median, BHNI: f.cats.bhni && f.cats.bhni.median };
+    });
     list.sort(function (a, b) { return String(b.openDate || '').localeCompare(String(a.openDate || '')); });
     FD._ipos = list;
     FD._ipoMap = {}; list.forEach(function (i) { FD._ipoMap[i.id] = i; });
