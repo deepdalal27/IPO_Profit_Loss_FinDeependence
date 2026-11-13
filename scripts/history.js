@@ -75,22 +75,26 @@ const P = require('../site/js/parse.js');
 async function subPage(slug, id, debug) {
   const doc = await page(`${BASE}/subscription/${slug}/${id}/`);
   if (!doc) return null;
-  const res = {};
+  const res = {}, resv = {};
   for (const tb of doc.querySelectorAll('table')) {
-    if (/daywise/.test(tb.getAttribute('class') || '')) continue;
-    const heads = [...tb.querySelectorAll('thead th, tr:first-child th')].map(txt);
-    let tcol = heads.findIndex((h) => /times|subscri|\(x\)/i.test(h));
-    const rows = [...tb.querySelectorAll('tbody tr, tr')].map((tr) => [...tr.querySelectorAll('td')].map(txt)).filter((r) => r.length >= 2);
-    if (debug) console.log('  TABLE heads=' + JSON.stringify(heads) + ' rows=' + JSON.stringify(rows.slice(0, 9)));
-    for (const r of rows) {
-      const li = r.findIndex((c) => /[A-Za-z]/.test(c)); if (li < 0) continue;
-      const k = P.catKey(r[li]); if (!k || res[k] != null) continue;
-      let v = tcol >= 0 && r[tcol] != null ? num(r[tcol]) : null;
-      if (v == null) { const nx = r.slice(li + 1).find((c) => /^-?[\d,.]+\s*x?$/i.test(c)); v = nx != null ? num(nx) : null; }
-      if (v != null) res[k] = v;
+    const heads = [...tb.querySelectorAll('thead th')].map(txt);
+    const rows = [...tb.querySelectorAll('tbody tr')].map((tr) => [...tr.querySelectorAll('td, th')].map(txt)).filter((r) => r.length >= 2);
+    const cls = tb.getAttribute('class') || '';
+    if (/daywise/.test(cls)) {
+      if (debug) console.log('  DAYWISE heads=' + JSON.stringify(heads) + ' rows=' + JSON.stringify(rows.slice(0, 8)));
+      const hk = heads.map((h) => P.catKey(h));
+      if (hk.filter(Boolean).length >= 2) { // columns are categories, rows are days → last row with numbers = final
+        const last = rows.filter((r) => r.some((c) => /\d/.test(c))).pop() || [];
+        hk.forEach((k, i) => { if (k && res[k] == null && num(last[i]) != null) res[k] = num(last[i]); });
+      } else { // rows are categories, columns are days → last numeric cell
+        for (const r of rows) { const k = P.catKey(r[0]); if (!k || res[k] != null) continue; const v = r.slice(1).map(num).filter((x) => x != null); if (v.length) res[k] = v[v.length - 1]; }
+      }
+    } else if (heads.some((h) => /Max Allottees/i.test(h))) { // reservation table
+      const si = heads.findIndex((h) => /^Shares$/i.test(h)), ai = heads.findIndex((h) => /Allottees/i.test(h));
+      for (const r of rows) { const k = P.catKey(r[0].replace(/^[−-]\s*/, '').replace(/bNII\s*>.*/i, 'bNII').replace(/sNII\s*<.*/i, 'sNII')); if (!k || resv[k]) continue; resv[k] = { shares: num(r[si]), allottees: num(r[ai]) }; }
     }
-    if (res.total != null && (res.rii != null || res.retail != null)) break;
   }
+  if (Object.keys(resv).length) res.reserved = resv;
   return res;
 }
 
@@ -141,13 +145,13 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
   }
   let n = 0, dbg = 0;
   for (const x of byId.values()) {
-    if (x.v === 2) continue; // already complete
-    if (x.rii == null || x.qib == null) {
+    if (x.v === 3) continue; // already complete
+    if (x.rii == null || !x.reserved) {
       const s = await subPage(x.slug, x.igId, dbg < 2);
-      if (s) { dbg++; for (const k of ['qib', 'nii', 'bnii', 'snii', 'retail', 'total', 'emp']) if (s[k] != null) x[{ bnii: 'bhni', snii: 'shni', retail: 'rii' }[k] || k] = s[k]; }
+      if (s) { dbg++; for (const k of ['qib', 'nii', 'bnii', 'snii', 'retail', 'total', 'emp']) if (s[k] != null) x[{ bnii: 'bhni', snii: 'shni', retail: 'rii' }[k] || k] = s[k]; if (s.reserved) x.reserved = s.reserved; }
       await sleep(1000);
     }
-    const g = await gmpPage(x.slug, x.igId);
+    const g = x.gmpSeries && x.gmpSeries.length > 1 ? null : await gmpPage(x.slug, x.igId);
     if (g && g.series.length) {
       const yr = +(x.listingDate || x.closeDate || String(years[years.length - 1])).slice(0, 4), lm = x.listingDate ? +x.listingDate.slice(5, 7) : null;
       x.gmpSeries = g.series.map((p) => ({ date: iso(lm && p.mon > lm + 2 ? yr - 1 : yr, p.mon, p.day), gmp: p.gmp, tag: p.tag })).sort((a, b) => a.date.localeCompare(b.date));
@@ -159,8 +163,8 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
     }
     if (!x.closeDate && x.listingDate) x.closeDate = backBusinessDays(x.listingDate, 3);
     if (!x.openDate && x.closeDate) x.openDate = backBusinessDays(x.closeDate, 2);
-    if (x.total == null && x.subTotalT != null) x.total = x.subTotalT;
-    if (x.rii != null && x.gmpSeries) x.v = 2;
+    if (x.subTotalT != null) x.total = x.subTotalT;
+    if (x.rii != null && x.reserved && x.gmpSeries) x.v = 3;
     n++; if (n % 20 === 0) { console.log(`  pages ${n}`); save(); }
     await sleep(1000);
   }
