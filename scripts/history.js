@@ -155,8 +155,8 @@ function fwdBusinessDays(d, n) { const t = new Date(d + 'T00:00:00Z'); while (n 
   }
   let n = 0, dbg = 0;
   for (const x of byId.values()) {
-    if (x.v === 4) continue; // already complete
-    if (x.v !== 4) {
+    if (x.v === 4 || !x.slug) continue; // already complete (or added from NSE)
+    if (x.v !== 4 && x.subSource !== 'NSE') {
       const s = await subPage(x.slug, x.igId, dbg < 2);
       if (s && s._layout) { for (const k of ['qib', 'nii', 'shni', 'bhni', 'rii']) delete x[k]; }
       if (s) { dbg++; x.subLayout = s._layout || null; for (const k of ['qib', 'nii', 'bnii', 'snii', 'retail', 'total', 'emp']) if (s[k] != null) x[{ bnii: 'bhni', snii: 'shni', retail: 'rii' }[k] || k] = s[k]; if (s.reserved) x.reserved = s.reserved; }
