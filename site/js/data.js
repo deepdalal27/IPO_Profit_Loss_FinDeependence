@@ -55,6 +55,7 @@
       '<h3 style="margin-top:14px">Demo</h3><p class="sub">See the desk with sample investors and deals; remove it with one click.</p><div class="row"><button id="demoOn">Load demo data</button><button class="danger" id="demoOff">Remove demo data</button><button class="danger" id="wipe">Erase everything</button></div></div></div>';
     html += '<div class="card"><h3>Settings</h3><p class="sub">Pricing and probability model</p><div class="form">' +
       '<label>Margin below fair rate for “your bid” (%) <input id="sMargin" type="number" step="1" min="0" max="90" value="' + s.marginPct + '"></label>' +
+      '<label>Recent IPOs count more: weight halves every (months, 0 = equal weight) <input id="sRecency" type="number" step="1" min="0" max="60" value="' + (s.recencyMonths == null ? 6 : s.recencyMonths) + '"></label>' +
       '<label>Default investor deal <select id="sBuy">' + FD.opts([['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium per share'], ['NONE', 'Own account']], s.defaults.buyType) + '</select></label>' +
       '<label>Default broker deal <select id="sSell">' + FD.opts([['KOSTAK', 'Kostak'], ['SUBJECT', 'Subject-to'], ['PREMIUM', 'Premium per share']], s.defaults.sellType) + '</select></label>' +
       '<label>Theme <select id="sTheme">' + FD.opts([['auto', 'Match device'], ['light', 'Light'], ['dark', 'Dark']], s.theme) + '</select></label>' +
@@ -91,6 +92,7 @@
     $('#demoOff').onclick = function () { removeDemo(); FD.refresh(); FD.toast('Demo data removed'); };
     $('#wipe').onclick = function () { FD.confirm('Erase all investors, brokers, deals and settings in this browser? Download a backup first if unsure.', function () { localStorage.removeItem('fd-ipo-deal-desk-v1'); FD.load(); FD.invalidate(); FD.refresh(); FD.toast('Everything erased'); }, 'Erase'); };
     $('#sMargin').onchange = function (e) { s.marginPct = Math.max(0, Math.min(90, +e.target.value || 0)); FD.save(true); FD.toast('Saved'); };
+    $('#sRecency').onchange = function (e) { s.recencyMonths = Math.max(0, Math.min(60, +e.target.value || 0)); FD.save(true); FD.loadHistory().then(function () { FD.toast('Forecast retrained'); }); };
     $('#sBuy').onchange = function (e) { s.defaults.buyType = e.target.value; FD.save(true); };
     $('#sSell').onchange = function (e) { s.defaults.sellType = e.target.value; FD.save(true); };
     $('#sTheme').onchange = function (e) { s.theme = e.target.value; FD.save(true); FD.applyTheme(); };
