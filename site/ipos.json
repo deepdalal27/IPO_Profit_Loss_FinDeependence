@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-13T18:29:53.617Z",
- "checkedAt": "2026-11-13T18:29:53.617Z",
+ "updatedAt": "2026-11-14T10:15:07.634Z",
+ "checkedAt": "2026-11-14T10:15:07.634Z",
  "today": "2026-11-14",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -33,14 +33,49 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-13T18:29:53.617Z",
-   "gmp": 15,
+   "updatedAt": "2026-11-14T10:15:07.634Z",
+   "gmp": 18,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
      "g": 15
+    },
+    {
+     "t": "2026-11-14 10:15",
+     "g": 18
     }
    ]
+  },
+  {
+   "id": "ipo-mahanadi-coalfields",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Mahanadi Coalfields",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "gmp": 12.5,
+   "priceHigh": 0,
+   "openDate": "2026-11-19",
+   "closeDate": "2026-11-23",
+   "allotmentDate": "2026-11-25",
+   "listingDate": "2026-11-27",
+   "gmpHistory": [
+    {
+     "t": "2026-11-14 10:15",
+     "g": 12.5
+    }
+   ],
+   "updatedAt": "2026-11-14T10:15:07.634Z"
   },
   {
    "id": "ipo-crystal-crop-protection",
@@ -61,8 +96,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-13T10:52:18.451Z",
-   "gmp": 45,
+   "updatedAt": "2026-11-14T10:15:07.634Z",
+   "gmp": 27,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -78,6 +113,10 @@
     {
      "t": "2026-11-13 10:52",
      "g": 45
+    },
+    {
+     "t": "2026-11-14 10:15",
+     "g": 27
     }
    ]
   },
