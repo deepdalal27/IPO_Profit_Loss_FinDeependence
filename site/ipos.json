@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-14T10:15:07.634Z",
- "checkedAt": "2026-11-14T10:15:07.634Z",
+ "updatedAt": "2026-11-14T16:43:43.806Z",
+ "checkedAt": "2026-11-14T16:43:43.806Z",
  "today": "2026-11-14",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -33,8 +33,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-14T10:15:07.634Z",
-   "gmp": 18,
+   "updatedAt": "2026-11-14T16:43:43.806Z",
+   "gmp": 22,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -43,6 +43,10 @@
     {
      "t": "2026-11-14 10:15",
      "g": 18
+    },
+    {
+     "t": "2026-11-14 16:43",
+     "g": 22
     }
    ]
   },
@@ -63,7 +67,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 12.5,
+   "gmp": 10,
    "priceHigh": 0,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -73,9 +77,13 @@
     {
      "t": "2026-11-14 10:15",
      "g": 12.5
+    },
+    {
+     "t": "2026-11-14 16:43",
+     "g": 10
     }
    ],
-   "updatedAt": "2026-11-14T10:15:07.634Z"
+   "updatedAt": "2026-11-14T16:43:43.806Z"
   },
   {
    "id": "ipo-crystal-crop-protection",
