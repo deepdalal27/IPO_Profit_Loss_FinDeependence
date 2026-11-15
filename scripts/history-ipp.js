@@ -44,12 +44,21 @@ function appsByCategory(doc, d) {
   const t0 = Date.now();
   const hist = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : { ipos: [] };
   const done = hist.ippDone || (hist.ippDone = {}); // id -> 1 (final) | 'old' (before SINCE) | 'na' (not an IPO page)
-  const sm = await get('https://www.ipopremium.in/sitemap.xml');
-  if (sm.status !== 200 || sm.wall) { console.log('sitemap not readable: ' + sm.status); return; }
-  const urls = [...new Set((sm.body.match(/https:\/\/www\.ipopremium\.in\/view\/ipo\/\d+\/[^<\s"]+/g) || []))]
-    .map((u) => ({ u, id: +u.match(/\/ipo\/(\d+)\//)[1] })).sort((a, b) => b.id - a.id);
+  // Page list: the sitemap when it loads, otherwise page numbers (an unknown slug redirects to the right page).
+  let urls = [];
+  try {
+    const sm = await get('https://www.ipopremium.in/sitemap.xml');
+    if (sm.status === 200 && !sm.wall) urls = [...new Set((sm.body.match(/https:\/\/www\.ipopremium\.in\/view\/ipo\/\d+\/[^<\s"]+/g) || []))].map((u) => ({ u, id: +u.match(/\/ipo\/(\d+)\//)[1] }));
+    else console.log('sitemap not readable (' + sm.status + '), using page numbers');
+  } catch (e) { console.log('sitemap: ' + e.message + ', using page numbers'); }
+  const known = new Set(urls.map((x) => x.id));
+  const maxId = Math.max(1445, hist.ippMaxId || 0, ...urls.map((x) => x.id), ...hist.ipos.map((x) => x.ippId || 0));
+  const MIN_ID = +process.env.IPP_MIN_ID || 550;
+  if (!urls.length) for (let id = maxId + 12; id >= MIN_ID; id--) urls.push({ u: `https://www.ipopremium.in/view/ipo/${id}/ipo`, id });
+  else for (let id = maxId + 1; id <= maxId + 12; id++) if (!known.has(id)) urls.push({ u: `https://www.ipopremium.in/view/ipo/${id}/ipo`, id });
+  urls.sort((a, b) => b.id - a.id);
   const todo = urls.filter((x) => !done[x.id]);
-  console.log(`sitemap: ${urls.length} IPO pages, ${todo.length} to read`);
+  console.log(`${urls.length} IPO pages listed, ${todo.length} to read`);
   let read = 0, added = 0, updated = 0, blocked = 0, streak = 0, old = 0;
   const save = () => { hist.ippUpdatedAt = new Date().toISOString(); fs.writeFileSync(OUT, JSON.stringify(hist) + '\n'); };
   for (const { u, id } of todo) {
@@ -58,11 +67,12 @@ function appsByCategory(doc, d) {
     try { r = await get(u); } catch (e) { console.log(`  ${id}: ${e.message}`); await sleep(2500); continue; }
     if (r.wall || r.status === 403 || r.status === 429) { blocked++; streak++; if (streak >= 8) { console.log('bot check on 8 pages in a row, stopping for now'); break; } await sleep(4000); continue; }
     streak = 0;
-    if (r.status !== 200) { if (r.status === 404 || r.status === 410) done[id] = 'na'; await sleep(1500); continue; }
+    if (r.status !== 200) { if ((r.status === 404 || r.status === 410) && id <= maxId) done[id] = 'na'; await sleep(1200); continue; }
     const doc = parseHTML(r.body).document;
     const d = P.parseDetail(doc, r.url);
     read++;
-    if (!d || !d.name) { done[id] = 'na'; await sleep(1500); continue; }
+    if (!d || !d.name) { if (id <= maxId) done[id] = 'na'; await sleep(1500); continue; }
+    if (id > (hist.ippMaxId || 0)) hist.ippMaxId = id;
     const close = d.closeDate || d.listingDate;
     if (close && close < SINCE) { done[id] = 'old'; old++; await sleep(1200); continue; }
     const s = d.sub || {};
