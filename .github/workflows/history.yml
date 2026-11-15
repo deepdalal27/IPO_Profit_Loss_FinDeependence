@@ -3,6 +3,7 @@ name: Update past IPO history (subscription + GMP)
 on:
   schedule:
     - cron: '37 13 * * *'   # daily 19:07 IST, after the day's subscription closes
+    - cron: '23 1,7,19 * * *' # extra tries: IPO Premium sometimes shows a bot check, then the step waits for the next run
   workflow_dispatch:
   push:
     branches: [main]
