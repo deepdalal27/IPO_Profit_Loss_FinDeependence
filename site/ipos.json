@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-16T20:58:08.102Z",
- "checkedAt": "2026-11-16T20:58:08.102Z",
+ "updatedAt": "2026-11-17T11:44:36.502Z",
+ "checkedAt": "2026-11-17T11:44:36.502Z",
  "today": "2026-11-17",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -73,7 +73,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 3.5,
+   "gmp": 4.3,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -107,9 +107,13 @@
     {
      "t": "2026-11-16 20:58",
      "g": 3.5
+    },
+    {
+     "t": "2026-11-17 11:44",
+     "g": 4.3
     }
    ],
-   "updatedAt": "2026-11-16T20:58:08.102Z",
+   "updatedAt": "2026-11-17T11:44:36.502Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12
   },
