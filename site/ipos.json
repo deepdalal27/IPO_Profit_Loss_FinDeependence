@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-11-18T11:31:46.979Z",
- "checkedAt": "2026-11-18T11:31:46.979Z",
- "today": "2026-11-18",
+ "updatedAt": "2026-11-18T19:34:30.839Z",
+ "checkedAt": "2026-11-18T19:34:30.839Z",
+ "today": "2026-11-19",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
@@ -33,8 +33,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-18T11:31:46.979Z",
-   "gmp": 37,
+   "updatedAt": "2026-11-18T19:34:30.839Z",
+   "gmp": 60,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -55,6 +55,10 @@
     {
      "t": "2026-11-18 11:31",
      "g": 37
+    },
+    {
+     "t": "2026-11-18 19:34",
+     "g": 60
     }
    ]
   },
@@ -149,8 +153,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-18T11:31:46.979Z",
-   "gmp": 19,
+   "updatedAt": "2026-11-18T19:34:30.839Z",
+   "gmp": 18,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -186,9 +190,13 @@
     {
      "t": "2026-11-17 20:50",
      "g": 19
+    },
+    {
+     "t": "2026-11-18 19:34",
+     "g": 18
     }
    ],
-   "subTotal": 1.05
+   "subTotal": 1.48
   },
   {
    "id": "ipp-1432",
