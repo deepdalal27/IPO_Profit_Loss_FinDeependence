@@ -1,12 +1,43 @@
 {
- "updatedAt": "2026-11-19T11:30:20.963Z",
- "checkedAt": "2026-11-19T11:30:20.963Z",
- "today": "2026-11-19",
+ "updatedAt": "2026-11-19T19:37:40.825Z",
+ "checkedAt": "2026-11-19T19:37:40.825Z",
+ "today": "2026-11-20",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
  ],
  "ipos": [
+  {
+   "id": "ipo-foodlink-f-b-holdings",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Foodlink F&B Holdings",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "gmp": 12,
+   "priceHigh": 0,
+   "openDate": "2026-11-26",
+   "closeDate": "2026-11-30",
+   "allotmentDate": "2026-12-01",
+   "listingDate": "2026-12-03",
+   "gmpHistory": [
+    {
+     "t": "2026-11-19 19:37",
+     "g": 12
+    }
+   ],
+   "updatedAt": "2026-11-19T19:37:40.825Z"
+  },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
    "source": "investorgain",
@@ -61,7 +92,7 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-19T11:30:20.963Z",
+   "updatedAt": "2026-11-19T19:37:40.825Z",
    "gmp": 67,
    "gmpHistory": [
     {
@@ -93,7 +124,7 @@
      "g": 67
     }
    ],
-   "subTotal": 2.73
+   "subTotal": 3.78
   },
   {
    "id": "ipo-mahanadi-coalfields",
@@ -167,10 +198,10 @@
      "g": 1.9
     }
    ],
-   "updatedAt": "2026-11-19T11:30:20.963Z",
+   "updatedAt": "2026-11-19T19:37:40.825Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
-   "subTotal": 0.37
+   "subTotal": 0.38
   },
   {
    "id": "ipo-crystal-crop-protection",
@@ -192,7 +223,7 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-19T11:30:20.963Z",
+   "updatedAt": "2026-11-19T19:37:40.825Z",
    "gmp": 17,
    "priceHigh": 272,
    "lotSize": 55,
@@ -239,7 +270,7 @@
      "g": 17
     }
    ],
-   "subTotal": 2.69
+   "subTotal": 3.08
   },
   {
    "id": "ipp-1432",
