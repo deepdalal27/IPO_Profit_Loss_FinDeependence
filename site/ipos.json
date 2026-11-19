@@ -1,12 +1,39 @@
 {
- "updatedAt": "2026-11-18T19:34:30.839Z",
- "checkedAt": "2026-11-18T19:34:30.839Z",
+ "updatedAt": "2026-11-19T11:30:20.963Z",
+ "checkedAt": "2026-11-19T11:30:20.963Z",
  "today": "2026-11-19",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
  ],
  "ipos": [
+  {
+   "id": "ipo-shree-siddhivinayak-greentech-industries",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Shree Siddhivinayak Greentech Industries",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "priceHigh": 142,
+   "lotSize": 1000,
+   "issueSizeCr": 93.66,
+   "openDate": "2026-11-25",
+   "closeDate": "2026-11-27",
+   "allotmentDate": "2026-11-30",
+   "listingDate": "2026-12-02",
+   "updatedAt": "2026-11-19T11:30:20.963Z"
+  },
   {
    "id": "ipo-watrana-rentals",
    "source": "investorgain",
@@ -21,7 +48,8 @@
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
     "listingDate": "investorgain",
-    "gmp": "investorgain"
+    "gmp": "investorgain",
+    "subTotal": "investorgain"
    },
    "name": "Watrana Rentals",
    "exchange": "NSE SME",
@@ -33,8 +61,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-18T19:34:30.839Z",
-   "gmp": 60,
+   "updatedAt": "2026-11-19T11:30:20.963Z",
+   "gmp": 67,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -59,8 +87,13 @@
     {
      "t": "2026-11-18 19:34",
      "g": 60
+    },
+    {
+     "t": "2026-11-19 11:30",
+     "g": 67
     }
-   ]
+   ],
+   "subTotal": 2.73
   },
   {
    "id": "ipo-mahanadi-coalfields",
@@ -76,12 +109,13 @@
     "allotmentDate": "investorgain",
     "listingDate": "investorgain",
     "lotSize": "investorgain",
-    "issueSizeCr": "investorgain"
+    "issueSizeCr": "investorgain",
+    "subTotal": "investorgain"
    },
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 3.1,
+   "gmp": 1.9,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -127,11 +161,16 @@
     {
      "t": "2026-11-18 11:31",
      "g": 3.1
+    },
+    {
+     "t": "2026-11-19 11:30",
+     "g": 1.9
     }
    ],
-   "updatedAt": "2026-11-18T11:31:46.979Z",
+   "updatedAt": "2026-11-19T11:30:20.963Z",
    "lotSize": 110,
-   "issueSizeCr": 8981.12
+   "issueSizeCr": 8981.12,
+   "subTotal": 0.37
   },
   {
    "id": "ipo-crystal-crop-protection",
@@ -153,8 +192,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-18T19:34:30.839Z",
-   "gmp": 18,
+   "updatedAt": "2026-11-19T11:30:20.963Z",
+   "gmp": 17,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -194,9 +233,13 @@
     {
      "t": "2026-11-18 19:34",
      "g": 18
+    },
+    {
+     "t": "2026-11-19 11:30",
+     "g": 17
     }
    ],
-   "subTotal": 1.48
+   "subTotal": 2.69
   },
   {
    "id": "ipp-1432",
