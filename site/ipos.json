@@ -1,12 +1,33 @@
 {
- "updatedAt": "2026-11-19T19:37:40.825Z",
- "checkedAt": "2026-11-19T19:37:40.825Z",
+ "updatedAt": "2026-11-20T11:26:40.813Z",
+ "checkedAt": "2026-11-20T11:26:40.813Z",
  "today": "2026-11-20",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
  ],
  "ipos": [
+  {
+   "id": "ipo-integris-medtech",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Integris Medtech",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "openDate": "2026-11-27",
+   "closeDate": "2026-12-01",
+   "allotmentDate": "2026-12-02",
+   "listingDate": "2026-12-04",
+   "updatedAt": "2026-11-20T11:26:40.813Z"
+  },
   {
    "id": "ipo-foodlink-f-b-holdings",
    "source": "investorgain",
@@ -92,7 +113,7 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-19T19:37:40.825Z",
+   "updatedAt": "2026-11-20T11:26:40.813Z",
    "gmp": 67,
    "gmpHistory": [
     {
@@ -124,7 +145,7 @@
      "g": 67
     }
    ],
-   "subTotal": 3.78
+   "subTotal": 10.73
   },
   {
    "id": "ipo-mahanadi-coalfields",
@@ -146,7 +167,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 1.9,
+   "gmp": 1.3,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -196,12 +217,16 @@
     {
      "t": "2026-11-19 11:30",
      "g": 1.9
+    },
+    {
+     "t": "2026-11-20 11:26",
+     "g": 1.3
     }
    ],
-   "updatedAt": "2026-11-19T19:37:40.825Z",
+   "updatedAt": "2026-11-20T11:26:40.813Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
-   "subTotal": 0.38
+   "subTotal": 0.48
   },
   {
    "id": "ipo-crystal-crop-protection",
@@ -223,8 +248,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-19T19:37:40.825Z",
-   "gmp": 17,
+   "updatedAt": "2026-11-20T11:26:40.813Z",
+   "gmp": 14.5,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -268,9 +293,13 @@
     {
      "t": "2026-11-19 11:30",
      "g": 17
+    },
+    {
+     "t": "2026-11-20 11:26",
+     "g": 14.5
     }
    ],
-   "subTotal": 3.08
+   "subTotal": 17.25
   },
   {
    "id": "ipp-1432",
@@ -1781,6 +1810,19 @@
     }
    ],
    "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipo-monomark-engineering",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain"
+   },
+   "name": "Monomark Engineering",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "updatedAt": "2026-11-20T11:26:40.813Z"
   }
  ]
 }
