@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-20T19:14:56.852Z",
- "checkedAt": "2026-11-20T19:14:56.852Z",
+ "updatedAt": "2026-11-21T10:54:28.204Z",
+ "checkedAt": "2026-11-21T10:54:28.204Z",
  "today": "2026-11-21",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -113,8 +113,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-20T19:14:56.852Z",
-   "gmp": 67,
+   "updatedAt": "2026-11-21T10:54:28.204Z",
+   "gmp": 65,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -143,6 +143,10 @@
     {
      "t": "2026-11-19 11:30",
      "g": 67
+    },
+    {
+     "t": "2026-11-21 10:54",
+     "g": 65
     }
    ],
    "subTotal": 11.98
@@ -167,7 +171,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 0.75,
+   "gmp": 0.7,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -225,9 +229,13 @@
     {
      "t": "2026-11-20 19:14",
      "g": 0.75
+    },
+    {
+     "t": "2026-11-21 10:54",
+     "g": 0.7
     }
    ],
-   "updatedAt": "2026-11-20T19:14:56.852Z",
+   "updatedAt": "2026-11-21T10:54:28.204Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
    "subTotal": 0.49
@@ -252,8 +260,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-20T19:14:56.852Z",
-   "gmp": 14.5,
+   "updatedAt": "2026-11-21T10:54:28.204Z",
+   "gmp": 14,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -301,6 +309,10 @@
     {
      "t": "2026-11-20 11:26",
      "g": 14.5
+    },
+    {
+     "t": "2026-11-21 10:54",
+     "g": 14
     }
    ],
    "subTotal": 17.68
