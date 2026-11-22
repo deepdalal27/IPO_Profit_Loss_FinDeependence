@@ -1,12 +1,43 @@
 {
- "updatedAt": "2026-11-21T17:56:55.132Z",
- "checkedAt": "2026-11-22T11:11:26.869Z",
- "today": "2026-11-22",
+ "updatedAt": "2026-11-22T18:38:31.599Z",
+ "checkedAt": "2026-11-22T18:38:31.599Z",
+ "today": "2026-11-23",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
  ],
  "ipos": [
+  {
+   "id": "ipo-monomark-engineering",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Monomark Engineering",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "updatedAt": "2026-11-22T18:38:31.599Z",
+   "gmp": 23,
+   "priceHigh": 0,
+   "openDate": "2026-12-02",
+   "closeDate": "2026-12-04",
+   "allotmentDate": "2026-12-07",
+   "listingDate": "2026-12-09",
+   "gmpHistory": [
+    {
+     "t": "2026-11-22 18:38",
+     "g": 23
+    }
+   ]
+  },
   {
    "id": "ipo-integris-medtech",
    "source": "investorgain",
@@ -113,8 +144,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-21T10:54:28.204Z",
-   "gmp": 65,
+   "updatedAt": "2026-11-22T18:38:31.599Z",
+   "gmp": 55,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -147,6 +178,10 @@
     {
      "t": "2026-11-21 10:54",
      "g": 65
+    },
+    {
+     "t": "2026-11-22 18:38",
+     "g": 55
     }
    ],
    "subTotal": 11.98
@@ -1830,19 +1865,6 @@
     }
    ],
    "updatedAt": "2026-11-06T15:48:22.812Z"
-  },
-  {
-   "id": "ipo-monomark-engineering",
-   "source": "investorgain",
-   "src": {
-    "name": "investorgain",
-    "exchange": "investorgain",
-    "type": "investorgain"
-   },
-   "name": "Monomark Engineering",
-   "exchange": "Mainboard",
-   "type": "Mainboard",
-   "updatedAt": "2026-11-20T11:26:40.813Z"
   }
  ]
 }
