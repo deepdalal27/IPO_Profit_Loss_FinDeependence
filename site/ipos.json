@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-22T18:38:31.599Z",
- "checkedAt": "2026-11-22T18:38:31.599Z",
+ "updatedAt": "2026-11-23T12:21:55.757Z",
+ "checkedAt": "2026-11-23T12:21:55.757Z",
  "today": "2026-11-23",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -39,6 +39,76 @@
    ]
   },
   {
+   "id": "ipo-a-j-packaging",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "A J Packaging",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "gmp": 20,
+   "priceHigh": 180,
+   "lotSize": 800,
+   "issueSizeCr": 54,
+   "openDate": "2026-12-01",
+   "closeDate": "2026-12-03",
+   "allotmentDate": "2026-12-04",
+   "listingDate": "2026-12-08",
+   "gmpHistory": [
+    {
+     "t": "2026-11-23 12:21",
+     "g": 20
+    }
+   ],
+   "updatedAt": "2026-11-23T12:21:55.757Z"
+  },
+  {
+   "id": "ipo-matangi-rubber",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Matangi Rubber",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "gmp": 21,
+   "priceHigh": 172,
+   "lotSize": 87,
+   "issueSizeCr": 125.16,
+   "openDate": "2026-12-01",
+   "closeDate": "2026-12-03",
+   "allotmentDate": "2026-12-04",
+   "listingDate": "2026-12-08",
+   "gmpHistory": [
+    {
+     "t": "2026-11-23 12:21",
+     "g": 21
+    }
+   ],
+   "updatedAt": "2026-11-23T12:21:55.757Z"
+  },
+  {
    "id": "ipo-integris-medtech",
    "source": "investorgain",
    "src": {
@@ -71,13 +141,15 @@
     "openDate": "investorgain",
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
-    "listingDate": "investorgain"
+    "listingDate": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain"
    },
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
    "gmp": 12,
-   "priceHigh": 0,
+   "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
    "allotmentDate": "2026-12-01",
@@ -88,7 +160,9 @@
      "g": 12
     }
    ],
-   "updatedAt": "2026-11-19T19:37:40.825Z"
+   "updatedAt": "2026-11-23T12:21:55.757Z",
+   "lotSize": 78,
+   "issueSizeCr": 360.76
   },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
@@ -103,7 +177,8 @@
     "openDate": "investorgain",
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
-    "listingDate": "investorgain"
+    "listingDate": "investorgain",
+    "gmp": "investorgain"
    },
    "name": "Shree Siddhivinayak Greentech Industries",
    "exchange": "NSE SME",
@@ -115,7 +190,14 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-19T11:30:20.963Z"
+   "updatedAt": "2026-11-23T12:21:55.757Z",
+   "gmp": 5,
+   "gmpHistory": [
+    {
+     "t": "2026-11-23 12:21",
+     "g": 5
+    }
+   ]
   },
   {
    "id": "ipo-watrana-rentals",
@@ -144,8 +226,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-22T18:38:31.599Z",
-   "gmp": 55,
+   "updatedAt": "2026-11-23T12:21:55.757Z",
+   "gmp": 40,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -182,9 +264,13 @@
     {
      "t": "2026-11-22 18:38",
      "g": 55
+    },
+    {
+     "t": "2026-11-23 12:21",
+     "g": 40
     }
    ],
-   "subTotal": 11.98
+   "subTotal": 144.67
   },
   {
    "id": "ipo-mahanadi-coalfields",
@@ -206,7 +292,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 0.7,
+   "gmp": 0.2,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -268,12 +354,16 @@
     {
      "t": "2026-11-21 10:54",
      "g": 0.7
+    },
+    {
+     "t": "2026-11-23 12:21",
+     "g": 0.2
     }
    ],
-   "updatedAt": "2026-11-21T10:54:28.204Z",
+   "updatedAt": "2026-11-23T12:21:55.757Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
-   "subTotal": 0.49
+   "subTotal": 1.48
   },
   {
    "id": "ipo-crystal-crop-protection",
@@ -295,8 +385,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-21T17:56:55.132Z",
-   "gmp": 14.5,
+   "updatedAt": "2026-11-23T12:21:55.757Z",
+   "gmp": 14,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -352,6 +442,10 @@
     {
      "t": "2026-11-21 17:56",
      "g": 14.5
+    },
+    {
+     "t": "2026-11-23 12:21",
+     "g": 14
     }
    ],
    "subTotal": 17.68
