@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-11-24T13:34:20.410Z",
- "checkedAt": "2026-11-24T13:34:20.410Z",
- "today": "2026-11-24",
+ "updatedAt": "2026-11-24T23:15:43.145Z",
+ "checkedAt": "2026-11-24T23:15:43.145Z",
+ "today": "2026-11-25",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
@@ -179,7 +179,7 @@
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 16,
+   "gmp": 21,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -197,9 +197,13 @@
     {
      "t": "2026-11-24 13:34",
      "g": 16
+    },
+    {
+     "t": "2026-11-24 23:15",
+     "g": 21
     }
    ],
-   "updatedAt": "2026-11-24T13:34:20.410Z",
+   "updatedAt": "2026-11-24T23:15:43.145Z",
    "lotSize": 78,
    "issueSizeCr": 360.76
   },
@@ -229,8 +233,8 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-24T00:20:23.367Z",
-   "gmp": 10,
+   "updatedAt": "2026-11-24T23:15:43.145Z",
+   "gmp": 20,
    "gmpHistory": [
     {
      "t": "2026-11-23 12:21",
@@ -239,6 +243,10 @@
     {
      "t": "2026-11-24 00:20",
      "g": 10
+    },
+    {
+     "t": "2026-11-24 23:15",
+     "g": 20
     }
    ]
   },
@@ -428,8 +436,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-24T13:34:20.410Z",
-   "gmp": 18,
+   "updatedAt": "2026-11-24T23:15:43.145Z",
+   "gmp": 19,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -493,6 +501,10 @@
     {
      "t": "2026-11-24 13:34",
      "g": 18
+    },
+    {
+     "t": "2026-11-24 23:15",
+     "g": 19
     }
    ],
    "subTotal": 17.68
