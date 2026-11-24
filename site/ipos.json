@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-24T00:20:23.367Z",
- "checkedAt": "2026-11-24T00:20:23.367Z",
+ "updatedAt": "2026-11-24T13:34:20.410Z",
+ "checkedAt": "2026-11-24T13:34:20.410Z",
  "today": "2026-11-24",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -134,6 +134,33 @@
    "updatedAt": "2026-11-20T11:26:40.813Z"
   },
   {
+   "id": "ipo-airpro-technology",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Airpro Technology",
+   "exchange": "NSE SME",
+   "type": "SME",
+   "priceHigh": 99,
+   "lotSize": 1200,
+   "issueSizeCr": 35.64,
+   "openDate": "2026-11-27",
+   "closeDate": "2026-12-01",
+   "allotmentDate": "2026-12-02",
+   "listingDate": "2026-12-04",
+   "updatedAt": "2026-11-24T13:34:20.410Z"
+  },
+  {
    "id": "ipo-foodlink-f-b-holdings",
    "source": "investorgain",
    "src": {
@@ -152,7 +179,7 @@
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 15,
+   "gmp": 16,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -166,9 +193,13 @@
     {
      "t": "2026-11-24 00:20",
      "g": 15
+    },
+    {
+     "t": "2026-11-24 13:34",
+     "g": 16
     }
    ],
-   "updatedAt": "2026-11-24T00:20:23.367Z",
+   "updatedAt": "2026-11-24T13:34:20.410Z",
    "lotSize": 78,
    "issueSizeCr": 360.76
   },
@@ -397,8 +428,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-23T12:21:55.757Z",
-   "gmp": 14,
+   "updatedAt": "2026-11-24T13:34:20.410Z",
+   "gmp": 18,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -458,6 +489,10 @@
     {
      "t": "2026-11-23 12:21",
      "g": 14
+    },
+    {
+     "t": "2026-11-24 13:34",
+     "g": 18
     }
    ],
    "subTotal": 17.68
