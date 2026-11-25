@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-24T23:15:43.145Z",
- "checkedAt": "2026-11-24T23:15:43.145Z",
+ "updatedAt": "2026-11-25T12:43:33.785Z",
+ "checkedAt": "2026-11-25T12:43:33.785Z",
  "today": "2026-11-25",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -19,14 +19,16 @@
     "openDate": "investorgain",
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
-    "listingDate": "investorgain"
+    "listingDate": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain"
    },
    "name": "Monomark Engineering",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-22T18:38:31.599Z",
-   "gmp": 23,
-   "priceHigh": 0,
+   "updatedAt": "2026-11-25T12:43:33.785Z",
+   "gmp": 21,
+   "priceHigh": 65,
    "openDate": "2026-12-02",
    "closeDate": "2026-12-04",
    "allotmentDate": "2026-12-07",
@@ -35,8 +37,14 @@
     {
      "t": "2026-11-22 18:38",
      "g": 23
+    },
+    {
+     "t": "2026-11-25 12:43",
+     "g": 21
     }
-   ]
+   ],
+   "lotSize": 225,
+   "issueSizeCr": 175.5
   },
   {
    "id": "ipo-a-j-packaging",
@@ -57,7 +65,7 @@
    "name": "A J Packaging",
    "exchange": "NSE SME",
    "type": "SME",
-   "gmp": 20,
+   "gmp": 24,
    "priceHigh": 180,
    "lotSize": 800,
    "issueSizeCr": 54,
@@ -69,9 +77,13 @@
     {
      "t": "2026-11-23 12:21",
      "g": 20
+    },
+    {
+     "t": "2026-11-25 12:43",
+     "g": 24
     }
    ],
-   "updatedAt": "2026-11-23T12:21:55.757Z"
+   "updatedAt": "2026-11-25T12:43:33.785Z"
   },
   {
    "id": "ipo-matangi-rubber",
@@ -146,7 +158,8 @@
     "openDate": "investorgain",
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
-    "listingDate": "investorgain"
+    "listingDate": "investorgain",
+    "gmp": "investorgain"
    },
    "name": "Airpro Technology",
    "exchange": "NSE SME",
@@ -158,7 +171,14 @@
    "closeDate": "2026-12-01",
    "allotmentDate": "2026-12-02",
    "listingDate": "2026-12-04",
-   "updatedAt": "2026-11-24T13:34:20.410Z"
+   "updatedAt": "2026-11-25T12:43:33.785Z",
+   "gmp": 4,
+   "gmpHistory": [
+    {
+     "t": "2026-11-25 12:43",
+     "g": 4
+    }
+   ]
   },
   {
    "id": "ipo-foodlink-f-b-holdings",
@@ -179,7 +199,7 @@
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 21,
+   "gmp": 27,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -201,9 +221,13 @@
     {
      "t": "2026-11-24 23:15",
      "g": 21
+    },
+    {
+     "t": "2026-11-25 12:43",
+     "g": 27
     }
    ],
-   "updatedAt": "2026-11-24T23:15:43.145Z",
+   "updatedAt": "2026-11-25T12:43:33.785Z",
    "lotSize": 78,
    "issueSizeCr": 360.76
   },
@@ -221,7 +245,8 @@
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
     "listingDate": "investorgain",
-    "gmp": "investorgain"
+    "gmp": "investorgain",
+    "subTotal": "investorgain"
    },
    "name": "Shree Siddhivinayak Greentech Industries",
    "exchange": "NSE SME",
@@ -233,7 +258,7 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-24T23:15:43.145Z",
+   "updatedAt": "2026-11-25T12:43:33.785Z",
    "gmp": 20,
    "gmpHistory": [
     {
@@ -248,7 +273,8 @@
      "t": "2026-11-24 23:15",
      "g": 20
     }
-   ]
+   ],
+   "subTotal": 0.4
   },
   {
    "id": "ipo-watrana-rentals",
@@ -277,8 +303,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-24T00:20:23.367Z",
-   "gmp": 40,
+   "updatedAt": "2026-11-25T12:43:33.785Z",
+   "gmp": 41,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -319,6 +345,10 @@
     {
      "t": "2026-11-23 12:21",
      "g": 40
+    },
+    {
+     "t": "2026-11-25 12:43",
+     "g": 41
     }
    ],
    "subTotal": 150.48
@@ -436,8 +466,8 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-24T23:15:43.145Z",
-   "gmp": 19,
+   "updatedAt": "2026-11-25T12:43:33.785Z",
+   "gmp": 18,
    "priceHigh": 272,
    "lotSize": 55,
    "issueSizeCr": 455.49,
@@ -505,6 +535,10 @@
     {
      "t": "2026-11-24 23:15",
      "g": 19
+    },
+    {
+     "t": "2026-11-25 12:43",
+     "g": 18
     }
    ],
    "subTotal": 17.68
