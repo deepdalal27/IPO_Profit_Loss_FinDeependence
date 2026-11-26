@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-11-26T12:18:38.005Z",
- "checkedAt": "2026-11-26T12:18:38.005Z",
- "today": "2026-11-26",
+ "updatedAt": "2026-11-26T21:54:56.987Z",
+ "checkedAt": "2026-11-26T21:54:56.987Z",
+ "today": "2026-11-27",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
@@ -179,8 +179,8 @@
    "closeDate": "2026-12-01",
    "allotmentDate": "2026-12-02",
    "listingDate": "2026-12-04",
-   "updatedAt": "2026-11-26T12:18:38.005Z",
-   "gmp": 2,
+   "updatedAt": "2026-11-26T21:54:56.987Z",
+   "gmp": 3,
    "gmpHistory": [
     {
      "t": "2026-11-25 12:43",
@@ -189,6 +189,10 @@
     {
      "t": "2026-11-26 12:18",
      "g": 2
+    },
+    {
+     "t": "2026-11-26 21:54",
+     "g": 3
     }
    ]
   },
@@ -212,7 +216,7 @@
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 12.5,
+   "gmp": 7,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -246,12 +250,16 @@
     {
      "t": "2026-11-26 12:18",
      "g": 12.5
+    },
+    {
+     "t": "2026-11-26 21:54",
+     "g": 7
     }
    ],
-   "updatedAt": "2026-11-26T12:18:38.005Z",
+   "updatedAt": "2026-11-26T21:54:56.987Z",
    "lotSize": 78,
    "issueSizeCr": 360.76,
-   "subTotal": 1.03
+   "subTotal": 1.1
   },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
@@ -280,8 +288,8 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-26T12:18:38.005Z",
-   "gmp": 10,
+   "updatedAt": "2026-11-26T21:54:56.987Z",
+   "gmp": 2,
    "gmpHistory": [
     {
      "t": "2026-11-23 12:21",
@@ -302,9 +310,13 @@
     {
      "t": "2026-11-26 12:18",
      "g": 10
+    },
+    {
+     "t": "2026-11-26 21:54",
+     "g": 2
     }
    ],
-   "subTotal": 1.14
+   "subTotal": 1.27
   },
   {
    "id": "ipo-watrana-rentals",
@@ -333,8 +345,8 @@
    "closeDate": "2026-11-23",
    "allotmentDate": "2026-11-25",
    "listingDate": "2026-11-27",
-   "updatedAt": "2026-11-25T22:28:02.459Z",
-   "gmp": 22,
+   "updatedAt": "2026-11-26T21:54:56.987Z",
+   "gmp": 23,
    "gmpHistory": [
     {
      "t": "2026-11-13 18:29",
@@ -383,6 +395,10 @@
     {
      "t": "2026-11-25 22:28",
      "g": 22
+    },
+    {
+     "t": "2026-11-26 21:54",
+     "g": 23
     }
    ],
    "subTotal": 150.48
@@ -407,7 +423,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 0.75,
+   "gmp": 0.7,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -477,9 +493,13 @@
     {
      "t": "2026-11-26 12:18",
      "g": 0.75
+    },
+    {
+     "t": "2026-11-26 21:54",
+     "g": 0.7
     }
    ],
-   "updatedAt": "2026-11-26T12:18:38.005Z",
+   "updatedAt": "2026-11-26T21:54:56.987Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
    "subTotal": 1.52
@@ -2094,6 +2114,21 @@
     }
    ],
    "updatedAt": "2026-11-06T15:48:22.812Z"
+  },
+  {
+   "id": "ipo-swara-baby-products",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "issueSizeCr": "investorgain"
+   },
+   "name": "Swara Baby Products",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "issueSizeCr": 1000,
+   "updatedAt": "2026-11-26T21:54:56.987Z"
   }
  ]
 }
