@@ -1,6 +1,6 @@
 {
- "updatedAt": "2026-11-25T22:28:02.459Z",
- "checkedAt": "2026-11-25T22:28:02.459Z",
+ "updatedAt": "2026-11-26T12:18:38.005Z",
+ "checkedAt": "2026-11-26T12:18:38.005Z",
  "today": "2026-11-26",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
@@ -26,8 +26,8 @@
    "name": "Monomark Engineering",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-25T12:43:33.785Z",
-   "gmp": 21,
+   "updatedAt": "2026-11-26T12:18:38.005Z",
+   "gmp": 24,
    "priceHigh": 65,
    "openDate": "2026-12-02",
    "closeDate": "2026-12-04",
@@ -41,6 +41,10 @@
     {
      "t": "2026-11-25 12:43",
      "g": 21
+    },
+    {
+     "t": "2026-11-26 12:18",
+     "g": 24
     }
    ],
    "lotSize": 225,
@@ -175,12 +179,16 @@
    "closeDate": "2026-12-01",
    "allotmentDate": "2026-12-02",
    "listingDate": "2026-12-04",
-   "updatedAt": "2026-11-25T12:43:33.785Z",
-   "gmp": 4,
+   "updatedAt": "2026-11-26T12:18:38.005Z",
+   "gmp": 2,
    "gmpHistory": [
     {
      "t": "2026-11-25 12:43",
      "g": 4
+    },
+    {
+     "t": "2026-11-26 12:18",
+     "g": 2
     }
    ]
   },
@@ -198,12 +206,13 @@
     "allotmentDate": "investorgain",
     "listingDate": "investorgain",
     "lotSize": "investorgain",
-    "issueSizeCr": "investorgain"
+    "issueSizeCr": "investorgain",
+    "subTotal": "investorgain"
    },
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 18,
+   "gmp": 12.5,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -233,11 +242,16 @@
     {
      "t": "2026-11-25 22:28",
      "g": 18
+    },
+    {
+     "t": "2026-11-26 12:18",
+     "g": 12.5
     }
    ],
-   "updatedAt": "2026-11-25T22:28:02.459Z",
+   "updatedAt": "2026-11-26T12:18:38.005Z",
    "lotSize": 78,
-   "issueSizeCr": 360.76
+   "issueSizeCr": 360.76,
+   "subTotal": 1.03
   },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
@@ -266,8 +280,8 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-25T22:28:02.459Z",
-   "gmp": 25,
+   "updatedAt": "2026-11-26T12:18:38.005Z",
+   "gmp": 10,
    "gmpHistory": [
     {
      "t": "2026-11-23 12:21",
@@ -284,9 +298,13 @@
     {
      "t": "2026-11-25 22:28",
      "g": 25
+    },
+    {
+     "t": "2026-11-26 12:18",
+     "g": 10
     }
    ],
-   "subTotal": 0.41
+   "subTotal": 1.14
   },
   {
    "id": "ipo-watrana-rentals",
@@ -389,7 +407,7 @@
    "name": "Mahanadi Coalfields",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 0.2,
+   "gmp": 0.75,
    "priceHigh": 136,
    "openDate": "2026-11-19",
    "closeDate": "2026-11-23",
@@ -455,9 +473,13 @@
     {
      "t": "2026-11-23 12:21",
      "g": 0.2
+    },
+    {
+     "t": "2026-11-26 12:18",
+     "g": 0.75
     }
    ],
-   "updatedAt": "2026-11-24T00:20:23.367Z",
+   "updatedAt": "2026-11-26T12:18:38.005Z",
    "lotSize": 110,
    "issueSizeCr": 8981.12,
    "subTotal": 1.52
@@ -482,11 +504,11 @@
    "name": "Crystal Crop Protection",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-25T22:28:02.459Z",
+   "updatedAt": "2026-11-26T12:18:38.005Z",
    "gmp": 17,
    "priceHigh": 272,
    "lotSize": 55,
-   "issueSizeCr": 455.49,
+   "issueSizeCr": 455.72,
    "openDate": "2026-11-18",
    "closeDate": "2026-11-20",
    "allotmentDate": "2026-11-23",
