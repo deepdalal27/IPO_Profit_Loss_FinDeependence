@@ -1,7 +1,7 @@
 {
- "updatedAt": "2026-11-27T12:06:16.002Z",
- "checkedAt": "2026-11-27T12:06:16.002Z",
- "today": "2026-11-27",
+ "updatedAt": "2026-11-27T21:09:24.687Z",
+ "checkedAt": "2026-11-27T21:09:24.687Z",
+ "today": "2026-11-28",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
@@ -101,8 +101,8 @@
    "exchange": "Mainboard",
    "type": "Mainboard",
    "issueSizeCr": 799.88,
-   "updatedAt": "2026-11-27T12:06:16.002Z",
-   "gmp": 7,
+   "updatedAt": "2026-11-27T21:09:24.687Z",
+   "gmp": 3,
    "priceHigh": 111,
    "lotSize": 135,
    "openDate": "2026-12-02",
@@ -113,6 +113,10 @@
     {
      "t": "2026-11-27 12:06",
      "g": 7
+    },
+    {
+     "t": "2026-11-27 21:09",
+     "g": 3
     }
    ]
   },
@@ -174,7 +178,7 @@
    "name": "Matangi Rubber",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 25.5,
+   "gmp": 31,
    "priceHigh": 172,
    "lotSize": 87,
    "issueSizeCr": 125.16,
@@ -198,9 +202,13 @@
     {
      "t": "2026-11-27 12:06",
      "g": 25.5
+    },
+    {
+     "t": "2026-11-27 21:09",
+     "g": 31
     }
    ],
-   "updatedAt": "2026-11-27T12:06:16.002Z"
+   "updatedAt": "2026-11-27T21:09:24.687Z"
   },
   {
    "id": "ipo-integris-medtech",
@@ -250,7 +258,7 @@
    "closeDate": "2026-12-01",
    "allotmentDate": "2026-12-02",
    "listingDate": "2026-12-04",
-   "updatedAt": "2026-11-27T12:06:16.002Z",
+   "updatedAt": "2026-11-27T21:09:24.687Z",
    "gmp": 3,
    "gmpHistory": [
     {
@@ -266,7 +274,7 @@
      "g": 3
     }
    ],
-   "subTotal": 0.43
+   "subTotal": 0.8
   },
   {
    "id": "ipo-foodlink-f-b-holdings",
@@ -332,10 +340,10 @@
      "g": 4
     }
    ],
-   "updatedAt": "2026-11-27T12:06:16.002Z",
+   "updatedAt": "2026-11-27T21:09:24.687Z",
    "lotSize": 78,
    "issueSizeCr": 360.76,
-   "subTotal": 1.36
+   "subTotal": 1.49
   },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
@@ -364,8 +372,8 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-27T12:06:16.002Z",
-   "gmp": 1.5,
+   "updatedAt": "2026-11-27T21:09:24.687Z",
+   "gmp": 1,
    "gmpHistory": [
     {
      "t": "2026-11-23 12:21",
@@ -394,9 +402,13 @@
     {
      "t": "2026-11-27 12:06",
      "g": 1.5
+    },
+    {
+     "t": "2026-11-27 21:09",
+     "g": 1
     }
    ],
-   "subTotal": 1.55
+   "subTotal": 1.69
   },
   {
    "id": "ipo-watrana-rentals",
