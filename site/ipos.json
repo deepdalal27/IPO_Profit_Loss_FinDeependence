@@ -1,12 +1,39 @@
 {
- "updatedAt": "2026-11-26T21:54:56.987Z",
- "checkedAt": "2026-11-26T21:54:56.987Z",
+ "updatedAt": "2026-11-27T12:06:16.002Z",
+ "checkedAt": "2026-11-27T12:06:16.002Z",
  "today": "2026-11-27",
  "notes": [
   "NSE: NSE unreachable: The operation was aborted due to timeout; The operation was aborted due to timeout",
   "ipopremium list: bot check shown, skipped"
  ],
  "ipos": [
+  {
+   "id": "ipo-vishwas-refoils-consumer",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "issueSizeCr": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Vishwas Refoils & Consumer",
+   "exchange": "BSE SME",
+   "type": "SME",
+   "priceHigh": 90,
+   "lotSize": 1600,
+   "issueSizeCr": 25.78,
+   "openDate": "2026-12-03",
+   "closeDate": "2026-12-07",
+   "allotmentDate": "2026-12-08",
+   "listingDate": "2026-12-10",
+   "updatedAt": "2026-11-27T12:06:16.002Z"
+  },
   {
    "id": "ipo-monomark-engineering",
    "source": "investorgain",
@@ -26,8 +53,8 @@
    "name": "Monomark Engineering",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "updatedAt": "2026-11-26T12:18:38.005Z",
-   "gmp": 24,
+   "updatedAt": "2026-11-27T12:06:16.002Z",
+   "gmp": 20,
    "priceHigh": 65,
    "openDate": "2026-12-02",
    "closeDate": "2026-12-04",
@@ -45,10 +72,49 @@
     {
      "t": "2026-11-26 12:18",
      "g": 24
+    },
+    {
+     "t": "2026-11-27 12:06",
+     "g": 20
     }
    ],
    "lotSize": 225,
    "issueSizeCr": 175.5
+  },
+  {
+   "id": "ipo-swara-baby-products",
+   "source": "investorgain",
+   "src": {
+    "name": "investorgain",
+    "exchange": "investorgain",
+    "type": "investorgain",
+    "issueSizeCr": "investorgain",
+    "gmp": "investorgain",
+    "priceHigh": "investorgain",
+    "lotSize": "investorgain",
+    "openDate": "investorgain",
+    "closeDate": "investorgain",
+    "allotmentDate": "investorgain",
+    "listingDate": "investorgain"
+   },
+   "name": "Swara Baby Products",
+   "exchange": "Mainboard",
+   "type": "Mainboard",
+   "issueSizeCr": 799.88,
+   "updatedAt": "2026-11-27T12:06:16.002Z",
+   "gmp": 7,
+   "priceHigh": 111,
+   "lotSize": 135,
+   "openDate": "2026-12-02",
+   "closeDate": "2026-12-04",
+   "allotmentDate": "2026-12-07",
+   "listingDate": "2026-12-09",
+   "gmpHistory": [
+    {
+     "t": "2026-11-27 12:06",
+     "g": 7
+    }
+   ]
   },
   {
    "id": "ipo-a-j-packaging",
@@ -108,7 +174,7 @@
    "name": "Matangi Rubber",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 27,
+   "gmp": 25.5,
    "priceHigh": 172,
    "lotSize": 87,
    "issueSizeCr": 125.16,
@@ -128,9 +194,13 @@
     {
      "t": "2026-11-25 22:28",
      "g": 27
+    },
+    {
+     "t": "2026-11-27 12:06",
+     "g": 25.5
     }
    ],
-   "updatedAt": "2026-11-25T22:28:02.459Z"
+   "updatedAt": "2026-11-27T12:06:16.002Z"
   },
   {
    "id": "ipo-integris-medtech",
@@ -167,7 +237,8 @@
     "closeDate": "investorgain",
     "allotmentDate": "investorgain",
     "listingDate": "investorgain",
-    "gmp": "investorgain"
+    "gmp": "investorgain",
+    "subTotal": "investorgain"
    },
    "name": "Airpro Technology",
    "exchange": "NSE SME",
@@ -179,7 +250,7 @@
    "closeDate": "2026-12-01",
    "allotmentDate": "2026-12-02",
    "listingDate": "2026-12-04",
-   "updatedAt": "2026-11-26T21:54:56.987Z",
+   "updatedAt": "2026-11-27T12:06:16.002Z",
    "gmp": 3,
    "gmpHistory": [
     {
@@ -194,7 +265,8 @@
      "t": "2026-11-26 21:54",
      "g": 3
     }
-   ]
+   ],
+   "subTotal": 0.43
   },
   {
    "id": "ipo-foodlink-f-b-holdings",
@@ -216,7 +288,7 @@
    "name": "Foodlink F&B Holdings",
    "exchange": "Mainboard",
    "type": "Mainboard",
-   "gmp": 7,
+   "gmp": 4,
    "priceHigh": 191,
    "openDate": "2026-11-26",
    "closeDate": "2026-11-30",
@@ -254,12 +326,16 @@
     {
      "t": "2026-11-26 21:54",
      "g": 7
+    },
+    {
+     "t": "2026-11-27 12:06",
+     "g": 4
     }
    ],
-   "updatedAt": "2026-11-26T21:54:56.987Z",
+   "updatedAt": "2026-11-27T12:06:16.002Z",
    "lotSize": 78,
    "issueSizeCr": 360.76,
-   "subTotal": 1.1
+   "subTotal": 1.36
   },
   {
    "id": "ipo-shree-siddhivinayak-greentech-industries",
@@ -288,8 +364,8 @@
    "closeDate": "2026-11-27",
    "allotmentDate": "2026-11-30",
    "listingDate": "2026-12-02",
-   "updatedAt": "2026-11-26T21:54:56.987Z",
-   "gmp": 2,
+   "updatedAt": "2026-11-27T12:06:16.002Z",
+   "gmp": 1.5,
    "gmpHistory": [
     {
      "t": "2026-11-23 12:21",
@@ -314,9 +390,13 @@
     {
      "t": "2026-11-26 21:54",
      "g": 2
+    },
+    {
+     "t": "2026-11-27 12:06",
+     "g": 1.5
     }
    ],
-   "subTotal": 1.27
+   "subTotal": 1.55
   },
   {
    "id": "ipo-watrana-rentals",
@@ -2114,21 +2194,6 @@
     }
    ],
    "updatedAt": "2026-11-06T15:48:22.812Z"
-  },
-  {
-   "id": "ipo-swara-baby-products",
-   "source": "investorgain",
-   "src": {
-    "name": "investorgain",
-    "exchange": "investorgain",
-    "type": "investorgain",
-    "issueSizeCr": "investorgain"
-   },
-   "name": "Swara Baby Products",
-   "exchange": "Mainboard",
-   "type": "Mainboard",
-   "issueSizeCr": 1000,
-   "updatedAt": "2026-11-26T21:54:56.987Z"
   }
  ]
 }
